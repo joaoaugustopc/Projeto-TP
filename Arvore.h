@@ -10,6 +10,7 @@ NoArv* auxcria(NoArv *p, char val);
 bool auxbusca(NoArv *p, char val);
 NoArv*libera(NoArv*p);
 void auxImprime(NoArv *p);
+void auxaltera(NoArv*p);
 
 public:
 Arv();
@@ -21,4 +22,6 @@ void imprime();
 bool busca (char val); 
 bool isoperator( char c);
 int altura(NoArv*p);
+void altera();
+char valaleatorio(char a, char b);
 };

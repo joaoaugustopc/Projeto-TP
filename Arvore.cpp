@@ -1,4 +1,7 @@
 #include"Arvore.h"
+#include<ctime>
+#include<cstdlib>
+
 using namespace std;
 
 Arv::Arv()
@@ -108,4 +111,25 @@ auxImprime(p->getEsq());
 auxImprime(p->getDir());
 cout << p->getInfo() <<", ";
 }
+}
+
+char Arv::valaleatorio(char a,char b){
+    
+    return a + rand()%(b-a + 1);
+}
+
+void Arv ::altera(){
+    auxaltera(raiz);
+}
+void Arv::auxaltera(NoArv *p){
+    srand(time(NULL));
+    char vet[4]={'+','-','*','/'};
+    if(p!=NULL){
+        auxaltera(p->getEsq());
+        auxaltera(p->getDir());
+        if(altura(p)!=0){
+            
+            p->setInfo(vet[valaleatorio(0,3)]);
+            }
+        }
 }

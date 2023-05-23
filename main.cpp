@@ -23,6 +23,9 @@ for(int i=0;i<NUMNOS;i++){
 cout<<endl;
 cout<<"Iprimindo a arvore em pos ordem: ";
 l.imprime();
+cout<<endl;
+l.altera();
+l.imprime();
 
 return 0;
     
