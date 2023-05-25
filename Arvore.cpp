@@ -25,7 +25,7 @@ if(n < max)
 {
 vet[n] = val;
 n++;
-sobe(n-1);
+//sobe(n-1);
 }
 else
 {
