@@ -2,7 +2,10 @@
 #include<iostream>
 using namespace std;
 
-NoArv::NoArv() {}
+NoArv::NoArv() {
+    esq = NULL;
+    dir = NULL;
+}
 
 NoArv::~NoArv() {}
 
