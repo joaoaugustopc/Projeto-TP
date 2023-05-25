@@ -1,7 +1,7 @@
 #include"Arvore.h"
 #include<ctime>
 #include<cstdlib>
-#include <random>
+#include<random>
 
 using namespace std;
 
@@ -16,7 +16,7 @@ Arv::~Arv(){
 int Arv::numAleatorio(){
     static random_device rd; // static para criar apenas uma vez
     static mt19937 gen(rd()); // gerador aleatorio
-    static uniform_int_distribution <int> dist(10, 100); // faixa de valores
+    static uniform_int_distribution <int> dist(48, 57); // faixa de valores
     return dist(gen);
 }
 
@@ -35,32 +35,6 @@ bool Arv::vazia()
 return raiz == NULL;
 }
 
-bool Arv::isoperator(char c){
-    return (c=='+'||c=='-'||c=='/'||c=='*');
-}
-
-
-void Arv::cria(char val)
-{
-raiz = auxcria(raiz, val);
-}
-
-
-NoArv* Arv::auxcria(NoArv *p, char val)
-{
-if(p == NULL)
-{
-p = new NoArv();
-p->setInfo(val);
-p->setEsq(NULL);
-p->setDir(NULL);
-}
-else if(val < p->getInfo())
-p->setEsq(auxcria(p->getEsq(), val));
-else
-p->setDir(auxcria(p->getDir(), val));
-return p;
-}
 
 NoArv* Arv::libera(NoArv *p)
 {
@@ -140,12 +114,14 @@ void Arv::auxaltera(NoArv *p){
             }
         }
 }
+
 void Arv::criaArvAleatoria(int altura){
     raiz = criaSubArvAleatoria(altura);
 }
+
 NoArv* Arv::criaSubArvAleatoria(int altura){
     // funcao para subarvore
-    if(altura <= 0){
+    if(altura <=0){
         return NULL;
     }
 
@@ -153,7 +129,7 @@ NoArv* Arv::criaSubArvAleatoria(int altura){
     novoNo->setInfo(numAleatorio());
 
 
-    if(altura > 1){
+    if(altura >= 1){
         novoNo->setEsq(criaSubArvAleatoria(altura - 1));
         novoNo->setDir(criaSubArvAleatoria(altura - 1));
 

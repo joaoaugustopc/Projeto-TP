@@ -6,7 +6,6 @@ class Arv
 {
 private:
 NoArv *raiz; 
-NoArv* auxcria(NoArv *p, char val);
 bool auxbusca(NoArv *p, char val);
 NoArv*libera(NoArv*p);
 void auxImprime(NoArv *p);
@@ -18,7 +17,6 @@ public:
 Arv();
 ~Arv();
 int getRaiz();
-void cria(char val);
 bool vazia(); 
 void imprime();
 bool busca (char val); 
