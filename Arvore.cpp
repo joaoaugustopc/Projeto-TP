@@ -1,6 +1,7 @@
 #include"Arvore.h"
 #include<ctime>
 #include<cstdlib>
+#include <random>
 
 using namespace std;
 
@@ -11,6 +12,12 @@ raiz =NULL;
 
 Arv::~Arv(){
     raiz=libera(raiz);
+}
+int Arv::numAleatorio(){
+    static random_device rd; // static para criar apenas uma vez
+    static mt19937 gen(rd()); // gerador aleatorio
+    static uniform_int_distribution <int> dist(10, 100); // faixa de valores
+    return dist(gen);
 }
 
 int Arv::getRaiz()
@@ -132,4 +139,26 @@ void Arv::auxaltera(NoArv *p){
             p->setInfo(vet[valaleatorio(0,3)]);
             }
         }
+}
+void Arv::criaArvAleatoria(int altura){
+    raiz = criaSubArvAleatoria(altura);
+}
+NoArv* Arv::criaSubArvAleatoria(int altura){
+    // funcao para subarvore
+    if(altura <= 0){
+        return NULL;
+    }
+
+    NoArv* novoNo = new NoArv();
+    novoNo->setInfo(numAleatorio());
+
+
+    if(altura > 1){
+        novoNo->setEsq(criaSubArvAleatoria(altura - 1));
+        novoNo->setDir(criaSubArvAleatoria(altura - 1));
+
+    }
+    
+    return novoNo;
+
 }

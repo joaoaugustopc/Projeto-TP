@@ -14,12 +14,13 @@ char numaleatorio(char a, char b){
 int main(){
     srand(time(NULL));
     Arv l;
-cout<<"Inserindo valores: ";
+/*cout<<"Inserindo valores: ";
 for(int i=0;i<NUMNOS;i++){
     char val = numaleatorio(32,126);
     l.cria(val);
     cout<<val<<", ";
-}
+}*/
+l.criaArvAleatoria(2);
 cout<<endl;
 cout<<"Iprimindo a arvore em pos ordem: ";
 l.imprime();
