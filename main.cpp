@@ -15,11 +15,14 @@ int main(){
     Arvore l(NUMNOS);
     cout<<"Inserindo valores: ";
     for(int i=0;i<NUMNOS;i++){
-    char val = numaleatorio('*','9');
+    char val = numaleatorio('0','9');
     l.insere(val);
     cout<<val<<", ";
 }
 cout<<endl;
+l.imprime();
+cout<<"\n------------------------------\n";
+l.altera();
 l.imprime();
 
 }

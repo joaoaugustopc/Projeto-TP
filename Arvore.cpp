@@ -1,5 +1,8 @@
 #include"Arvore.h"
 #include<iostream>
+#include<ctime>
+#include<cstdlib>
+
 using namespace std;
 
 Arvore::Arvore(int tam){
@@ -63,11 +66,42 @@ void Arvore::imprime(){
 }
 
 void Arvore::auximprime(int i){
-    if(i<=n){
+    if(i<n){
         auximprime(left(i));
         auximprime(right(i));
         cout<<vet[i]<<", ";
     }
 }
+
+int Arvore::altura(int p){
+    int he, hd;
+    if (p>=n)
+        return -1;
+    else{
+        he = altura(left(p));
+        hd = altura(right(p));
+        return 1 + (he > hd ? he : hd);
+    }
+}
+
+char Arvore::valaleatorio(char a,char b){    
+    return a + rand()%(b-a + 1);
+}
+void Arvore ::altera(){
+    auxaltera(0);
+}
+
+void Arvore::auxaltera(int p){
+    srand(time(NULL));
+    char op[4]={'+','-','*','/'};
+    if(p<n){
+        auxaltera(left(p));
+        auxaltera(right(p));
+        if(altura(p)!=0){            
+            vet[p]=op[valaleatorio(0,3)];
+        }
+    }
+}
+
 
 
