@@ -7,6 +7,7 @@ using namespace std;
 
 int main(){
     
+    
     Arv teste;
 
     teste.criaArvAleatoria(3);
