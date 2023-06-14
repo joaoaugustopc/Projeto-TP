@@ -1,21 +1,22 @@
 #ifndef NOARV_H
 #define NOARV_H
-class NoArv{
+class NoArv
+{
 
-    private:
+private:
     char info;
-    NoArv* esq;
-    NoArv* dir;
+    NoArv *esq;
+    NoArv *dir;
 
-    public:
-    NoArv() ;
+public:
+    NoArv();
     ~NoArv();
     void setEsq(NoArv *p);
     void setInfo(int val);
     void setDir(NoArv *p);
-    NoArv* getEsq(); 
+    NoArv *getEsq();
     char getInfo();
-    NoArv* getDir();
+    NoArv *getDir();
 };
 
 #endif

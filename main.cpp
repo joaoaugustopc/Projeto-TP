@@ -1,22 +1,19 @@
 #include <iostream>
 #include "Arvore.h"
 #include <random>
+#include <ctime>
 
 using namespace std;
 
+int main()
+{
 
-int main(){
-    
-    
+    srand(time(NULL));
     Arv teste;
 
-    teste.criaArvAleatoria(3);
+    teste.criaArvAleatoria(5);
 
     teste.imprime();
-    teste.altera();
-    cout<<endl;
-    teste.imprime();
-
 
     return 0;
 }
