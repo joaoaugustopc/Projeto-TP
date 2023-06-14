@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <random>
+#include <stack>
 
 using namespace std;
 
@@ -19,26 +20,17 @@ Arv::~Arv()
 int Arv::numAleatorio()
 {
 
-    int x = 0 + rand() % 3;
-    if (x == 0)
-    {
+    int x = 0 + rand() % 2;
+
+    if(x == 0){
         return 48 + rand() % (57 - 48 + 1);
-    }
-    else if (x == 1)
-    {
-        return 97 + rand() % (122 - 97 + 1);
-    }
-    else
-    {
+        
+    } else{
         int vet[4] = {42, 43, 45, 47};
         return vet[0 + rand() % 4];
     }
-
-    /*static random_device rd; // static para criar apenas uma vez
-    static mt19937 gen(rd()); // gerador aleatorio
-    static uniform_int_distribution <int> dist(48, 57); // faixa de valores
-    return dist(gen);*/
 }
+
 
 int Arv::getRaiz()
 {
@@ -115,31 +107,10 @@ void Arv ::auxImprime(NoArv *p)
 
 char Arv::valaleatorio()
 {
-    int val = 0 + rand() % 2;
-    if (val == 0)
-    {
-        return 48 + rand() % (57 - 48 + 1);
-    }
-    else
-    {
-        return 97 + rand() % (122 - 97 + 1);
-    }
+    int val = rand() % 2;
+    
+    return 48 + rand() % (57 - 48 + 1);
 }
-
-/*void Arv ::altera(){
-    auxaltera(raiz);
-}
-
-void Arv::auxaltera(NoArv *p){
-    char vet[4]={'+','-','*','/'};
-    if(p!=NULL){
-        auxaltera(p->getEsq());
-        auxaltera(p->getDir());
-        if(altura(p)!=0){
-            p->setInfo(vet[valaleatorio(0,3)]);
-        }
-    }
-}*/
 
 void Arv::criaArvAleatoria(int altura)
 {
@@ -174,4 +145,74 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     }
 
     return novoNo;
+}
+
+int Arv::resolverExpressao()
+{
+    std::stack<int> pilha;
+
+    resolverExpressaoAux(raiz, pilha);
+
+    if (!pilha.empty()) {
+        int resultado = pilha.top();
+        pilha.pop();
+        return resultado;
+    }
+
+    return -1; // invalido
+}
+
+void Arv::resolverExpressaoAux(NoArv *p, std::stack<int> &pilha){
+    if (p != NULL)
+    {
+        resolverExpressaoAux(p->getEsq(), pilha);
+        resolverExpressaoAux(p->getDir(), pilha);
+
+        char info = p->getInfo();
+
+        if(info == '+' || info == '-' || info == '*' || info == '/'){
+            if (pilha.size() < 2)
+            {
+                std::cout << "Expressão inválida!" << std::endl;
+                return;
+            }
+
+            int val2 = pilha.top();
+            pilha.pop();
+            int val1 = pilha.top();
+            pilha.pop();
+
+            int resultado;
+
+            switch (info)
+            {
+                case '+':
+                    resultado = val1 + val2;
+                    break;
+                case '-':
+                    resultado = val1 - val2;
+                    break;
+                case '*':
+                    resultado = val1 * val2;
+                    break;
+                case '/':
+                    if(val1 == 0){
+                        cout << "Impossível dividir 0 por um número!" << endl;
+                        exit(1);
+                    }
+                    resultado = val1 / val2;
+                    break;
+                default:
+                    std::cout << "Operador inválido!" << std::endl;
+                    return;
+            }
+
+            pilha.push(resultado);
+        } else if(isdigit(info)){
+            pilha.push(info - '0');
+        } else{
+            std::cout << "Caractere inválido!" << std::endl;
+            return;
+        }
+    }
 }

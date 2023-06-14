@@ -2,6 +2,8 @@
 #define ARVORE_H
 #include "NoArv.h"
 #include <iostream>
+#include <stack>
+
 using namespace std;
 
 class Arv
@@ -14,6 +16,7 @@ private:
     void auxaltera(NoArv *p);
     int numAleatorio();
     NoArv *criaSubArvAleatoria(int altura);
+    void resolverExpressaoAux(NoArv *p, std::stack<int> &pilha);
 
 public:
     Arv();
@@ -27,6 +30,7 @@ public:
     void altera();
     char valaleatorio();
     void criaArvAleatoria(int altura);
+    int resolverExpressao(); // somente com inteiros
 };
 
 #endif
