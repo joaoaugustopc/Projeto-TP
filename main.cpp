@@ -17,7 +17,7 @@ int main() {
     std::cout << "Árvore gerada aleatoriamente (altura " << altura << "): ";
     arvore.imprime();
     std::cout << std::endl;
-    cout << "Resultado da operacao: " << arvore.resolverOperacao() << endl;
+    /*cout << "Resultado da operacao: " << arvore.resolverOperacao() << endl;*/
 
     return 0;
 }

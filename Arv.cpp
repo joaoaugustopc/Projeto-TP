@@ -29,12 +29,20 @@ void Arv::criaSubArvoreAleatoria(int indice, int altura) {
     if (indice >= max || altura <= 0) {
         return;
     }
+    char x=numAleatorio();
 
     if (altura == 1) {
         vet[indice] = gerarNumeroAleatorio();
         n++;
-    } else {
-        vet[indice] = gerarOperadorAleatorio();
+    }
+    else if(x>='0'&&x<='9'){
+        vet[indice]=x;
+        n++;
+        
+    }
+    
+    else {
+        vet[indice] = x;
         n++;
         criaSubArvoreAleatoria(left(indice), altura - 1);
         criaSubArvoreAleatoria(right(indice), altura - 1);
@@ -42,7 +50,7 @@ void Arv::criaSubArvoreAleatoria(int indice, int altura) {
 }
 
 char Arv::gerarNumeroAleatorio() {
-    return '0' + rand() % 10;
+    return 48 + rand() % (57 - 48 + 1);
 }
 
 char Arv::gerarOperadorAleatorio() {
@@ -122,4 +130,24 @@ int Arv::resolverOperacao() {
     }
     
     return resultado;
+}
+
+int Arv::numAleatorio()
+{
+
+    int x = 0 + rand() % 2;
+    if (x == 0)
+    {
+        return 48 + rand() % (57 - 48 + 1);
+    }
+    else
+    {
+        int vet[4] = {42, 43, 45, 47};
+        return vet[0 + rand() % 4];
+    }
+
+    /*static random_device rd; // static para criar apenas uma vez
+    static mt19937 gen(rd()); // gerador aleatorio
+    static uniform_int_distribution <int> dist(48, 57); // faixa de valores
+    return dist(gen);*/
 }

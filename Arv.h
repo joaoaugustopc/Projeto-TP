@@ -14,6 +14,7 @@ class Arv{
     int right(int i);
     int parent(int i);
     void auxImprime(int i);
+    int numAleatorio();
 
     public:
     Arv(int tam);
@@ -21,6 +22,7 @@ class Arv{
     void criaArvoreAleatoria(int altura);
     void imprime();
     int resolverOperacao();
+    
 
 
 };
