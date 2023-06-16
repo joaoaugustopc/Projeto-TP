@@ -6,15 +6,14 @@
 using namespace std;
 
 Arv::Arv(int tam) {
-        max = tam;
-        n = 0;
-        vet = new char[max];
-    }
-
+    max = tam;
+    n = 0;
+    vet = new char[max];
+}
 
 Arv::~Arv() {
-        delete[] vet;
-    }
+    delete[] vet;
+}
 
 void Arv::criaArvoreAleatoria(int altura) {
     if (altura <= 0) {
@@ -34,10 +33,15 @@ void Arv::criaSubArvoreAleatoria(int indice, int altura) {
         vet[indice] = gerarNumeroAleatorio();
         n++;
     } else {
-        vet[indice] = gerarOperadorAleatorio();
-        n++;
-        criaSubArvoreAleatoria(left(indice), altura - 1);
-        criaSubArvoreAleatoria(right(indice), altura - 1);
+        if (rand() % 2 == 0) {
+            vet[indice] = gerarOperadorAleatorio();
+            n++;
+            criaSubArvoreAleatoria(left(indice), altura - 1);
+            criaSubArvoreAleatoria(right(indice), altura - 1);
+        } else {
+            vet[indice] = gerarNumeroAleatorio();
+            n++;
+        }
     }
 }
 
@@ -64,6 +68,7 @@ int Arv::parent(int i) {
 
 void Arv::imprime() {
     auxImprime(0);
+    cout << endl;
 }
 
 void Arv::auxImprime(int i) {
@@ -73,6 +78,8 @@ void Arv::auxImprime(int i) {
         std::cout << vet[i] << ", ";
     }
 }
+
+/*
 
 int Arv::resolverOperacao() {
     stack<int> pilha;
@@ -99,8 +106,8 @@ int Arv::resolverOperacao() {
                     break;
                 case '/':
                     pilha.push(a / b);
-                    if(a == 0){
-                        cout << "Impossivel realizar a operacao: 0/0" << endl;
+                    if (a == 0) {
+                        cout << "Impossível realizar a operação: 0/0" << endl;
                         exit(1);
                     }
                     break;
@@ -123,3 +130,5 @@ int Arv::resolverOperacao() {
     
     return resultado;
 }
+
+*/
