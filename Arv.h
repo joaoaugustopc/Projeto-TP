@@ -14,7 +14,8 @@ class Arv{
     int right(int i);
     int parent(int i);
     void auxImprime(int i);
-    int numAleatorio();
+    bool isOperador(char c);
+    char numAleatorio();
 
     public:
     Arv(int tam);

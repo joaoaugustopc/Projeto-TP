@@ -6,15 +6,14 @@
 using namespace std;
 
 Arv::Arv(int tam) {
-        max = tam;
-        n = 0;
-        vet = new char[max];
-    }
-
+    max = tam;
+    n = 0;
+    vet = new char[max];
+}
 
 Arv::~Arv() {
-        delete[] vet;
-    }
+    delete[] vet;
+}
 
 void Arv::criaArvoreAleatoria(int altura) {
     if (altura <= 0) {
@@ -29,28 +28,27 @@ void Arv::criaSubArvoreAleatoria(int indice, int altura) {
     if (indice >= max || altura <= 0) {
         return;
     }
-    char x=numAleatorio();
 
     if (altura == 1) {
         vet[indice] = gerarNumeroAleatorio();
         n++;
-    }
-    else if(x>='0'&&x<='9'){
-        vet[indice]=x;
-        n++;
-        
-    }
-    
-    else {
-        vet[indice] = x;
-        n++;
-        criaSubArvoreAleatoria(left(indice), altura - 1);
-        criaSubArvoreAleatoria(right(indice), altura - 1);
+    } else {
+        char x = numAleatorio();
+
+        if (isdigit(x)) {
+            vet[indice] = gerarNumeroAleatorio();
+            n++;
+        } else {
+            vet[indice] = x;
+            n++;
+            criaSubArvoreAleatoria(left(indice), altura - 1);
+            criaSubArvoreAleatoria(right(indice), altura - 1);
+        }
     }
 }
 
 char Arv::gerarNumeroAleatorio() {
-    return 48 + rand() % (57 - 48 + 1);
+    return '0' + rand() % 10;
 }
 
 char Arv::gerarOperadorAleatorio() {
@@ -78,14 +76,16 @@ void Arv::auxImprime(int i) {
     if (i < n) {
         auxImprime(left(i));
         auxImprime(right(i));
-        std::cout << vet[i] << ", ";
+        if (isdigit(vet[i]) || isOperador(vet[i])) {
+            std::cout << vet[i] << ", ";
+        }
     }
 }
 
 int Arv::resolverOperacao() {
     stack<int> pilha;
     int resultado = 0;
-    
+
     for (int i = 0; i < n; i++) {
         if (isdigit(vet[i])) {
             pilha.push(vet[i] - '0');
@@ -94,7 +94,7 @@ int Arv::resolverOperacao() {
             pilha.pop();
             int a = pilha.top();
             pilha.pop();
-            
+
             switch (vet[i]) {
                 case '+':
                     pilha.push(a + b);
@@ -107,8 +107,8 @@ int Arv::resolverOperacao() {
                     break;
                 case '/':
                     pilha.push(a / b);
-                    if(a == 0){
-                        cout << "Impossivel realizar a operacao: 0/0" << endl;
+                    if (a == 0) {
+                        cout << "Impossível realizar a operação: 0/0" << endl;
                         exit(1);
                     }
                     break;
@@ -118,36 +118,36 @@ int Arv::resolverOperacao() {
             }
         }
     }
-    
+
     if (!pilha.empty()) {
         resultado = pilha.top();
         pilha.pop();
     }
-    
+
     if (!pilha.empty()) {
         cout << "Erro: operação inválida!" << endl;
         return 0;
     }
-    
+
     return resultado;
 }
 
-int Arv::numAleatorio()
-{
-
+char Arv::numAleatorio() {
     int x = 0 + rand() % 2;
-    if (x == 0)
-    {
-        return 48 + rand() % (57 - 48 + 1);
+    if (x == 0) {
+        return gerarNumeroAleatorio();
+    } else {
+        char operadores[4] = {'+', '-', '*', '/'};
+        return operadores[rand() % 4];
     }
-    else
-    {
-        int vet[4] = {42, 43, 45, 47};
-        return vet[0 + rand() % 4];
-    }
+}
 
-    /*static random_device rd; // static para criar apenas uma vez
-    static mt19937 gen(rd()); // gerador aleatorio
-    static uniform_int_distribution <int> dist(48, 57); // faixa de valores
-    return dist(gen);*/
+bool Arv::isOperador(char c) {
+    char operadores[4] = {'+', '-', '*', '/'};
+    for (int i = 0; i < 4; i++) {
+        if (c == operadores[i]) {
+            return true;
+        }
+    }
+    return false;
 }
