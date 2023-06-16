@@ -132,7 +132,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
 
     char x = numAleatorio();
     novoNo->setInfo(x);
-    if ((novoNo->getInfo() >= '0' && novoNo->getInfo() <= '9') || (novoNo->getInfo() >= 'a' && novoNo->getInfo() <= 'z'))
+    if ((novoNo->getInfo() >= '0' && novoNo->getInfo() <= '9') || (novoNo->getInfo() >= 'x' && novoNo->getInfo() <= 'z'))
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
