@@ -1,28 +1,23 @@
-#include<iostream>
-#include"Arvore.h"
-#include <cstdlib> 
-#include <ctime> 
-#define NUMNOS 7
+#include "Arv.h"
+#include <iostream>
+#include <time.h>
+#include <stack>
 
 using namespace std;
 
-char numaleatorio(char a, char b){
-    return a + rand()%(b-a + 1);
-}
-
-int main(){
+int main() {
     srand(time(NULL));
-    Arvore l(NUMNOS);
-    cout<<"Inserindo valores: ";
-    for(int i=0;i<NUMNOS;i++){
-    char val = numaleatorio('0','9');
-    l.insere(val);
-    cout<<val<<", ";
-}
-cout<<endl;
-l.imprime();
-cout<<"\n------------------------------\n";
-l.altera();
-l.imprime();
 
+    int maxNodes = 20;
+    Arv arvore(maxNodes);
+    int altura = 4;
+
+    arvore.criaArvoreAleatoria(altura);
+
+    std::cout << "Árvore gerada aleatoriamente (altura " << altura << "): ";
+    arvore.imprime();
+    std::cout << std::endl;
+    cout << "Resultado da operacao: " << arvore.resolverOperacao() << endl;
+
+    return 0;
 }
