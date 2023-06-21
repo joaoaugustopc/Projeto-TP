@@ -83,7 +83,7 @@ void Arvore::auxcria(int idx)
         return;
     }
 
-    if (n != max)
+    if (n < max)
     {
 
         char val = valAleatorio();
