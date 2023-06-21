@@ -45,8 +45,9 @@ char Arvore::valAleatorio()
     {
         return gerarNumeroAleatorio();
     }
-    else if (x==1){
-        return 'x' + rand()%('z'-'x'+1);
+    else if (x == 1)
+    {
+        return 'x' + rand() % ('z' - 'x' + 1);
     }
     else
     {
