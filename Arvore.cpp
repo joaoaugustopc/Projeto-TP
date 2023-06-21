@@ -1,107 +1,117 @@
-#include"Arvore.h"
-#include<iostream>
-#include<ctime>
-#include<cstdlib>
+#include "Arvore.h"
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+#include <random>
 
 using namespace std;
 
-Arvore::Arvore(int tam){
-    max=tam;
-    n=0;
-    vet=new char[max];
+Arvore::Arvore(int tam)
+{
+    max = tam;
+    n = 0;
+    vet = new No[max];
 }
-Arvore::~Arvore(){
-    delete [] vet;
+Arvore::~Arvore()
+{
+    delete[] vet;
 }
-char Arvore::getraiz(){
-    if(n>0){
-        return vet[0];
+char Arvore::getraiz()
+{
+    if (n > 0)
+    {
+        return vet[0].getInfo();
     }
-    else{
-        cout<<"Arvore Vazia!\n";
-
+    else
+    {
+        cout << "Arvore Vazia!\n";
     }
 }
-void Arvore::insere(char val)
+
+char Arvore::gerarNumeroAleatorio()
 {
-if(n < max)
+    return '0' + rand() % 10;
+}
+char Arvore::gerarOperadorAleatorio()
 {
-vet[n] = val;
-n++;
-//sobe(n-1);
+    char operadores[4] = {'+', '-', '*', '/'};
+    return operadores[rand() % 4];
 }
-else
+
+char Arvore::valAleatorio()
 {
-cout << "Heap cheia!" << endl;
+    int x = 0 + rand() % 2;
+    if (x == 0)
+    {
+        return gerarNumeroAleatorio();
+    }
+    else
+    {
 
+        return gerarOperadorAleatorio();
+    }
 }
-}
-void Arvore::sobe(int filho)
+bool Arvore::isOperador(char c)
 {
-int pai = (filho - 1)/2;
-if(vet[filho] < vet[pai])
+    char operadores[4] = {'+', '-', '*', '/'};
+    for (int i = 0; i < 4; i++)
+    {
+        if (c == operadores[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Arvore::criarvorealeatoria()
 {
-
-float aux = vet[filho];
-vet[filho] = vet[pai];
-vet[pai] = aux;
-sobe(pai);
-}
+    auxcria(0);
 }
 
-int Arvore::left(int i){
-    return 2*i+1;
+void Arvore::auxcria(int idx)
+{
+    if (idx == max - 1)
+    {
+        vet[idx].setinfo(gerarNumeroAleatorio());
+        vet[idx].setEsq(-1);
+        vet[idx].setDir(-1);
+        n++;
+        return;
+    }
+
+    if (n != max)
+    {
+
+        char val = valAleatorio();
+        vet[idx].setinfo(val);
+        vet[idx].setEsq(-1);
+        vet[idx].setDir(-1);
+        n++;
+
+        if (isOperador(vet[idx].getInfo()))
+        {
+            vet[idx].setEsq(n);
+            auxcria(n);
+            vet[idx].setDir(n);
+            auxcria(n);
+        }
+    }
+    return;
 }
 
-int Arvore::right(int i){
-    return 2*(i+1);
-}
-
-int Arvore::pai(int i){
-    return (i-1)/2;
-}
-
-void Arvore::imprime(){
+void Arvore::imprime()
+{
     auximprime(0);
 }
 
-void Arvore::auximprime(int i){
-    if(i<n){
-        auximprime(left(i));
-        auximprime(right(i));
-        cout<<vet[i]<<", ";
+void Arvore::auximprime(int idx)
+{
+    if (idx == -1 || idx == max)
+    {
+        return;
     }
+    auximprime(vet[idx].getEsq());
+    auximprime(vet[idx].getDir());
+    cout << vet[idx].getInfo() << ", ";
 }
-
-int Arvore::altura(int p){
-    int he, hd;
-    if (p>=n)
-        return -1;
-    else{
-        he = altura(left(p));
-        hd = altura(right(p));
-        return 1 + (he > hd ? he : hd);
-    }
-}
-
-char Arvore::valaleatorio(char a,char b){    
-    return a + rand()%(b-a + 1);
-}
-void Arvore ::altera(){
-    auxaltera(0);
-}
-
-void Arvore::auxaltera(int p){
-    srand(time(NULL));
-    char op[4]={'+','-','*','/'};
-    if(p<n){
-        auxaltera(left(p));
-        auxaltera(right(p));
-        if(altura(p)!=0){            
-            vet[p]=op[valaleatorio(0,3)];
-        }
-    }
-}
-
-
-
