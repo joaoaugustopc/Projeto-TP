@@ -40,10 +40,13 @@ char Arvore::gerarOperadorAleatorio()
 
 char Arvore::valAleatorio()
 {
-    int x = 0 + rand() % 2;
+    int x = 0 + rand() % 3;
     if (x == 0)
     {
         return gerarNumeroAleatorio();
+    }
+    else if (x==1){
+        return 'x' + rand()%('z'-'x'+1);
     }
     else
     {
