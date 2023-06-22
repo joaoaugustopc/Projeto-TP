@@ -20,11 +20,13 @@ Arv::~Arv()
 int Arv::numAleatorio()
 {
 
-    int x = 0 + rand() % 2;
+    int x = 0 + rand() % 3;
 
     if(x == 0){
         return 48 + rand() % (57 - 48 + 1);
         
+    } if(x == 1){
+        return 'x' + rand() % ('z' - 'x' + 1);
     } else{
         int vet[4] = {42, 43, 45, 47};
         return vet[0 + rand() % 4];
@@ -132,7 +134,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
 
     char x = numAleatorio();
     novoNo->setInfo(x);
-    if ((novoNo->getInfo() >= '0' && novoNo->getInfo() <= '9') || (novoNo->getInfo() >= 'a' && novoNo->getInfo() <= 'z'))
+    if ((novoNo->getInfo() >= '0' && novoNo->getInfo() <= '9') || (novoNo->getInfo() >= 'x' && novoNo->getInfo() <= 'z'))
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
