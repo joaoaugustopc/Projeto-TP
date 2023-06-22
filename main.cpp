@@ -2,7 +2,7 @@
 #include "Arvore.h"
 #include <cstdlib>
 #include <ctime>
-#define NUMNOS 7
+
 
 using namespace std;
 
