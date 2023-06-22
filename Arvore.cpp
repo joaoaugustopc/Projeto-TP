@@ -147,44 +147,79 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     return novoNo;
 }
 
-int Arv::resolverExpressao()
-{
+int Arv::resolverExpressao(){
     std::stack<int> pilha;
 
-    resolverExpressaoAux(raiz, pilha);
+    preencherPilha(raiz, pilha);
 
-    if (!pilha.empty()) {
-        int resultado = pilha.top();
+    cout << "teste" << endl;
+
+    while(!pilha.empty()){
+        cout << pilha.top() << endl;
         pilha.pop();
-        return resultado;
     }
 
-    return -1; // invalido
+    cout << endl;
+
+    return 1;
+
+   /* comentario pra teste
+
+    if(!pilha.empty()){
+        int resultado = pilha.top(); // consertar
+        return resultado;
+    } else return -1;
+   */ 
+
 }
 
-void Arv::resolverExpressaoAux(NoArv *p, std::stack<int> &pilha){
-    if (p != NULL)
-    {
-        resolverExpressaoAux(p->getEsq(), pilha);
-        resolverExpressaoAux(p->getDir(), pilha);
+void Arv::preencherPilha(NoArv* p, std::stack<int>& pilha) {
+    // corrigir
+    if (p == nullptr) {
+        return;
+    }
 
-        char info = p->getInfo();
+    preencherPilha(p->getEsq(), pilha);
+    pilha.push(p->getInfo());
+    preencherPilha(p->getDir(), pilha);
+}
 
-        if(info == '+' || info == '-' || info == '*' || info == '/'){
-            if (pilha.size() < 2)
-            {
-                std::cout << "Expressão inválida!" << std::endl;
+ int Arv::retornarResultadoExpressao(std::stack<int> &pilha){
+    //criar copia da pilha original
+    std::stack<char> pilhaTemp;
+    std::stack<char> pilhaCopia;
+
+    while(!pilha.empty()){
+        pilhaTemp.push(pilha.top());
+        pilha.pop();
+    }
+
+    while(!pilhaTemp.empty()){
+        pilhaCopia.push(pilhaTemp.top());
+        pilha.push(pilhaTemp.top());
+        pilhaTemp.pop();
+    }
+
+    //operacoes
+
+    while(!pilhaCopia.empty()){
+        if(pilhaCopia.top() == '+' || pilhaCopia.top() == '-' || pilhaCopia.top() == '/' || pilhaCopia.top() == '*'){
+            if(pilhaCopia.size() < 2){
+                cout << "Expressao invalida" << endl;
                 return;
             }
 
-            int val2 = pilha.top();
-            pilha.pop();
-            int val1 = pilha.top();
-            pilha.pop();
+            char operacao = pilhaCopia.top();
+            pilhaCopia.pop();
+
+            int val2 = pilhaCopia.top();
+            pilhaCopia.pop();
+            int val1 = pilhaCopia.top();
+            pilhaCopia.pop();
 
             int resultado;
 
-            switch (info)
+            switch (operacao)
             {
                 case '+':
                     resultado = val1 + val2;
@@ -207,12 +242,11 @@ void Arv::resolverExpressaoAux(NoArv *p, std::stack<int> &pilha){
                     return;
             }
 
-            pilha.push(resultado);
-        } else if(isdigit(info)){
-            pilha.push(info - '0');
+            pilhaCopia.push(resultado);
         } else{
-            std::cout << "Caractere inválido!" << std::endl;
+            cout << "Operacao invalida" << endl;
             return;
         }
     }
-}
+
+ }
