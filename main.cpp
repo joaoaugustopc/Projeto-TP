@@ -178,7 +178,7 @@ void pilha(Arv *x)
     x->preenchePilhaAux(pilha);
     // vector<vector<string>> matriz = f1();
     // cout<<operacao(pilha);
-    cout << operacao(pilha, 1);
+    cout <<"RESULTADO DA OPERACAO --> " << operacao(pilha, 1);
 }
 
 int main()
