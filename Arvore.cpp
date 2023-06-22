@@ -20,11 +20,13 @@ Arv::~Arv()
 int Arv::numAleatorio()
 {
 
-    int x = 0 + rand() % 2;
+    int x = 0 + rand() % 3;
 
     if(x == 0){
         return 48 + rand() % (57 - 48 + 1);
         
+    } if(x == 1){
+        return 'x' + rand() % ('z' - 'x' + 1);
     } else{
         int vet[4] = {42, 43, 45, 47};
         return vet[0 + rand() % 4];
@@ -147,44 +149,62 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     return novoNo;
 }
 
-int Arv::resolverExpressao()
-{
-    std::stack<int> pilha;
+int Arv::resolverExpressao(){
+    std::stack<char> pilha;
 
-    resolverExpressaoAux(raiz, pilha);
+    preencherPilha(raiz, pilha);
 
-    if (!pilha.empty()) {
-        int resultado = pilha.top();
-        pilha.pop();
-        return resultado;
-    }
+    return retornarResultadoExpressao(pilha);
 
-    return -1; // invalido
 }
 
-void Arv::resolverExpressaoAux(NoArv *p, std::stack<int> &pilha){
-    if (p != NULL)
-    {
-        resolverExpressaoAux(p->getEsq(), pilha);
-        resolverExpressaoAux(p->getDir(), pilha);
+void Arv::preencherPilha(NoArv* p, std::stack<char>& pilha) {
+    if (p == nullptr) {
+        return;
+    }
 
-        char info = p->getInfo();
+    preencherPilha(p->getEsq(), pilha);
+    preencherPilha(p->getDir(), pilha);
+    pilha.push(p->getInfo());
+}
 
-        if(info == '+' || info == '-' || info == '*' || info == '/'){
-            if (pilha.size() < 2)
-            {
-                std::cout << "Expressão inválida!" << std::endl;
-                return;
+ int Arv::retornarResultadoExpressao(std::stack<char> &pilha){
+    //criar copia da pilha original
+    std::stack<char> pilhaTemp;
+    std::stack<char> pilhaCopia;
+
+    while(!pilha.empty()){
+        pilhaCopia.push(pilha.top());
+        pilhaTemp.push(pilha.top());
+        pilha.pop();
+    }
+
+    while(!pilhaTemp.empty()){
+        pilha.push(pilhaTemp.top());
+        pilhaTemp.pop();
+    }
+
+    //operacoes
+
+    std::stack<int> pilhaResultado;
+    while(!pilhaCopia.empty()){
+        if(pilhaCopia.top() == '+' || pilhaCopia.top() == '-' || pilhaCopia.top() == '*' || pilhaCopia.top() == '/'){
+            char operacao = pilhaCopia.top();
+            pilhaCopia.pop();
+
+            if(pilhaResultado.size() < 2){
+                cout << "erro de tamanho" << endl;
+                exit(1);
             }
 
-            int val2 = pilha.top();
-            pilha.pop();
-            int val1 = pilha.top();
-            pilha.pop();
+            int val2 = pilhaResultado.top();
+            pilhaResultado.pop();
+            int val1 = pilhaResultado.top();
+            pilhaResultado.pop();
 
             int resultado;
 
-            switch (info)
+            switch (operacao)
             {
                 case '+':
                     resultado = val1 + val2;
@@ -196,7 +216,7 @@ void Arv::resolverExpressaoAux(NoArv *p, std::stack<int> &pilha){
                     resultado = val1 * val2;
                     break;
                 case '/':
-                    if(val1 == 0){
+                    if(val2 == 0){
                         cout << "Impossível dividir 0 por um número!" << endl;
                         exit(1);
                     }
@@ -204,15 +224,20 @@ void Arv::resolverExpressaoAux(NoArv *p, std::stack<int> &pilha){
                     break;
                 default:
                     std::cout << "Operador inválido!" << std::endl;
-                    return;
+                    exit(1);
             }
 
-            pilha.push(resultado);
-        } else if(isdigit(info)){
-            pilha.push(info - '0');
-        } else{
-            std::cout << "Caractere inválido!" << std::endl;
-            return;
+            pilhaResultado.push(resultado);
+        } else if(isdigit(pilhaCopia.top())){
+            pilhaResultado.push(pilhaCopia.top() - '0');
+            pilhaCopia.pop();
+        } else {
+            cout << "operacao invalida" << endl;
+            exit(1);
         }
     }
-}
+
+    return pilhaResultado.top();
+ }
+
+    

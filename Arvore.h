@@ -16,7 +16,9 @@ private:
     void auxaltera(NoArv *p);
     int numAleatorio();
     NoArv *criaSubArvAleatoria(int altura);
-    void resolverExpressaoAux(NoArv *p, std::stack<int> &pilha);
+    void preencherPilha(NoArv *p, std::stack<char> &pilha);
+    int retornarResultadoExpressao(std::stack<char> &pilha);
+
 
 public:
     Arv();
@@ -30,7 +32,7 @@ public:
     void altera();
     char valaleatorio();
     void criaArvAleatoria(int altura);
-    int resolverExpressao(); // somente com inteiros
+    int resolverExpressao();
 };
 
 #endif
