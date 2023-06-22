@@ -16,8 +16,8 @@ private:
     void auxaltera(NoArv *p);
     int numAleatorio();
     NoArv *criaSubArvAleatoria(int altura);
-    void preencherPilha(NoArv *p, std::stack<int> &pilha);
-    int retornarResultadoExpressao(std::stack<int> &pilha);
+    void preencherPilha(NoArv *p, std::stack<char> &pilha);
+    int retornarResultadoExpressao(std::stack<char> &pilha);
 
 
 public:

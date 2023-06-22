@@ -16,7 +16,7 @@ int main()
 
     teste.imprime();
 
-    teste.resolverExpressao();
+    cout << teste.resolverExpressao() << endl;
 
     return 0;
 }
