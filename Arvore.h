@@ -19,7 +19,6 @@ private:
     void preencherPilha(NoArv *p, std::stack<char> &pilha);
     int retornarResultadoExpressao(std::stack<char> &pilha);
 
-
 public:
     Arv();
     ~Arv();
@@ -33,6 +32,7 @@ public:
     char valaleatorio();
     void criaArvAleatoria(int altura);
     int resolverExpressao();
+    void preenchePilhaAux(stack<char> &pilha);
 };
 
 #endif
