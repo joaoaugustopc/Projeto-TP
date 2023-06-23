@@ -109,14 +109,13 @@ float AUXoperacao(stack<char> &pilhaCopia)
     return pilhaResultado.top();
 }
 
-float operacao(stack<char> &pilha, int i)
+float operacao(stack<char> &pilha, int i, vector<vector<string>> matriz)
 {
     // criar copia da pilha original
     stack<char> pilhaTemp;
     stack<char> pilhaCopia;
     stack<char> pilhaCSV;
     stack<char> pilhaaux;
-    vector<vector<string>> matriz = f1();
 
     while (!pilha.empty())
     {
@@ -176,9 +175,11 @@ void pilha(Arv *x)
 {
     stack<char> pilha;
     x->preenchePilhaAux(pilha);
-    // vector<vector<string>> matriz = f1();
-    // cout<<operacao(pilha);
-    cout <<"RESULTADO DA OPERACAO --> " << operacao(pilha, 1);
+    vector<vector<string>> matriz = f1();
+    for (int i = 1; i < 6; i++)
+    {
+        cout << "Resultado da operacao da linha " << i << " --> " << operacao(pilha, i, matriz) << endl;
+    }
 }
 
 int main()
