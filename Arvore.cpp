@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <random>
+#include <stack>
 
 using namespace std;
 
@@ -118,4 +119,20 @@ void Arvore::auximprime(int idx)
     auximprime(vet[idx].getEsq());
     auximprime(vet[idx].getDir());
     cout << vet[idx].getInfo() << ", ";
+}
+
+void Arvore ::preencherPilha(int idx, std::stack<char> &pilha)
+{
+    if (idx == -1 || idx == max)
+    {
+        return;
+    }
+    preencherPilha(vet[idx].getEsq(), pilha);
+    preencherPilha(vet[idx].getDir(), pilha);
+    pilha.push(vet[idx].getInfo());
+}
+
+void Arvore ::preenchePilaAux(std::stack<char> &pilha)
+{
+    preencherPilha(0, pilha);
 }
