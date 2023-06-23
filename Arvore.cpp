@@ -78,6 +78,11 @@ int Arv::altura(NoArv *p)
     }
 }
 
+// variar o codigo de acordo com o arquivo
+// arquivo vai alterar a geração de arvore (conjunto de variáveis)
+// construtor da pilha para copiar
+// divisao protegida
+
 bool Arv::busca(char val)
 {
     return auxbusca(raiz, val);
@@ -186,6 +191,13 @@ int Arv::retornarResultadoExpressao(std::stack<char> &pilha)
         pilha.pop();
     }
 
+    cout << "teste" << endl;
+
+    while(!pilhaTemp.empty()){
+        cout << pilhaTemp.top() << endl;
+        pilhaTemp.pop();
+    }
+
     while (!pilhaTemp.empty())
     {
         pilha.push(pilhaTemp.top());
@@ -199,7 +211,7 @@ int Arv::retornarResultadoExpressao(std::stack<char> &pilha)
     {
         if (pilhaCopia.top() == '+' || pilhaCopia.top() == '-' || pilhaCopia.top() == '*' || pilhaCopia.top() == '/')
         {
-            char operacao = pilhaCopia.top();
+            char operacao = pilhaCopia.top(); // colocar em cima
             pilhaCopia.pop();
 
             if (pilhaResultado.size() < 2)
@@ -229,7 +241,8 @@ int Arv::retornarResultadoExpressao(std::stack<char> &pilha)
             case '/':
                 if (val2 == 0)
                 {
-                    cout << "Impossível dividir 0 por um número!" << endl;
+                    cout << "Impossível dividir 0 por um número!" << endl; //pensar em divisao protegida
+                    // colocar um if para retornar um valor para essas contas  
                     exit(1);
                 }
                 resultado = val1 / val2;
@@ -260,3 +273,10 @@ void Arv::preenchePilhaAux(stack<char> &pilha)
 {
     preencherPilha(raiz, pilha);
 }
+
+
+// fazer o sorteio do nó para incluir uma subarvore
+// a subarvore vai depender do nó sorteado na árvore
+// criar uma classe para fazer avaliação da arvore, usando o arquivo e as operações
+
+//lembrar de algo do operação 

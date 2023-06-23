@@ -192,8 +192,8 @@ int main()
     teste->imprime();
 
     cout << endl;
-    // cout << teste.resolverExpressao() << endl;
-    pilha(teste);
+    cout << teste->resolverExpressao() << endl;
+    
 
     return 0;
 }
