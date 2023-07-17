@@ -176,6 +176,8 @@ void pilha(Arv *x)
     stack<char> pilha;
     x->preenchePilhaAux(pilha);
     vector<vector<string>> matriz = f1();
+    int tam = matriz[0].size();
+    cout<<"TAMANHO DA PRIMEIRA LINHA -- > "<< tam<<endl;
     for (int i = 1; i < 6; i++)
     {
         cout << "Resultado da operacao da linha " << i << " --> " << operacao(pilha, i, matriz) << endl;
