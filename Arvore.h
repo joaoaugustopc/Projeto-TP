@@ -10,6 +10,8 @@ class Arv
 {
 private:
     NoArv *raiz;
+    char *vetor;
+    int tam;
     bool auxbusca(NoArv *p, char val);
     NoArv *libera(NoArv *p);
     void auxImprime(NoArv *p);
@@ -20,7 +22,7 @@ private:
     int retornarResultadoExpressao(std::stack<char> &pilha);
 
 public:
-    Arv();
+    Arv(char *cabecalho, int tam);
     ~Arv();
     int getRaiz();
     bool vazia();

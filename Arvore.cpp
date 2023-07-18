@@ -7,14 +7,21 @@
 
 using namespace std;
 
-Arv::Arv()
+Arv::Arv(char *cabecalho, int n)
 {
     raiz = NULL;
+    tam = n;
+    vetor = new char[tam];
+    for(int i=0;i<tam;i++){
+        vetor[i]=cabecalho[i];
+    }
+
 }
 
 Arv::~Arv()
 {
     raiz = libera(raiz);
+    delete [] vetor;
 }
 
 int Arv::numAleatorio()
@@ -28,13 +35,14 @@ int Arv::numAleatorio()
     }
     if (x == 1)
     {
-        return 'x' + rand() % ('z' - 'x' + 1);
+        return vetor[0 + rand() % tam];
     }
     else
     {
         int vet[4] = {42, 43, 45, 47};
         return vet[0 + rand() % 4];
     }
+    
 }
 
 int Arv::getRaiz()
@@ -137,7 +145,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
 
     char x = numAleatorio();
     novoNo->setInfo(x);
-    if ((novoNo->getInfo() >= '0' && novoNo->getInfo() <= '9') || (novoNo->getInfo() >= 'x' && novoNo->getInfo() <= 'z'))
+    if ((novoNo->getInfo()!='+') && (novoNo->getInfo()!='-') && (novoNo->getInfo()!='/') && (novoNo->getInfo()!='*'))
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
@@ -152,15 +160,6 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     return novoNo;
 }
 
-int Arv::resolverExpressao()
-{
-    std::stack<char> pilha;
-
-    preencherPilha(raiz, pilha);
-
-    return retornarResultadoExpressao(pilha);
-}
-
 void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
 {
     if (p == NULL)
@@ -173,88 +172,7 @@ void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
     pilha.push(p->getInfo());
 }
 
-int Arv::retornarResultadoExpressao(std::stack<char> &pilha)
-{
-    // criar copia da pilha original
-    std::stack<char> pilhaTemp;
-    std::stack<char> pilhaCopia;
 
-    while (!pilha.empty())
-    {
-        pilhaCopia.push(pilha.top());
-        pilhaTemp.push(pilha.top());
-        pilha.pop();
-    }
-
-    while (!pilhaTemp.empty())
-    {
-        pilha.push(pilhaTemp.top());
-        pilhaTemp.pop();
-    }
-
-    // operacoes
-
-    std::stack<int> pilhaResultado;
-    while (!pilhaCopia.empty())
-    {
-        if (pilhaCopia.top() == '+' || pilhaCopia.top() == '-' || pilhaCopia.top() == '*' || pilhaCopia.top() == '/')
-        {
-            char operacao = pilhaCopia.top();
-            pilhaCopia.pop();
-
-            if (pilhaResultado.size() < 2)
-            {
-                cout << "erro de tamanho" << endl;
-                exit(1);
-            }
-
-            int val2 = pilhaResultado.top();
-            pilhaResultado.pop();
-            int val1 = pilhaResultado.top();
-            pilhaResultado.pop();
-
-            int resultado;
-
-            switch (operacao)
-            {
-            case '+':
-                resultado = val1 + val2;
-                break;
-            case '-':
-                resultado = val1 - val2;
-                break;
-            case '*':
-                resultado = val1 * val2;
-                break;
-            case '/':
-                if (val2 == 0)
-                {
-                    cout << "Impossível dividir 0 por um número!" << endl;
-                    exit(1);
-                }
-                resultado = val1 / val2;
-                break;
-            default:
-                std::cout << "Operador inválido!" << std::endl;
-                exit(1);
-            }
-
-            pilhaResultado.push(resultado);
-        }
-        else if (isdigit(pilhaCopia.top()))
-        {
-            pilhaResultado.push(pilhaCopia.top() - '0');
-            pilhaCopia.pop();
-        }
-        else
-        {
-            cout << "operacao invalida" << endl;
-            exit(1);
-        }
-    }
-
-    return pilhaResultado.top();
-}
 
 void Arv::preenchePilhaAux(stack<char> &pilha)
 {
