@@ -75,16 +75,23 @@ int main()
     int tam;
     char *vet = cabecalho(matriz, &tam);
     Arv *teste = new Arv(vet, tam);
+    Arv *teste2 = new Arv(vet, tam);
 
     teste->criaArvAleatoria(5);
-
+    teste2->criaArvAleatoria(5);
+    cout<<"Arvore 1 -- > ";
+    teste->imprime();
+    cout<<"Arvore 2 --> ";
+    teste2->imprime();
+    teste->evolui(teste2);
+    cout<<"Arvore evoluida --> ";
     teste->imprime();
 
-    cout << endl;
 
-    opera(teste, matriz);
-    // C:\Users\joaoa\Documents\dados.csv
-    // C:\Users\joaoa\Downloads\csv.csv
+    //opera(teste, matriz);
 
     return 0;
 }
+
+    // C:\Users\joaoa\Documents\dados.csv (x,y,z)
+    // C:\Users\joaoa\Downloads\csv.csv   (f,j,b)

@@ -10,6 +10,7 @@ using namespace std;
 Arv::Arv(char *cabecalho, int n)
 {
     raiz = NULL;
+    nos=0;
     tam = n;
     vetor = new char[tam];
     for(int i=0;i<tam;i++){
@@ -45,10 +46,10 @@ int Arv::numAleatorio()
     
 }
 
-int Arv::getRaiz()
+NoArv* Arv::getRaiz()
 {
     if (raiz != NULL)
-        return raiz->getInfo();
+        return raiz;
     else
     {
         cout << "Árvora vazia!" << endl;
@@ -68,6 +69,7 @@ NoArv *Arv::libera(NoArv *p)
         p->setDir(libera(p->getDir()));
         delete p;
         p = NULL;
+        nos--;
     }
 
     return NULL;
@@ -106,6 +108,7 @@ bool Arv::auxbusca(NoArv *p, char ch)
 void Arv::imprime()
 {
     auxImprime(raiz);
+    cout<<endl;
 }
 
 void Arv ::auxImprime(NoArv *p)
@@ -140,6 +143,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
         novoNo->setInfo(valaleatorio());
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
+        nos++;
         return novoNo;
     }
 
@@ -149,12 +153,14 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
+        nos++;
         return novoNo;
     }
     else
     {
         novoNo->setEsq(criaSubArvAleatoria(altura - 1));
         novoNo->setDir(criaSubArvAleatoria(altura - 1));
+        nos++;
     }
 
     return novoNo;
@@ -177,4 +183,35 @@ void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
 void Arv::preenchePilhaAux(stack<char> &pilha)
 {
     preencherPilha(raiz, pilha);
+}
+
+
+void Arv:: evolui(Arv*subarv){
+    int noh = 1 + rand()%nos;
+    int cont = 1;
+    raiz = auxevolui(raiz, subarv->getRaiz(),noh,&cont);
+    nos+=subarv->getNos();
+}
+
+NoArv* Arv:: auxevolui(NoArv*p, NoArv*sub,int val, int *cont){
+    if(p==NULL){
+        return NULL;
+    }
+    if(val==(*cont)){
+        (*cont)++;
+        cout<<"noh sorteado --> "<<p->getInfo()<<endl;
+        p=libera(p);
+        return sub;
+    }
+    else{
+    (*cont)++;
+    p->setEsq(auxevolui(p->getEsq(),sub,val,cont));
+    p->setDir(auxevolui(p->getDir(),sub,val,cont));
+    }
+
+    return p;
+
+}
+int Arv :: getNos(){
+    return nos;
 }
