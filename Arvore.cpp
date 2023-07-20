@@ -7,14 +7,22 @@
 
 using namespace std;
 
-Arv::Arv()
+Arv::Arv(char *cabecalho, int n)
 {
     raiz = NULL;
+    nos = 0;
+    tam = n;
+    vetor = new char[tam];
+    for (int i = 0; i < tam; i++)
+    {
+        vetor[i] = cabecalho[i];
+    }
 }
 
 Arv::~Arv()
 {
     raiz = libera(raiz);
+    delete[] vetor;
 }
 
 int Arv::numAleatorio()
@@ -28,7 +36,7 @@ int Arv::numAleatorio()
     }
     if (x == 1)
     {
-        return 'x' + rand() % ('z' - 'x' + 1);
+        return vetor[0 + rand() % tam];
     }
     else
     {
@@ -37,10 +45,10 @@ int Arv::numAleatorio()
     }
 }
 
-int Arv::getRaiz()
+NoArv *Arv::getRaiz()
 {
     if (raiz != NULL)
-        return raiz->getInfo();
+        return raiz;
     else
     {
         cout << "Árvora vazia!" << endl;
@@ -60,6 +68,7 @@ NoArv *Arv::libera(NoArv *p)
         p->setDir(libera(p->getDir()));
         delete p;
         p = NULL;
+        nos--;
     }
 
     return NULL;
@@ -103,6 +112,7 @@ bool Arv::auxbusca(NoArv *p, char ch)
 void Arv::imprime()
 {
     auxImprime(raiz);
+    cout << endl;
 }
 
 void Arv ::auxImprime(NoArv *p)
@@ -137,33 +147,27 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
         novoNo->setInfo(valaleatorio());
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
+        nos++;
         return novoNo;
     }
 
     char x = numAleatorio();
     novoNo->setInfo(x);
-    if ((novoNo->getInfo() >= '0' && novoNo->getInfo() <= '9') || (novoNo->getInfo() >= 'x' && novoNo->getInfo() <= 'z'))
+    if ((novoNo->getInfo() != '+') && (novoNo->getInfo() != '-') && (novoNo->getInfo() != '/') && (novoNo->getInfo() != '*'))
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
+        nos++;
         return novoNo;
     }
     else
     {
         novoNo->setEsq(criaSubArvAleatoria(altura - 1));
         novoNo->setDir(criaSubArvAleatoria(altura - 1));
+        nos++;
     }
 
     return novoNo;
-}
-
-int Arv::resolverExpressao()
-{
-    std::stack<char> pilha;
-
-    preencherPilha(raiz, pilha);
-
-    return retornarResultadoExpressao(pilha);
 }
 
 void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
@@ -178,105 +182,105 @@ void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
     pilha.push(p->getInfo());
 }
 
-int Arv::retornarResultadoExpressao(std::stack<char> &pilha)
-{
-    // criar copia da pilha original
-    std::stack<char> pilhaTemp;
-    std::stack<char> pilhaCopia;
-
-    while (!pilha.empty())
-    {
-        pilhaCopia.push(pilha.top());
-        pilhaTemp.push(pilha.top());
-        pilha.pop();
-    }
-
-    cout << "teste" << endl;
-
-    while(!pilhaTemp.empty()){
-        cout << pilhaTemp.top() << endl;
-        pilhaTemp.pop();
-    }
-
-    while (!pilhaTemp.empty())
-    {
-        pilha.push(pilhaTemp.top());
-        pilhaTemp.pop();
-    }
-
-    // operacoes
-
-    std::stack<int> pilhaResultado;
-    while (!pilhaCopia.empty())
-    {
-        if (pilhaCopia.top() == '+' || pilhaCopia.top() == '-' || pilhaCopia.top() == '*' || pilhaCopia.top() == '/')
-        {
-            char operacao = pilhaCopia.top(); // colocar em cima
-            pilhaCopia.pop();
-
-            if (pilhaResultado.size() < 2)
-            {
-                cout << "erro de tamanho" << endl;
-                exit(1);
-            }
-
-            int val2 = pilhaResultado.top();
-            pilhaResultado.pop();
-            int val1 = pilhaResultado.top();
-            pilhaResultado.pop();
-
-            int resultado;
-
-            switch (operacao)
-            {
-            case '+':
-                resultado = val1 + val2;
-                break;
-            case '-':
-                resultado = val1 - val2;
-                break;
-            case '*':
-                resultado = val1 * val2;
-                break;
-            case '/':
-                if (val2 == 0)
-                {
-                    cout << "Impossível dividir 0 por um número!" << endl; //pensar em divisao protegida
-                    // colocar um if para retornar um valor para essas contas  
-                    exit(1);
-                }
-                resultado = val1 / val2;
-                break;
-            default:
-                std::cout << "Operador inválido!" << std::endl;
-                exit(1);
-            }
-
-            pilhaResultado.push(resultado);
-        }
-        else if (isdigit(pilhaCopia.top()))
-        {
-            pilhaResultado.push(pilhaCopia.top() - '0');
-            pilhaCopia.pop();
-        }
-        else
-        {
-            cout << "operacao invalida" << endl;
-            exit(1);
-        }
-    }
-
-    return pilhaResultado.top();
-}
-
 void Arv::preenchePilhaAux(stack<char> &pilha)
 {
     preencherPilha(raiz, pilha);
 }
 
+void Arv::Muta(Arv *subarv)
+{
+    int noh = 1 + rand() % nos;
+    int cont = 1;
+    raiz = auxMuta(raiz, subarv->getRaiz(), noh, &cont);
+    nos += subarv->getNos();
+}
 
-// fazer o sorteio do nó para incluir uma subarvore
-// a subarvore vai depender do nó sorteado na árvore
-// criar uma classe para fazer avaliação da arvore, usando o arquivo e as operações
+NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
+{
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    if (val == (*cont))
+    {
+        (*cont)++;
+        cout << "noh sorteado --> " << p->getInfo() << endl;
+        p = libera(p);
+        return sub;
+    }
+    else
+    {
+        (*cont)++;
+        p->setEsq(auxMuta(p->getEsq(), sub, val, cont));
+        p->setDir(auxMuta(p->getDir(), sub, val, cont));
+    }
 
-//lembrar de algo do operação 
+    return p;
+}
+int Arv ::getNos()
+{
+    return nos;
+}
+
+void Arv ::Recombina(Arv *arvore2)
+{
+    int no1 = 1 + rand() % nos;
+    int no2 = 1 + rand() % (arvore2->nos);
+    int cont = 1;
+    NoArv *arv1 = noh(this->raiz, no1, &cont);
+    cout << "Noh sorteado da Arvore 1 --> " << arv1->getInfo() << endl;
+    cont = 1;
+    NoArv *arv2 = noh(arvore2->raiz, no2, &cont);
+    cout << "Noh sorteado da Arvore 2 --> " << arv2->getInfo() << endl;
+    cont = 1;
+    raiz = auxRecombina(raiz, arv2, no1, &cont);
+    cont = 1;
+    arvore2->raiz = auxRecombina(arvore2->raiz, arv1, no2, &cont);
+}
+
+NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont)
+{
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    if (val == (*cont))
+    {
+        (*cont)++;
+        return sub;
+    }
+    else
+    {
+        (*cont)++;
+        p->setEsq(auxRecombina(p->getEsq(), sub, val, cont));
+        p->setDir(auxRecombina(p->getDir(), sub, val, cont));
+    }
+
+    return p;
+}
+
+NoArv *Arv ::noh(NoArv *p, int val, int *cont)
+{
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    if (val == (*cont))
+    {
+        (*cont)++;
+        return p;
+    }
+    else
+    {
+        (*cont)++;
+        NoArv *result_esq = noh(p->getEsq(), val, cont);
+        if (result_esq != NULL)
+        {
+            return result_esq;
+        }
+        else
+        {
+            return noh(p->getDir(), val, cont);
+        }
+    }
+}

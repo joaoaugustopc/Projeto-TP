@@ -10,6 +10,9 @@ class Arv
 {
 private:
     NoArv *raiz;
+    char *vetor;
+    int tam;
+    int nos;
     bool auxbusca(NoArv *p, char val);
     NoArv *libera(NoArv *p);
     void auxImprime(NoArv *p);
@@ -18,12 +21,15 @@ private:
     NoArv *criaSubArvAleatoria(int altura);
     void preencherPilha(NoArv *p, std::stack<char> &pilha);
     int retornarResultadoExpressao(std::stack<char> &pilha);
+    NoArv *auxMuta(NoArv *p, NoArv *sub, int val, int *cont);
+    NoArv *noh(NoArv *p, int val, int *cont);
+    NoArv *auxRecombina(NoArv *p, NoArv *sub, int val, int *cont);
 
 public:
-    Arv();
+    Arv(char *cabecalho, int tam);
     ~Arv();
-    int getRaiz();
     bool vazia();
+    NoArv *getRaiz();
     void imprime();
     bool busca(char val);
     bool isoperator(char c);
@@ -33,6 +39,9 @@ public:
     void criaArvAleatoria(int altura);
     int resolverExpressao();
     void preenchePilhaAux(stack<char> &pilha);
+    void Muta(Arv *subarv);
+    int getNos();
+    void Recombina(Arv *arvore2);
 };
 
 #endif
