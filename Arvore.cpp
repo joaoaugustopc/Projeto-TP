@@ -10,19 +10,19 @@ using namespace std;
 Arv::Arv(char *cabecalho, int n)
 {
     raiz = NULL;
-    nos=0;
+    nos = 0;
     tam = n;
     vetor = new char[tam];
-    for(int i=0;i<tam;i++){
-        vetor[i]=cabecalho[i];
+    for (int i = 0; i < tam; i++)
+    {
+        vetor[i] = cabecalho[i];
     }
-
 }
 
 Arv::~Arv()
 {
     raiz = libera(raiz);
-    delete [] vetor;
+    delete[] vetor;
 }
 
 int Arv::numAleatorio()
@@ -43,10 +43,9 @@ int Arv::numAleatorio()
         int vet[4] = {42, 43, 45, 47};
         return vet[0 + rand() % 4];
     }
-    
 }
 
-NoArv* Arv::getRaiz()
+NoArv *Arv::getRaiz()
 {
     if (raiz != NULL)
         return raiz;
@@ -108,7 +107,7 @@ bool Arv::auxbusca(NoArv *p, char ch)
 void Arv::imprime()
 {
     auxImprime(raiz);
-    cout<<endl;
+    cout << endl;
 }
 
 void Arv ::auxImprime(NoArv *p)
@@ -149,7 +148,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
 
     char x = numAleatorio();
     novoNo->setInfo(x);
-    if ((novoNo->getInfo()!='+') && (novoNo->getInfo()!='-') && (novoNo->getInfo()!='/') && (novoNo->getInfo()!='*'))
+    if ((novoNo->getInfo() != '+') && (novoNo->getInfo() != '-') && (novoNo->getInfo() != '/') && (novoNo->getInfo() != '*'))
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
@@ -178,40 +177,105 @@ void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
     pilha.push(p->getInfo());
 }
 
-
-
 void Arv::preenchePilhaAux(stack<char> &pilha)
 {
     preencherPilha(raiz, pilha);
 }
 
-
-void Arv:: evolui(Arv*subarv){
-    int noh = 1 + rand()%nos;
+void Arv::Muta(Arv *subarv)
+{
+    int noh = 1 + rand() % nos;
     int cont = 1;
-    raiz = auxevolui(raiz, subarv->getRaiz(),noh,&cont);
-    nos+=subarv->getNos();
+    raiz = auxMuta(raiz, subarv->getRaiz(), noh, &cont);
+    nos += subarv->getNos();
 }
 
-NoArv* Arv:: auxevolui(NoArv*p, NoArv*sub,int val, int *cont){
-    if(p==NULL){
+NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
+{
+    if (p == NULL)
+    {
         return NULL;
     }
-    if(val==(*cont)){
+    if (val == (*cont))
+    {
         (*cont)++;
-        cout<<"noh sorteado --> "<<p->getInfo()<<endl;
-        p=libera(p);
+        cout << "noh sorteado --> " << p->getInfo() << endl;
+        p = libera(p);
         return sub;
     }
-    else{
-    (*cont)++;
-    p->setEsq(auxevolui(p->getEsq(),sub,val,cont));
-    p->setDir(auxevolui(p->getDir(),sub,val,cont));
+    else
+    {
+        (*cont)++;
+        p->setEsq(auxMuta(p->getEsq(), sub, val, cont));
+        p->setDir(auxMuta(p->getDir(), sub, val, cont));
     }
 
     return p;
-
 }
-int Arv :: getNos(){
+int Arv ::getNos()
+{
     return nos;
+}
+
+void Arv ::Recombina(Arv *arvore2)
+{
+    int no1 = 1 + rand() % nos;
+    int no2 = 1 + rand() % (arvore2->nos);
+    int cont = 1;
+    NoArv *arv1 = noh(this->raiz, no1, &cont);
+    cout << "Noh sorteado da Arvore 1 --> " << arv1->getInfo() << endl;
+    cont = 1;
+    NoArv *arv2 = noh(arvore2->raiz, no2, &cont);
+    cout << "Noh sorteado da Arvore 2 --> " << arv2->getInfo() << endl;
+    cont = 1;
+    raiz = auxRecombina(raiz, arv2, no1, &cont);
+    cont = 1;
+    arvore2->raiz = auxRecombina(arvore2->raiz, arv1, no2, &cont);
+}
+
+NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont)
+{
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    if (val == (*cont))
+    {
+        (*cont)++;
+        return sub;
+    }
+    else
+    {
+        (*cont)++;
+        p->setEsq(auxRecombina(p->getEsq(), sub, val, cont));
+        p->setDir(auxRecombina(p->getDir(), sub, val, cont));
+    }
+
+    return p;
+}
+
+NoArv *Arv ::noh(NoArv *p, int val, int *cont)
+{
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    if (val == (*cont))
+    {
+        (*cont)++;
+        return p;
+    }
+    else
+    {
+        (*cont)++;
+        NoArv *result_esq = noh(p->getEsq(), val, cont);
+        if (result_esq != NULL)
+        {
+            return result_esq;
+        }
+        else
+        {
+            return noh(p->getDir(), val, cont);
+        }
+    }
 }

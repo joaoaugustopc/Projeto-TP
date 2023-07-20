@@ -79,19 +79,26 @@ int main()
 
     teste->criaArvAleatoria(5);
     teste2->criaArvAleatoria(5);
-    cout<<"Arvore 1 -- > ";
+    cout << "Arvore 1 -- > ";
     teste->imprime();
-    cout<<"Arvore 2 --> ";
+    cout << "Arvore 2 --> ";
     teste2->imprime();
-    teste->evolui(teste2);
+    teste->Recombina(teste2);
+    cout << "--------------------------------------" << endl;
+    cout << "Arvore 1 -- > ";
+    teste->imprime();
+    cout << "Arvore 2 --> ";
+    teste2->imprime();
+
+    /*teste->Muta(teste2);
     cout<<"Arvore evoluida --> ";
     teste->imprime();
+    cout<<teste->getNos()<<endl;*/
 
-
-    //opera(teste, matriz);
+    // opera(teste, matriz);
 
     return 0;
 }
 
-    // C:\Users\joaoa\Documents\dados.csv (x,y,z)
-    // C:\Users\joaoa\Downloads\csv.csv   (f,j,b)
+// C:\Users\joaoa\Documents\dados.csv (x,y,z)
+// C:\Users\joaoa\Downloads\csv.csv   (f,j,b)

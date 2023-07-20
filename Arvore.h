@@ -21,13 +21,15 @@ private:
     NoArv *criaSubArvAleatoria(int altura);
     void preencherPilha(NoArv *p, std::stack<char> &pilha);
     int retornarResultadoExpressao(std::stack<char> &pilha);
-    NoArv* auxevolui(NoArv*p, NoArv*sub, int val, int* cont);
+    NoArv *auxMuta(NoArv *p, NoArv *sub, int val, int *cont);
+    NoArv *noh(NoArv *p, int val, int *cont);
+    NoArv *auxRecombina(NoArv *p, NoArv *sub, int val, int *cont);
 
 public:
     Arv(char *cabecalho, int tam);
     ~Arv();
     bool vazia();
-    NoArv* getRaiz();
+    NoArv *getRaiz();
     void imprime();
     bool busca(char val);
     bool isoperator(char c);
@@ -37,10 +39,9 @@ public:
     void criaArvAleatoria(int altura);
     int resolverExpressao();
     void preenchePilhaAux(stack<char> &pilha);
-    void evolui(Arv*subarv);
+    void Muta(Arv *subarv);
     int getNos();
-    
-
+    void Recombina(Arv *arvore2);
 };
 
 #endif

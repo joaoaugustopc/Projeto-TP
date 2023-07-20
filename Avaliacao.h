@@ -49,10 +49,12 @@ private:
                 case '/':
                     if (val2 == 0)
                     {
-                        cout << "Impossível dividir 0 por um número!" << endl;
                         resultado = 0;
                     }
+                    else{
                     resultado = val1 / val2;
+                    }
+                        
                     break;
                 default:
                     cout << "Operador inválido!" << endl;
