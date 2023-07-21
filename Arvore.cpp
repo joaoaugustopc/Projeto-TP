@@ -7,15 +7,22 @@
 
 using namespace std;
 
-Arvore::Arvore(int tam)
+Arvore::Arvore(int tam, char *cabecalho, int i)
 {
     max = tam;
     n = 0;
     vet = new No[max];
+    tamanho = i;
+    vetor = new char[tamanho];
+    for (int i = 0; i < tamanho; i++)
+    {
+        vetor[i] = cabecalho[i];
+    }
 }
 Arvore::~Arvore()
 {
     delete[] vet;
+    delete[] vetor;
 }
 char Arvore::getraiz()
 {
@@ -29,9 +36,9 @@ char Arvore::getraiz()
     }
 }
 
-char Arvore::gerarNumeroAleatorio()
+int Arvore::gerarNumeroAleatorio()
 {
-    return '0' + rand() % 10;
+    return 48 + rand() % (57 - 48 + 1);
 }
 char Arvore::gerarOperadorAleatorio()
 {
@@ -39,21 +46,22 @@ char Arvore::gerarOperadorAleatorio()
     return operadores[rand() % 4];
 }
 
-char Arvore::valAleatorio()
+int Arvore::valAleatorio()
 {
     int x = 0 + rand() % 3;
+
     if (x == 0)
     {
-        return gerarNumeroAleatorio();
+        return 48 + rand() % (57 - 48 + 1);
     }
-    else if (x == 1)
+    if (x == 1)
     {
-        return 'x' + rand() % ('z' - 'x' + 1);
+        return vetor[rand() % tamanho];
     }
     else
     {
-
-        return gerarOperadorAleatorio();
+        int vet[4] = {42, 43, 45, 47};
+        return vet[0 + rand() % 4];
     }
 }
 bool Arvore::isOperador(char c)

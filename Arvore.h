@@ -6,17 +6,19 @@ class Arvore
 private:
     int max;
     int n;
+    char *vetor;
+    int tamanho;
     No *vet;
-    char gerarNumeroAleatorio();
+    int gerarNumeroAleatorio();
     char gerarOperadorAleatorio();
-    char valAleatorio();
+    int valAleatorio();
     bool isOperador(char c);
     void auxcria(int idx);
     void auximprime(int idx);
     void preencherPilha(int idx, std::stack<char> &pilha);
 
 public:
-    Arvore(int tam);
+    Arvore(int tam, char *cabecalho, int i);
     ~Arvore();
     char getraiz();
     void criarvorealeatoria();
