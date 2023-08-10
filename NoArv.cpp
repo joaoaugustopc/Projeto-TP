@@ -12,12 +12,16 @@ NoArv::~NoArv() {}
 
 void NoArv::setEsq(NoArv *p) { esq = p; }
 
-void NoArv::setInfo(int val) { info = val; }
+void NoArv::setInfo(float val) { info = val; }
 
 void NoArv::setDir(NoArv *p) { dir = p; }
 
 NoArv *NoArv::getEsq() { return esq; }
 
-char NoArv::getInfo() { return info; }
+float NoArv::getInfo() { return info; }
 
 NoArv *NoArv::getDir() { return dir; }
+
+void NoArv ::setTipo(char type) { tipo = type; }
+
+char NoArv ::getTipo() { return tipo; }

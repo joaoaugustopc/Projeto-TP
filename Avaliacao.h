@@ -10,16 +10,35 @@ using namespace std;
 class Avaliacao
 {
 private:
-    float Auxoperacao(stack<char> &pilhaCopia)
+public:
+    Avaliacao(){};
+    ~Avaliacao(){};
+    float Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> matriz)
     {
-        // operacoes
-
+        // criar copia da pilha original
+        stack<NoArv *> pilhaTemp;
+        stack<NoArv *> pilhaCopia;
         stack<float> pilhaResultado;
+
+        while (!pilha.empty())
+        {
+            pilhaCopia.push(pilha.top());
+            pilhaTemp.push(pilha.top());
+            pilha.pop();
+        }
+
+        while (!pilhaTemp.empty())
+        {
+            pilha.push(pilhaTemp.top());
+            pilhaTemp.pop();
+        }
+
+        // realiza a operacao
         while (!pilhaCopia.empty())
         {
-            if (pilhaCopia.top() == '+' || pilhaCopia.top() == '-' || pilhaCopia.top() == '*' || pilhaCopia.top() == '/')
+            if (pilhaCopia.top()->getTipo() == 2) // verifica se é um operador
             {
-                char operacao = pilhaCopia.top();
+                char operacao = ((char)pilhaCopia.top()->getInfo()); // lida como um char
                 pilhaCopia.pop();
 
                 if (pilhaResultado.size() < 2)
@@ -51,10 +70,11 @@ private:
                     {
                         resultado = 0;
                     }
-                    else{
-                    resultado = val1 / val2;
+                    else
+                    {
+                        resultado = val1 / val2;
                     }
-                        
+
                     break;
                 default:
                     cout << "Operador inválido!" << endl;
@@ -63,77 +83,33 @@ private:
 
                 pilhaResultado.push(resultado);
             }
-            else if (isdigit(pilhaCopia.top()))
+            else if (pilhaCopia.top()->getTipo() == 0) // verifica se é um numero
             {
-                pilhaResultado.push(pilhaCopia.top() - '0');
+                pilhaResultado.push(pilhaCopia.top()->getInfo());
                 pilhaCopia.pop();
             }
-            else
+            else if (pilhaCopia.top()->getTipo() == 1) // verifica se é uma varialvel
             {
-                cout << "operacao invalida" << endl;
-                exit(1);
+                for (int j = 0; j < matriz[0].size(); j++)
+                {
+                    istringstream trans(matriz[0][j]);
+                    char elemento;
+                    trans >> elemento;
+                    char valor = ((char)pilhaCopia.top()->getInfo());
+
+                    if (valor == elemento)
+                    {
+                        istringstream ent(matriz[i][j]); // altera para o numero correspondente (float)
+                        float val;
+                        ent >> val;
+                        pilhaResultado.push(val);
+                        pilhaCopia.pop();
+                        break;
+                    }
+                }
             }
         }
 
         return pilhaResultado.top();
-    };
-
-public:
-    Avaliacao(){};
-    ~Avaliacao(){};
-    float Operacao(stack<char> &pilha, int i, vector<vector<string>> matriz)
-    {
-        // criar copia da pilha original
-        stack<char> pilhaTemp;
-        stack<char> pilhaCopia;
-        stack<char> pilhaCSV;
-        stack<char> pilhaaux;
-
-        while (!pilha.empty())
-        {
-            pilhaCopia.push(pilha.top());
-            pilhaTemp.push(pilha.top());
-            pilha.pop();
-        }
-
-        while (!pilhaTemp.empty())
-        {
-            pilha.push(pilhaTemp.top());
-            pilhaTemp.pop();
-        }
-
-        while (!pilhaCopia.empty())
-        {
-            int aux = 0;
-            for (int j = 0; j < matriz[0].size(); j++)
-            {
-                istringstream trans(matriz[0][j]);
-                char elemento;
-                trans >> elemento;
-
-                if (pilhaCopia.top() == elemento)
-                {
-                    istringstream ent(matriz[i][j]);
-                    char val;
-                    ent >> val;
-                    pilhaCSV.push(val);
-                    pilhaCopia.pop();
-                    aux = 1;
-                    break;
-                }
-            }
-            if (aux == 0)
-            {
-                pilhaCSV.push(pilhaCopia.top());
-                pilhaCopia.pop();
-            }
-        }
-        while (!pilhaCSV.empty())
-        {
-            pilhaaux.push(pilhaCSV.top());
-            pilhaCSV.pop();
-        }
-
-        return Auxoperacao(pilhaaux);
     };
 };

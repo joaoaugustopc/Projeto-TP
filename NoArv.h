@@ -4,19 +4,22 @@ class NoArv
 {
 
 private:
-    char info;
+    float info;
     NoArv *esq;
     NoArv *dir;
+    char tipo;
 
 public:
     NoArv();
     ~NoArv();
     void setEsq(NoArv *p);
-    void setInfo(int val);
+    void setInfo(float val);
     void setDir(NoArv *p);
     NoArv *getEsq();
-    char getInfo();
+    float getInfo();
     NoArv *getDir();
+    void setTipo(char type);
+    char getTipo();
 };
 
 #endif

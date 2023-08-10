@@ -10,9 +10,9 @@ using namespace std;
 Arv::Arv(char *cabecalho, int n)
 {
     raiz = NULL;
-    nos = 0;
-    tam = n;
-    vetor = new char[tam];
+    no = -1; // idx dos nos da arvore
+    tam = n; // tamanho do vetor 
+    vetor = new char[tam]; // vetor para armazenar as variaveis do arquivo lido
     for (int i = 0; i < tam; i++)
     {
         vetor[i] = cabecalho[i];
@@ -25,23 +25,26 @@ Arv::~Arv()
     delete[] vetor;
 }
 
-int Arv::numAleatorio()
+float Arv::numAleatorio(char *type) // retornar float
 {
 
-    int x = 0 + rand() % 3;
+    int x = rand() % 3;
 
     if (x == 0)
     {
-        return 48 + rand() % (57 - 48 + 1);
+        *type = 0;               // guardar o tipo (numero)
+        return 0 + rand() % 101; // retornar um valor aleatorio em uma faixa de valores
     }
     if (x == 1)
     {
-        return vetor[0 + rand() % tam];
+        *type = 1; // guardar o tipo (variavel)
+        return vetor[0 + rand() % tam]; // retornar uma variavel válida aleatoria 
     }
     else
     {
-        int vet[4] = {42, 43, 45, 47};
-        return vet[0 + rand() % 4];
+        *type = 2; // guardar o tipo (operador)
+        int vet[4] = {42, 43, 45, 47}; //vetor contendo (na representacao do tipo int) os operadores
+        return vet[0 + rand() % 4]; 
     }
 }
 
@@ -68,7 +71,7 @@ NoArv *Arv::libera(NoArv *p)
         p->setDir(libera(p->getDir()));
         delete p;
         p = NULL;
-        nos--;
+        no--;
     }
 
     return NULL;
@@ -121,56 +124,72 @@ void Arv ::auxImprime(NoArv *p)
     {
         auxImprime(p->getEsq());
         auxImprime(p->getDir());
-        cout << p->getInfo() << ", ";
+        if (p->getTipo() != 0)
+        {
+            char valor = ((char)p->getInfo());
+            cout << valor << ", ";
+        }
+        else
+        {
+            cout << p->getInfo() << ", ";
+        }
     }
 }
 
-char Arv::valaleatorio()
+float Arv::valaleatorio(char* type)  // funcao para retornar um valor aleatorio (no caso de chegar na altura maxima)
 {
     int val = rand() % 2;
-
-    return 48 + rand() % (57 - 48 + 1);
+    if(val==0){
+        *type=0;
+        return rand() % 101;
+    }
+    else{
+        *type=1;
+        return vetor[0 + rand() % tam];
+    }
 }
 
 void Arv::criaArvAleatoria(int altura)
 {
-
     raiz = criaSubArvAleatoria(altura);
 }
 
 NoArv *Arv::criaSubArvAleatoria(int altura)
 {
     // funcao para subarvore
+    char type;
     NoArv *novoNo = new NoArv();
-    if (altura == 1)
+    if (altura == 1) // caso chegue na altura maxima as folhas devem ser valores e nao operadores 
     {
-        novoNo->setInfo(valaleatorio());
+        novoNo->setInfo(valaleatorio(&type));
+        novoNo->setTipo(type);
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
-        nos++;
+        no++;
         return novoNo;
     }
 
-    char x = numAleatorio();
+    float x = numAleatorio(&type); //Passa o endereco da variavel para armezar o tipo de dado do nó
     novoNo->setInfo(x);
-    if ((novoNo->getInfo() != '+') && (novoNo->getInfo() != '-') && (novoNo->getInfo() != '/') && (novoNo->getInfo() != '*'))
+    novoNo->setTipo(type);
+    if (novoNo->getTipo() != 2)
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
-        nos++;
+        no++;
         return novoNo;
     }
     else
     {
         novoNo->setEsq(criaSubArvAleatoria(altura - 1));
         novoNo->setDir(criaSubArvAleatoria(altura - 1));
-        nos++;
+        no++;
     }
 
     return novoNo;
 }
 
-void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
+void Arv::preencherPilha(NoArv *p, std::stack<NoArv *> &pilha)
 {
     if (p == NULL)
     {
@@ -179,20 +198,20 @@ void Arv::preencherPilha(NoArv *p, std::stack<char> &pilha)
 
     preencherPilha(p->getEsq(), pilha);
     preencherPilha(p->getDir(), pilha);
-    pilha.push(p->getInfo());
+    pilha.push(p);
 }
 
-void Arv::preenchePilhaAux(stack<char> &pilha)
+void Arv::preenchePilhaAux(stack<NoArv *> &pilha)
 {
     preencherPilha(raiz, pilha);
 }
 
-void Arv::Muta(Arv *subarv)
+void Arv::Muta(Arv *subarv) 
 {
-    int noh = 1 + rand() % nos;
-    int cont = 1;
+    int noh = rand() % (no + 1); // sorteia um idx que vai representar um nó
+    int cont = 0;//contador 
     raiz = auxMuta(raiz, subarv->getRaiz(), noh, &cont);
-    nos += subarv->getNos();
+    no += subarv->getNos(); // atualiza o ultimo idx 
 }
 
 NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
@@ -204,8 +223,13 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
     if (val == (*cont))
     {
         (*cont)++;
-        cout << "noh sorteado --> " << p->getInfo() << endl;
-        p = libera(p);
+        if(p->getTipo()!=0){
+            cout << "noh sorteado --> " << (char)p->getInfo() << endl;
+        }
+        else{
+            cout << "noh sorteado --> " << p->getInfo() << endl;
+        }
+        p = libera(p); // deleta toda a subarvore sorteada e retorna a raiz da outra arvore gerada aleatoriamente 
         return sub;
     }
     else
@@ -217,28 +241,38 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
 
     return p;
 }
-int Arv ::getNos()
+int Arv ::getNos() // retorna a quantidade de nos
 {
-    return nos;
+    return no + 1;
 }
 
 void Arv ::Recombina(Arv *arvore2)
 {
-    int no1 = 1 + rand() % nos;
-    int no2 = 1 + rand() % (arvore2->nos);
-    int cont = 1;
-    NoArv *arv1 = noh(this->raiz, no1, &cont);
-    cout << "Noh sorteado da Arvore 1 --> " << arv1->getInfo() << endl;
-    cont = 1;
-    NoArv *arv2 = noh(arvore2->raiz, no2, &cont);
-    cout << "Noh sorteado da Arvore 2 --> " << arv2->getInfo() << endl;
-    cont = 1;
-    raiz = auxRecombina(raiz, arv2, no1, &cont);
-    cont = 1;
-    arvore2->raiz = auxRecombina(arvore2->raiz, arv1, no2, &cont);
+    int no1 = rand() % (no + 1); // sorteia um idx para representar o nó da arvore1
+    int no2 = rand() % ((arvore2->no) + 1); // sorteia outro idx para representar o nó da arvore 2
+    int cont = 0;
+    NoArv *arv1 = noh(this->raiz, no1, &cont); // Retorna o nó da arvore 1 que corresponde ao idx sorteado (NAO CONSEGUI PASSAR O PONTEIRO PARA PONTEIRO PARA GUARDAR O PAI E REALIZAR A OPERACAO)
+    if(arv1->getTipo()!=0){
+        cout << "Noh sorteado da Arvore 1 --> " << (char)arv1->getInfo() << endl;
+    }
+    else{
+        cout << "Noh sorteado da Arvore 1 --> " << arv1->getInfo() << endl;
+    }
+    cont = 0;
+    NoArv *arv2 = noh(arvore2->raiz, no2, &cont); // Retorna o nó da arvore 2 que corresponde ao idx sorteado
+    if(arv2->getTipo()!=0){ 
+        cout << "Noh sorteado da Arvore 2 --> " << (char)arv2->getInfo() << endl;
+    }
+    else{
+        cout << "Noh sorteado da Arvore 2 --> " << arv2->getInfo() << endl;
+    }
+    cont = 0;
+    raiz = auxRecombina(raiz, arv2, no1, &cont); // coloca o nó sorteado da arvore 2 no local do nó sorteado da arvore 1 
+    cont = 0;
+    arvore2->raiz = auxRecombina(arvore2->raiz, arv1, no2, &cont); // coloca o nó sorteado da arvore 1 no local do nó sorteado da arvore 2 
 }
 
-NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont)
+NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont) // igual a funcao de mutar, porém esta nao deleta nenhuma subarvore
 {
     if (p == NULL)
     {
@@ -259,7 +293,7 @@ NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont)
     return p;
 }
 
-NoArv *Arv ::noh(NoArv *p, int val, int *cont)
+NoArv *Arv ::noh(NoArv *p, int val, int *cont)  // funcao que retorna o nó de idx "val"
 {
     if (p == NULL)
     {

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-char *cabecalho(vector<vector<string>> &matriz, int *tam)
+char *cabecalho(vector<vector<string>> &matriz, int *tam)  // funcao para retornar um vetor contendo o cabecalho do arquivo 
 {
     *tam = matriz[0].size();
     char *vet = new char[*tam];
@@ -24,7 +24,7 @@ char *cabecalho(vector<vector<string>> &matriz, int *tam)
     return vet;
 }
 
-vector<vector<string>> learquivo()
+vector<vector<string>> learquivo() //funcao para ler e retornar o arquivo em forma de uma matriz 
 {
     string fname;
     cout << "Enter the file name: ";
@@ -58,12 +58,12 @@ vector<vector<string>> learquivo()
 
 void opera(Arv *x, vector<vector<string>> matriz)
 {
-    stack<char> pilha;
-    Avaliacao op;
-    x->preenchePilhaAux(pilha);
-    for (int i = 1; i < 6; i++)
+    stack<NoArv *> pilha; 
+    Avaliacao op; // classe para realizar a operacao
+    x->preenchePilhaAux(pilha); //Funcao no MI para preencher a pilha com os nós da arvore
+    for (int i = 1; i < 6; i++) //Laço para realizar as operacoes com os valores de cada linha do arquivo ( o contador é oque define a linha para ser considerada na operacao)
     {
-        cout << "Resultado da operacao da linha " << i << " --> " << op.Operacao(pilha, i, matriz) << endl;
+        cout << "Resultado da operacao da linha " << i + 1 << " --> " << op.Operacao(pilha, i, matriz) << endl;
     }
 }
 
@@ -73,29 +73,45 @@ int main()
     srand(time(NULL));
     vector<vector<string>> matriz = learquivo();
     int tam;
-    char *vet = cabecalho(matriz, &tam);
-    Arv *teste = new Arv(vet, tam);
+    char *vet = cabecalho(matriz, &tam);  // função para extrair somente o cabecalho do arquivo
+    Arv *teste = new Arv(vet, tam); // passa um vetor guardando o cabecalho e o seu tamnho no construtor da arvore
     Arv *teste2 = new Arv(vet, tam);
 
-    teste->criaArvAleatoria(5);
+    teste->criaArvAleatoria(5); // Preeche a arvore com valores aleatorios com altura maxima de 5
     teste2->criaArvAleatoria(5);
     cout << "Arvore 1 -- > ";
     teste->imprime();
     cout << "Arvore 2 --> ";
     teste2->imprime();
-    teste->Recombina(teste2);
+
+
+
+    // Recombinação
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    teste->Recombina(teste2); // funcao de recombinação
     cout << "--------------------------------------" << endl;
     cout << "Arvore 1 -- > ";
     teste->imprime();
     cout << "Arvore 2 --> ";
     teste2->imprime();
 
-    /*teste->Muta(teste2);
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    //Mutação
+    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    /*teste->Muta(teste2); // Muta a arvore teste substituindo um nó aleatorio com a arvore teste2 gerada aleatoriamente
     cout<<"Arvore evoluida --> ";
     teste->imprime();
-    cout<<teste->getNos()<<endl;*/
+    cout<<"Nos-->"<<teste->getNos()<<endl;*/
+    
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    // opera(teste, matriz);
+    //operação
+    //opera(teste, matriz); // chama a função opera para realizar as operações substituindo as variaveis pelos valores correspondentes do arquivo fornecido
 
     return 0;
 }
