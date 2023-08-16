@@ -7,7 +7,7 @@ private:
     float info;
     NoArv *esq;
     NoArv *dir;
-    char tipo;
+    char tipo; // 0 = numero, 1 = variavel, 2 = operador
 
 public:
     NoArv();

@@ -7,16 +7,17 @@
 
 using namespace std;
 
-class Avaliacao
-{
+class Avaliacao {
+
 private:
 public:
     Avaliacao(){};
     ~Avaliacao(){};
+
     float Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> matriz)
     {
         // criar copia da pilha original
-        stack<NoArv *> pilhaTemp;
+        stack<NoArv *> pilhaTemp; // criar pilha de nós
         stack<NoArv *> pilhaCopia;
         stack<float> pilhaResultado;
 
@@ -66,7 +67,7 @@ public:
                     resultado = val1 * val2;
                     break;
                 case '/':
-                    if (val2 == 0)
+                    if (val2 == 0) // divisao protegida
                     {
                         resultado = 0;
                     }
@@ -97,8 +98,9 @@ public:
                     trans >> elemento;
                     char valor = ((char)pilhaCopia.top()->getInfo());
 
-                    if (valor == elemento)
+                    if (valor == elemento) // encontrar a coluna correspondente ao elemento da pilha
                     {
+                        // "i" é a linha escolhida para selecionar os valores (escolhida na main)
                         istringstream ent(matriz[i][j]); // altera para o numero correspondente (float)
                         float val;
                         ent >> val;

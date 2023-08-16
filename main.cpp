@@ -17,8 +17,8 @@ char *cabecalho(vector<vector<string>> &matriz, int *tam)  // funcao para retorn
     char *vet = new char[*tam];
     for (int i = 0; i < *tam; i++)
     {
-        istringstream ent(matriz[0][i]);
-        ent >> vet[i];
+        istringstream ent(matriz[0][i]); // tratar string como char
+        ent >> vet[i]; // guardar os caracteres no vetor
     }
 
     return vet;
@@ -47,13 +47,10 @@ vector<vector<string>> learquivo() //funcao para ler e retornar o arquivo em for
                 row.push_back(word);
             content.push_back(row);
         }
-    }
-    else
-    {
-
+    } else {
         cout << "Could not open the file\n";
     }
-    return content;
+    return content; // retornar matriz com os valores da tabela
 }
 
 void opera(Arv *x, vector<vector<string>> matriz)
