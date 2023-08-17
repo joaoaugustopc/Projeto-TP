@@ -16,7 +16,7 @@ Arv::Arv(char *cabecalho, int n)
     
     for (int i = 0; i < tam; i++)
     {
-        vetor[i] = cabecalho[i];
+        vetor[i] = cabecalho[i]; // trocar o nome
     }
 }
 
@@ -237,7 +237,7 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
 
     return p;
 }
-int Arv ::getNos() // retorna a quantidade de nos
+int Arv ::getNos() // retorna a quantidade de nos, alterar nome
 {
     return no + 1;
 }
@@ -264,13 +264,18 @@ void Arv ::Recombina(Arv *arvore2)
     else{
         cout << "Noh sorteado da Arvore 2 --> " << arv2->getInfo() << endl;
     }
+
+    NoArv ** pai;
+    if((*pai)->getEsq() == avr2)
+
+    //percorre arvore novamente
     cont = 0;
     raiz = auxRecombina(raiz, arv2, no1, &cont); // coloca o nó sorteado da arvore 2 no local do nó sorteado da arvore 1 
     cont = 0;
     arvore2->raiz = auxRecombina(arvore2->raiz, arv1, no2, &cont); // coloca o nó sorteado da arvore 1 no local do nó sorteado da arvore 2 
 }
 
-NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont) // igual a funcao de mutar, porém esta nao deleta nenhuma subarvore
+NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont, NoArv **pai) // igual a funcao de mutar, porém esta nao deleta nenhuma subarvore
 {
     if (p == NULL)
     {
@@ -305,6 +310,7 @@ NoArv *Arv ::noh(NoArv *p, int val, int *cont)  // funcao que retorna o nó de i
     else
     {
         (*cont)++;
+        *pai = p;
         NoArv *result_esq = noh(p->getEsq(), val, cont);
         if (result_esq != NULL)
         {

@@ -115,3 +115,20 @@ int main()
 
 // C:\Users\joaoa\Documents\dados.csv (x,y,z)
 // C:\Users\joaoa\Downloads\csv.csv   (f,j,b)
+
+
+
+// proximos passos : 
+/*
+-> Gerar um vetor de arvores; Definir o tamnho do vetor (100);
+-> Operação nova: avaliar arvores; avaliar todos os registros do Csv -> calcular diferença (ao quadrado) entre val esperado e valor da arvore e somar essa diferença de todas linhas
+obs: quanto menor o resultado, melhor a arvore -- guardar o resultado em um novo parametro;
+-> Definir um laço de geração de arvores de tamnho 100; Dentro - passos : 1 - Selecionar arvores progenitoras; 2 - sortear aleatoriamente duas arvores do vetor dee arv
+3 - escolher a arvore com o melhor resultado e guardar em um vetor de progenitores -> colocar outro laco de repetição com o mesmo valor da população (tamanho);
+obs : o progenitor tem que ser uma cópia da arvore escolhida - operação psra clone da arvore ( PONTEIROS DIFERENTES );
+-> Com a populaçao de progenitores gerar uma nova população de arvores geradas a partir de mutação e recombinações dos proprios progenitores;
+-> avaliar essas novas arvores;
+-> para substituir as soluções : - indentificar a melhor solução que tinha na população original, indentificar a pior solução na população de filhos;
+- Substituir todas os individuos salvando o melhor e matando o pior 
+
+*/ -
