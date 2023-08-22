@@ -54,7 +54,7 @@ vector<vector<string>> learquivo() //funcao para ler e retornar o arquivo em for
     return content; // retornar matriz com os valores da tabela
 }
 
-void opera(Arv *x, vector<vector<string>> matriz)
+void opera(Arv *x, vector<vector<string>> valoresFile)
 {
     stack<NoArv *> pilha; 
     Avaliacao op; // classe para realizar a operacao
@@ -65,36 +65,31 @@ void opera(Arv *x, vector<vector<string>> matriz)
     }
 }
 
-int operaReturn(Arv *arvPop, vector<vector<string>> valoresMatriz){ // retornar soma da diferença de uma arvore
+int operaReturn(Arv *arvPop, vector<vector<string>> valoresFile){ // retornar soma da diferença de uma arvore
     stack<NoArv *> pilha; 
     Avaliacao resultOperacao; // classe para realizar a operacao
     arvPop->preenchePilhaAux(pilha); //Funcao no MI para preencher a pilha com os nós da arvore
-
-    vector<vector<string>> copiaArquivo = learquivo();
     
-    int  colunaFileTam = copiaArquivo; // quantidade de linhas do csv (obter ainda)
-    float *diferencaValEsp = new float[colunaFileTam]; // guardar diferença de cada linha
 
-    for(int i = 0; i < colunaFileTam; i++){
+    int qtdLinhasFile; //precisa ainda calcular
+
+    float diferencaValEsp = 0;
+
+    for(int i = 0; i < qtdLinhasFile; i++){
         
-        diferencaValEsp[i] = pow (valEsperado - resultOperacao.Operacao(pilha, i, valoresMatriz), 2);
+        diferencaValEsp += pow (valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2); // precisa ainda pegar o valEsperado
     }
 
-    float avaliacaoArv;
-
-    for(int i = 0; i < arquivoTam; i++){
-        avaliacaoArv += diferencaValEsp[i]; // somar diferenças
-    }
-    delete [] diferencaValEsp;
-    return avaliacaoArv; // retornar resultado total
+    return diferencaValEsp;
 
 }
 
-int* eficienciaArvores(vector<Arv> vetorArvores, int tamVetArv){ // retornar vetor com os valores de cada arvore (diferenças)
+int* eficienciaArvores(vector<Arv*> vetorArvores, int tamVetArv){ // retornar vetor com os valores de cada arvore (diferenças)
     int *vetorValores = new int[tamVetArv];
     for(int i = 0; i < tamVetArv; i++){
-        vetorValores[i] = operaReturn(vetorArvores[i]);
+        vetorValores[i] = operaReturn(vetorArvores[i], learquivo());
     }
+    return vetorValores;
 }
 
 
@@ -145,8 +140,9 @@ int main()
     //operação
     //opera(teste, matriz); // chama a função opera para realizar as operações substituindo as variaveis pelos valores correspondentes do arquivo fornecido
 
+    
     int tamPopulacao = 100;
-    vector<Arv*> arvPopulacao(tamPopulacao);
+    vector<Arv*> arvPopulacao(tamPopulacao); // vetor de arvores
 
     for(int i = 0; i < tamPopulacao; i++){
         arvPopulacao[i] = new Arv(cabecalhoVet, tam);
