@@ -8,6 +8,7 @@
 #include <vector>
 #include <sstream>
 #include "Avaliacao.h"
+#include <math.h>
 
 using namespace std;
 
@@ -64,15 +65,49 @@ void opera(Arv *x, vector<vector<string>> matriz)
     }
 }
 
+int operaReturn(Arv *arvPop, vector<vector<string>> valoresMatriz){ // retornar soma da diferença de uma arvore
+    stack<NoArv *> pilha; 
+    Avaliacao resultOperacao; // classe para realizar a operacao
+    arvPop->preenchePilhaAux(pilha); //Funcao no MI para preencher a pilha com os nós da arvore
+
+    vector<vector<string>> copiaArquivo = learquivo();
+    
+    int  colunaFileTam = copiaArquivo; // quantidade de linhas do csv (obter ainda)
+    float *diferencaValEsp = new float[colunaFileTam]; // guardar diferença de cada linha
+
+    for(int i = 0; i < colunaFileTam; i++){
+        
+        diferencaValEsp[i] = pow (valEsperado - resultOperacao.Operacao(pilha, i, valoresMatriz), 2);
+    }
+
+    float avaliacaoArv;
+
+    for(int i = 0; i < arquivoTam; i++){
+        avaliacaoArv += diferencaValEsp[i]; // somar diferenças
+    }
+    delete [] diferencaValEsp;
+    return avaliacaoArv; // retornar resultado total
+
+}
+
+int* eficienciaArvores(vector<Arv> vetorArvores, int tamVetArv){ // retornar vetor com os valores de cada arvore (diferenças)
+    int *vetorValores = new int[tamVetArv];
+    for(int i = 0; i < tamVetArv; i++){
+        vetorValores[i] = operaReturn(vetorArvores[i]);
+    }
+}
+
+
+
 int main()
 {
 
     srand(time(NULL));
     vector<vector<string>> matriz = learquivo();
     int tam;
-    char *vet = cabecalho(matriz, &tam);  // função para extrair somente o cabecalho do arquivo
-    Arv *teste = new Arv(vet, tam); // passa um vetor guardando o cabecalho e o seu tamnho no construtor da arvore
-    Arv *teste2 = new Arv(vet, tam);
+    char *cabecalhoVet = cabecalho(matriz, &tam);  // função para extrair somente o cabecalho do arquivo
+    Arv *teste = new Arv(cabecalhoVet, tam); // passa um vetor guardando o cabecalho e o seu tamnho no construtor da arvore
+    Arv *teste2 = new Arv(cabecalhoVet, tam);
 
     teste->criaArvAleatoria(5); // Preeche a arvore com valores aleatorios com altura maxima de 5
     teste2->criaArvAleatoria(5);
@@ -109,6 +144,22 @@ int main()
 
     //operação
     //opera(teste, matriz); // chama a função opera para realizar as operações substituindo as variaveis pelos valores correspondentes do arquivo fornecido
+
+    int tamPopulacao = 100;
+    vector<Arv*> arvPopulacao(tamPopulacao);
+
+    for(int i = 0; i < tamPopulacao; i++){
+        arvPopulacao[i] = new Arv(cabecalhoVet, tam);
+        arvPopulacao[i]->criaArvAleatoria(5);
+    }
+
+
+
+
+    //deletar
+    for(int i = 0; i < tamPopulacao; i++){
+        delete arvPopulacao[i];
+    }
 
     return 0;
 }
