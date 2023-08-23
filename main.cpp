@@ -70,29 +70,30 @@ int operaReturn(Arv *arvPop, vector<vector<string>> valoresFile){ // retornar so
     Avaliacao resultOperacao; // classe para realizar a operacao
     arvPop->preenchePilhaAux(pilha); //Funcao no MI para preencher a pilha com os nós da arvore
     
-
-    int qtdLinhasFile; //precisa ainda calcular
+    int qtdLinhasFile = valoresFile.size();
 
     float diferencaValEsp = 0;
 
-    for(int i = 0; i < qtdLinhasFile; i++){
-        
-        diferencaValEsp += pow (valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2); // precisa ainda pegar o valEsperado
+    int indiceValEsperado = valoresFile[0].size() - 1;
+
+    for(int i = 1; i < qtdLinhasFile; i++){
+        istringstream ent(valoresFile[i][indiceValEsperado]);
+        float valEsperado;
+        ent >> valEsperado;
+        diferencaValEsp += pow (valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
 
     return diferencaValEsp;
 
 }
 
-int* eficienciaArvores(vector<Arv*> vetorArvores, int tamVetArv){ // retornar vetor com os valores de cada arvore (diferenças)
-    int *vetorValores = new int[tamVetArv];
-    for(int i = 0; i < tamVetArv; i++){
-        vetorValores[i] = operaReturn(vetorArvores[i], learquivo());
+void eficienciaArvores(vector<Arv*> vetorArvores, float* aptidoes, vector<vector<string>> valoresArquivo){ // retornar vetor com os valores de cada arvore (diferenças)
+    int qtdArvores = vetorArvores.size();
+    for(int i = 0; i < qtdArvores; i++){
+        aptidoes[i] = operaReturn(vetorArvores[i], valoresArquivo);
     }
-    return vetorValores;
+
 }
-
-
 
 int main()
 {
