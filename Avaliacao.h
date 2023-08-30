@@ -91,7 +91,7 @@ public:
             }
             else if (pilhaCopia.top()->getTipo() == 1) // verifica se é uma varialvel
             {
-                for (int j = 0; j < matriz[0].size(); j++)
+                for (int j = 0; j < matriz[0].size() - 1; j++) // retirar o valor esperado das operações
                 {
                     istringstream trans(matriz[0][j]);
                     char elemento;

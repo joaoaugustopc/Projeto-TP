@@ -10,7 +10,7 @@
 #include "Avaliacao.h"
 #include <math.h>
 
-#define TAM 100
+#define TAM 5
 
 using namespace std;
 
@@ -103,10 +103,17 @@ void eficienciaArvores(vector<Arv *> vetorArvores, float *aptidoes, vector<vecto
     for (int i = 0; i < qtdArvores; i++)
     {
         aptidoes[i] = operaReturn(vetorArvores[i], valoresArquivo);
+
+        //teste
+        cout << "Imprime arvores" << i << ": ";
+        vetorArvores[i]->imprime();
+        cout << "Aptidao da arvore " << i <<": " << aptidoes[i] << endl;
+
+        //teste
     }
 }
 
-vector<Arv *> gerarPopulacaoInicial(char *cabecalho, int tam) // Função que Gera uma População Inical de Arvores
+vector<Arv *> gerarPopulacaoInicial(char *cabecalho, int tam, int alturaArv)  // Função que Gera uma População Inical de Arvores 
 {
     int tamPopulacao = TAM;
     vector<Arv *> arvPopulacao(tamPopulacao, NULL); // vetor de arvores obs: passar altura arvore como parametro
@@ -114,15 +121,15 @@ vector<Arv *> gerarPopulacaoInicial(char *cabecalho, int tam) // Função que Ge
     for (int i = 0; i < tamPopulacao; i++)
     {
         arvPopulacao[i] = new Arv(cabecalho, tam);
-        arvPopulacao[i]->criaArvAleatoria(5);
+        arvPopulacao[i]->criaArvAleatoria(alturaArv);
     }
 
     return arvPopulacao;
 }
-void mutacao(Arv *arvore, char *cabecalho, int tam) // funcao que Muta uma determinada arvore
+void mutacao(Arv *arvore, char *cabecalho, int tam, int alturaArv)  // funcao que Muta uma determinada arvore 
 {
-    Arv *aux = new Arv(cabecalho, tam); // gera uma arvore aleatoria;
-    aux->criaArvAleatoria(5);
+    Arv *aux = new Arv(cabecalho, tam);  // gera uma arvore aleatoria;
+    aux->criaArvAleatoria(alturaArv);
     arvore->Muta(aux);
 }
 
@@ -178,13 +185,14 @@ int main()
     float aptidoes[TAM];       // vetor que guarda as aptidões da Populacao Inicial
     // criar um parametro novo na própria arvore <------------>
     float aptidoesFilhos[TAM]; // vetor que guarda as aptidoes da Populacao gerada a partir da mutacao e recombinação de genitores
-    int tamanhoCabecalho;
+    int qtdVariaveis;
+    int alturaArvore = 5;
 
-    vector<vector<string>> matriz = learquivo();
-    char *cabecalhoVet = cabecalho(matriz, &tamanhoCabecalho); // função para extrair somente o cabecalho do arquivo
+    vector<vector<string>> infoArquivo = learquivo();
+    char *cabecalhoVet = cabecalho(infoArquivo, &qtdVariaveis); // função para extrair somente o cabecalho do arquivo
 
-    PopulacaoInicial = gerarPopulacaoInicial(cabecalhoVet, tamanhoCabecalho); // gerando População Inicial
-    eficienciaArvores(PopulacaoInicial, aptidoes, matriz);                    // avaliando População Inicial
+    PopulacaoInicial = gerarPopulacaoInicial(cabecalhoVet, qtdVariaveis, alturaArvore); // gerando População Inicial
+    eficienciaArvores(PopulacaoInicial, aptidoes, infoArquivo);                    // avaliando População Inicial
 
     int idxPai1;
     int idxPai2;
@@ -201,15 +209,21 @@ int main()
 
             idxPai1 = gerarNumAleatorio(0, PopulacaoInicial.size() - 1);
             idxPai2 = gerarNumAleatorio(0, PopulacaoInicial.size() - 1);
-            PopulacaoGenitores[i] = new Arv(cabecalhoVet, tamanhoCabecalho);
+            PopulacaoGenitores[i] = new Arv(cabecalhoVet, qtdVariaveis);
             *PopulacaoGenitores[i] = *PopulacaoInicial[idxPai1];
-            PopulacaoGenitores[i + 1] = new Arv(cabecalhoVet, tamanhoCabecalho);
+            PopulacaoGenitores[i + 1] = new Arv(cabecalhoVet, qtdVariaveis);
             *PopulacaoGenitores[i + 1] = *PopulacaoInicial[idxPai2]; // <------------------- > criar uma função clone(fazer na mão)
 
             // processo de mutação e Recombinação
             PopulacaoGenitores[i]->Recombina(PopulacaoGenitores[i + 1]);
-            mutacao(PopulacaoGenitores[i], cabecalhoVet, tamanhoCabecalho);
-            mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, tamanhoCabecalho);
+            mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
+            mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
+
+            // avaliacao da Populacao de filhos
+            //teste
+            cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
+            //teste
+            eficienciaArvores(PopulacaoGenitores, aptidoesFilhos, infoArquivo);
         }
         eficienciaArvores(PopulacaoGenitores, aptidoesFilhos, matriz);
         // avaliacao da Populacao de filhos
@@ -217,6 +231,13 @@ int main()
         // Faz a  Substituição de todoss os individuos salvando o melhor da População Inicial e matando o pior da População de Filhos;
         substituirPopulacao(PopulacaoInicial, PopulacaoGenitores, aptidoes, aptidoesFilhos);
     }
+
+    //teste
+    cout << "Populacao apos substituicao:" << endl;
+    for(int i = 0; i < PopulacaoGenitores.size() - 1; i++){
+        cout << "Resultado da avaliacao arvore " << i << ": " << operaReturn(PopulacaoGenitores[i], infoArquivo) << endl;
+    }
+    //teste
 
     // deletar
     for (int i = 0; i < PopulacaoInicial.size(); i++)
