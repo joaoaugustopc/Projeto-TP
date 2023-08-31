@@ -222,14 +222,6 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
     if (val == (*cont))
     {
         (*cont)++;
-        if (p->getTipo() != 0)
-        {
-            cout << "noh sorteado --> " << (char)p->getInfo() << endl;
-        }
-        else
-        {
-            cout << "noh sorteado --> " << p->getInfo() << endl;
-        }
         p = libera(p); // deleta toda a subarvore sorteada e retorna a raiz da outra arvore gerada aleatoriamente
         return sub;
     }
@@ -254,25 +246,9 @@ void Arv ::Recombina(Arv *arvore2)
     int cont = 0;
 
     NoArv *arv1 = noh(this->raiz, no1, &cont); // Retorna o nó da arvore 1 que corresponde ao idx sorteado (NAO CONSEGUI PASSAR O PONTEIRO PARA PONTEIRO PARA GUARDAR O PAI E REALIZAR A OPERACAO)
-    if (arv1->getTipo() != 0)
-    {
-        cout << "Noh sorteado da Arvore 1 --> " << (char)arv1->getInfo() << endl;
-    }
-    else
-    {
-        cout << "Noh sorteado da Arvore 1 --> " << arv1->getInfo() << endl;
-    }
 
     cont = 0;
     NoArv *arv2 = noh(arvore2->raiz, no2, &cont); // Retorna o nó da arvore 2 que corresponde ao idx sorteado
-    if (arv2->getTipo() != 0)
-    {
-        cout << "Noh sorteado da Arvore 2 --> " << (char)arv2->getInfo() << endl;
-    }
-    else
-    {
-        cout << "Noh sorteado da Arvore 2 --> " << arv2->getInfo() << endl;
-    }
 
     // percorre arvore novamente
     cont = 0;

@@ -135,6 +135,7 @@ void mutacao(Arv *arvore, char *cabecalho, int tam, int alturaArv) // funcao que
 
 void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> PopulacaoGenitores)
 {
+    // descobrindo o melhor e o Pior
     float melhor = PopulacaoInicial[0]->getAptidao();
     float pior = PopulacaoGenitores[0]->getAptidao();
     int idxMelhor = 0;
@@ -152,6 +153,8 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
             idxPior = i;
         }
     }
+
+    // realizando a substituicao
     int j = 0;
     for (int i = 0; i < PopulacaoInicial.size(); i++)
     {
@@ -192,9 +195,6 @@ int main()
     vector<Arv *> PopulacaoInicial;
     vector<Arv *> PopulacaoGenitores(TAM, NULL);
 
-    float aptidoes[TAM]; // vetor que guarda as aptidões da Populacao Inicial
-    // criar um parametro novo na própria arvore <------------>
-    float aptidoesFilhos[TAM]; // vetor que guarda as aptidoes da Populacao gerada a partir da mutacao e recombinação de genitores
     int qtdVariaveis;
     int alturaArvore = 5;
 
@@ -244,7 +244,7 @@ int main()
     cout << "Populacao apos substituicao:" << endl;
     for (int i = 0; i < PopulacaoGenitores.size() - 1; i++)
     {
-        cout << "Resultado da avaliacao arvore " << i << ": " << operaReturn(PopulacaoGenitores[i], infoArquivo) << endl;
+        cout << "Resultado da avaliacao arvore " << i << ": " << operaReturn(PopulacaoInicial[i], infoArquivo) << endl;
     }
     // teste
 
