@@ -10,7 +10,7 @@
 #include "Avaliacao.h"
 #include <math.h>
 
-#define TAM 5
+#define TAM 6
 
 using namespace std;
 
@@ -166,13 +166,14 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
         {
             if (j == idxPior)
             {
-                delete PopulacaoGenitores[j];
+                PopulacaoGenitores[j]->liberar();
                 j++;
             }
-            delete PopulacaoInicial[i];
-            PopulacaoInicial[i] = PopulacaoGenitores[j];
+            PopulacaoInicial[i]->liberar();
+            PopulacaoInicial[i]->clona(PopulacaoGenitores[j]);
+            PopulacaoGenitores[j]->liberar();
             j++;
-            delete PopulacaoGenitores[j];
+        
         }
     }
 }
@@ -188,12 +189,25 @@ int getPai(vector<Arv *> PopulacaoInicial){
     }
 }
 
+vector<Arv *> gerarVetorDeGenitores(char *cabecalho, int tam) // Função que Gera uma População Inical de Arvores
+{
+    int tamPopulacao = TAM;
+    vector<Arv *> arvPopulacao(tamPopulacao, NULL); // vetor de arvores obs: passar altura arvore como parametro
+
+    for (int i = 0; i < tamPopulacao; i++)
+    {
+        arvPopulacao[i] = new Arv(cabecalho, tam);
+    }
+
+    return arvPopulacao;
+}
+
 int main()
 {
 
     srand(time(NULL));
-    vector<Arv *> PopulacaoInicial;
-    vector<Arv *> PopulacaoGenitores(TAM, NULL);
+    vector<Arv *> PopulacaoInicial; // Estudar algum jeito de alocar um vetor de classe que precisa de um construtor;
+    vector<Arv *> PopulacaoGenitores;
 
     int qtdVariaveis;
     int alturaArvore = 5;
@@ -203,7 +217,7 @@ int main()
 
     PopulacaoInicial = gerarPopulacaoInicial(cabecalhoVet, qtdVariaveis - 1, alturaArvore); // gerando População Inicial desconsiderando a ultima coluna (valesperado)
     eficienciaArvores(PopulacaoInicial,infoArquivo);                             // avaliando População Inicial
-
+    PopulacaoGenitores = gerarVetorDeGenitores(cabecalhoVet, qtdVariaveis - 1);
     int idxPai1;
     int idxPai2;
 
@@ -219,16 +233,14 @@ int main()
 
             idxPai1 = getPai(PopulacaoInicial);
             idxPai2 = getPai(PopulacaoInicial);
-            PopulacaoGenitores[i] = new Arv(cabecalhoVet, qtdVariaveis);
-            PopulacaoGenitores[i]->clona(PopulacaoInicial[idxPai1]->getRaiz());
-            PopulacaoGenitores[i + 1] = new Arv(cabecalhoVet, qtdVariaveis);
-            PopulacaoGenitores[i + 1]->clona(PopulacaoInicial[idxPai2]->getRaiz());
+            PopulacaoGenitores[i]->clona(PopulacaoInicial[idxPai1]);
+            PopulacaoGenitores[i + 1]->clona(PopulacaoInicial[idxPai2]);
             // <------------------- > criar uma função clone(fazer na mão)
 
             // processo de mutação e Recombinação
             PopulacaoGenitores[i]->Recombina(PopulacaoGenitores[i + 1]);
-            mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
-            mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
+            //mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
+            //mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
         }
         // teste
         cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
@@ -237,6 +249,7 @@ int main()
         // avaliacao da Populacao de filhos
 
         // Faz a  Substituição de todoss os individuos salvando o melhor da População Inicial e matando o pior da População de Filhos;
+        cout<< "substituicao"<<endl;
         substituirPopulacao(PopulacaoInicial, PopulacaoGenitores);
     }
 

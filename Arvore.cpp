@@ -74,7 +74,6 @@ NoArv *Arv::libera(NoArv *p)
         p = NULL;
         no--;
     }
-
     return NULL;
 }
 
@@ -150,6 +149,7 @@ float Arv::valaleatorio(char *type) // funcao para retornar um valor aleatorio (
 void Arv::criaArvAleatoria(int altura)
 {
     raiz = criaSubArvAleatoria(altura);
+
 }
 
 NoArv *Arv::criaSubArvAleatoria(int altura)
@@ -314,9 +314,12 @@ float Arv ::getAptidao()
     return Aptidao;
 }
 
-void Arv ::clona(NoArv *p)
+void Arv ::clona(Arv*p)
 {
-    raiz = auxClona(p);
+    raiz = auxClona(p->getRaiz());
+    Aptidao = p->Aptidao;
+    no = p->no;
+    
 }
 
 NoArv *Arv ::auxClona(NoArv *p)
@@ -343,4 +346,9 @@ NoArv *Arv ::auxClona(NoArv *p)
     }
 
     return novoNo;
+}
+
+void Arv :: liberar(){
+    raiz = libera(raiz);
+    Aptidao = - 1;
 }

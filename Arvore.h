@@ -46,7 +46,8 @@ public:
     void Recombina(Arv *arvore2);
     void setAptidao(float val);
     float getAptidao();
-    void clona(NoArv*p);
+    void clona(Arv*p);
+    void liberar();
 };
 
 #endif
