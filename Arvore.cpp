@@ -211,7 +211,6 @@ void Arv::Muta(Arv *subarv)
     int cont = 0;                // contador
     
     raiz = auxMuta(raiz, subarv->raiz, noSorteio, &cont);
-    //raiz = auxClona(auxMuta(raiz, subarv->raiz, noSorteio, &cont));
 
     no += subarv->getNos(); // atualiza o ultimo idx
 }

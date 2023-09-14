@@ -131,6 +131,7 @@ void mutacao(Arv *arvore, char *cabecalho, int tam, int alturaArv) // funcao que
     Arv *aux = new Arv(cabecalho, tam); // gera uma arvore aleatoria;
     aux->criaArvAleatoria(alturaArv);
     arvore->Muta(aux);
+
 }
 
 void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> PopulacaoGenitores)
@@ -156,11 +157,12 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
 
     // realizando a substituicao
     int j = 0;
-    for (int i = 0; i < PopulacaoInicial.size(); i++)
+    int i = 0;
+    for (i = 0; i < PopulacaoInicial.size(); i++)
     {
         if (i == idxMelhor)
         {
-            continue;
+            continue; 
         }
         else
         {
@@ -176,6 +178,11 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
         
         }
     }
+    
+    if(j < i){ // caso o ultimo elemento do genitor seja o pior
+        PopulacaoGenitores[j]->liberar();
+    }
+    
 }
 
 int getPai(vector<Arv *> PopulacaoInicial){
@@ -273,6 +280,7 @@ int main()
 
 // C:\Users\joaoa\Documents\dados.csv (x,y,z)
 // C:\Users\joaoa\Downloads\csv.csv   (f,j,b)
+//C:\Users\luiza\Downloads\dados.csv
 
 // proximos passos :
 /*
