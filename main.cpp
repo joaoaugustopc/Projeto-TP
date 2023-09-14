@@ -251,8 +251,8 @@ int main()
 
             // processo de mutação e Recombinação
             PopulacaoGenitores[i]->Recombina(PopulacaoGenitores[i + 1]);
-            mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
-            mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
+            //mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
+            //mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
         }
         // teste
         cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
