@@ -207,19 +207,22 @@ void Arv::preenchePilhaAux(stack<NoArv *> &pilha)
 
 void Arv::Muta(Arv *subarv)
 {
-    int noh = rand() % (no + 1); // sorteia um idx que vai representar um nó
+    int noSorteio = rand() % (no + 1); // sorteia um idx que vai representar um nó
     int cont = 0;                // contador
-    raiz = auxMuta(raiz, subarv->getRaiz(), noh, &cont);
+    
+    raiz = auxMuta(raiz, subarv->raiz, noSorteio, &cont);
+
     no += subarv->getNos(); // atualiza o ultimo idx
 }
 
-NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
+NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int noMutacao, int *cont)
 {
+
     if (p == NULL)
     {
         return NULL;
     }
-    if (val == (*cont))
+    if ((*cont) == noMutacao)
     {
         (*cont)++;
         p = libera(p); // deleta toda a subarvore sorteada e retorna a raiz da outra arvore gerada aleatoriamente
@@ -229,12 +232,15 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
     else
     {
         (*cont)++;
-        p->setEsq(auxMuta(p->getEsq(), sub, val, cont));
-        p->setDir(auxMuta(p->getDir(), sub, val, cont));
+        p->setEsq(auxMuta(p->getEsq(), sub, noMutacao, cont));
+        p->setDir(auxMuta(p->getDir(), sub, noMutacao, cont));
     }
 
     return p;
+
+
 }
+
 int Arv ::getNos() // retorna a quantidade de nos, alterar nome
 {
     return no + 1;

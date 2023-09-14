@@ -20,6 +20,7 @@ public:
     NoArv *getDir();
     void setTipo(char type);
     char getTipo();
+    void limpaNo(NoArv* raizSub);
 };
 
 #endif

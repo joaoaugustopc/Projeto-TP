@@ -162,7 +162,7 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
     {
         if (i == idxMelhor)
         {
-            continue;
+            continue; 
         }
         else
         {
@@ -180,10 +180,11 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
             }
         }
     }
-    if (j < i) //  caso o ultimo elemento do genitor for o pior
-    {
+    
+    if(j < i){ // caso o ultimo elemento do genitor seja o pior
         PopulacaoGenitores[j]->liberar();
     }
+    
 }
 
 int getPai(vector<Arv *> PopulacaoInicial)
@@ -250,8 +251,8 @@ int main()
 
             // processo de mutação e Recombinação
             PopulacaoGenitores[i]->Recombina(PopulacaoGenitores[i + 1]);
-            //mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
-            //mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
+            mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
+            mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
         }
         // teste
         cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
@@ -284,6 +285,7 @@ int main()
 
 // C:\Users\joaoa\Documents\dados.csv (x,y,z)
 // C:\Users\joaoa\Downloads\csv.csv   (f,j,b)
+//C:\Users\luiza\Downloads\dados.csv
 
 // proximos passos :
 /*
