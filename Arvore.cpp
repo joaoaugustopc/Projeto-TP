@@ -223,7 +223,8 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int val, int *cont)
     {
         (*cont)++;
         p = libera(p); // deleta toda a subarvore sorteada e retorna a raiz da outra arvore gerada aleatoriamente
-        return sub;
+        p = auxClona(sub);
+        return p;
     }
     else
     {

@@ -131,6 +131,7 @@ void mutacao(Arv *arvore, char *cabecalho, int tam, int alturaArv) // funcao que
     Arv *aux = new Arv(cabecalho, tam); // gera uma arvore aleatoria;
     aux->criaArvAleatoria(alturaArv);
     arvore->Muta(aux);
+    delete aux;
 }
 
 void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> PopulacaoGenitores)
@@ -156,7 +157,8 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
 
     // realizando a substituicao
     int j = 0;
-    for (int i = 0; i < PopulacaoInicial.size(); i++)
+    int i = 0;
+    for (; i < PopulacaoInicial.size(); i++)
     {
         if (i == idxMelhor)
         {
@@ -169,22 +171,31 @@ void substituirPopulacao(vector<Arv *> PopulacaoInicial, vector<Arv *> Populacao
                 PopulacaoGenitores[j]->liberar();
                 j++;
             }
-            PopulacaoInicial[i]->liberar();
-            PopulacaoInicial[i]->clona(PopulacaoGenitores[j]);
-            PopulacaoGenitores[j]->liberar();
-            j++;
-        
+            if (j < PopulacaoGenitores.size())
+            {
+                PopulacaoInicial[i]->liberar();
+                PopulacaoInicial[i]->clona(PopulacaoGenitores[j]);
+                PopulacaoGenitores[j]->liberar();
+                j++;
+            }
         }
+    }
+    if (j < i) //  caso o ultimo elemento do genitor for o pior
+    {
+        PopulacaoGenitores[j]->liberar();
     }
 }
 
-int getPai(vector<Arv *> PopulacaoInicial){
-    int idx1 = gerarNumAleatorio(0,PopulacaoInicial.size()-1);
-    int idx2 = gerarNumAleatorio(0,PopulacaoInicial.size()-1);
-    if(PopulacaoInicial[idx1]->getAptidao()<PopulacaoInicial[idx2]->getAptidao()){
+int getPai(vector<Arv *> PopulacaoInicial)
+{
+    int idx1 = gerarNumAleatorio(0, PopulacaoInicial.size() - 1);
+    int idx2 = gerarNumAleatorio(0, PopulacaoInicial.size() - 1);
+    if (PopulacaoInicial[idx1]->getAptidao() < PopulacaoInicial[idx2]->getAptidao())
+    {
         return idx1;
     }
-    else{
+    else
+    {
         return idx2;
     }
 }
@@ -216,7 +227,7 @@ int main()
     char *cabecalhoVet = cabecalho(infoArquivo, &qtdVariaveis); // função para extrair somente o cabecalho do arquivo e guardar o numero de colunas da matriz
 
     PopulacaoInicial = gerarPopulacaoInicial(cabecalhoVet, qtdVariaveis - 1, alturaArvore); // gerando População Inicial desconsiderando a ultima coluna (valesperado)
-    eficienciaArvores(PopulacaoInicial,infoArquivo);                             // avaliando População Inicial
+    eficienciaArvores(PopulacaoInicial, infoArquivo);                                       // avaliando População Inicial
     PopulacaoGenitores = gerarVetorDeGenitores(cabecalhoVet, qtdVariaveis - 1);
     int idxPai1;
     int idxPai2;
@@ -245,11 +256,11 @@ int main()
         // teste
         cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
         // teste
-        eficienciaArvores(PopulacaoGenitores,infoArquivo);
+        eficienciaArvores(PopulacaoGenitores, infoArquivo);
         // avaliacao da Populacao de filhos
 
         // Faz a  Substituição de todoss os individuos salvando o melhor da População Inicial e matando o pior da População de Filhos;
-        cout<< "substituicao"<<endl;
+        cout << "substituicao" << endl;
         substituirPopulacao(PopulacaoInicial, PopulacaoGenitores);
     }
 
