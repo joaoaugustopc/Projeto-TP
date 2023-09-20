@@ -323,10 +323,10 @@ float Arv ::getAptidao()
 
 void Arv ::clona(Arv*p)
 {
+    raiz=libera(raiz);
     raiz = auxClona(p->getRaiz());
     Aptidao = p->Aptidao;
     no = p->no;
-    
 }
 
 NoArv *Arv ::auxClona(NoArv *p)
@@ -343,7 +343,6 @@ NoArv *Arv ::auxClona(NoArv *p)
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
         no++;
-        return novoNo;
     }
     else
     {
@@ -357,5 +356,5 @@ NoArv *Arv ::auxClona(NoArv *p)
 
 void Arv :: liberar(){
     raiz = libera(raiz);
-    Aptidao = - 1;
+    Aptidao = -1;
 }

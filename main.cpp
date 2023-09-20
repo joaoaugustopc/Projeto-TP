@@ -157,30 +157,20 @@ void substituirPopulacao(Arv**PopulacaoInicial, Arv** PopulacaoGenitores)
     int i = 0;
     for (; i < TAM; i++)
     {
-        if (i == idxMelhor)
-        {
-            continue; 
-        }
-        else
+        if (i != idxMelhor)
         {
             if (j == idxPior)
             {
-                PopulacaoGenitores[j]->liberar();
                 j++;
             }
             if (j < TAM)
             {
-                PopulacaoInicial[i]->liberar();
                 PopulacaoInicial[i]->clona(PopulacaoGenitores[j]);
-                PopulacaoGenitores[j]->liberar();
                 j++;
             }
         }
     }
     
-    if(j < i){ // caso o ultimo elemento do genitor seja o pior
-        PopulacaoGenitores[j]->liberar();
-    }
     
 }
 
@@ -252,8 +242,8 @@ int main()
 
             // processo de mutação e Recombinação
             PopulacaoGenitores[i]->Recombina(PopulacaoGenitores[i + 1]);
-            mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
-            mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
+            //mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
+            //mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
         }
         // teste
         cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
