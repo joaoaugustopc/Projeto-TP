@@ -159,14 +159,14 @@ void substituirPopulacao(Arv** PopulacaoInicial, Arv** PopulacaoGenitores)
     int i = 0;
     for (i; i < TAM; i++)
     {
-        if(i = idxMelhor){
+        if(i == idxMelhor){
             continue;
         } else if(j == idxPior){
+            j++;
             continue;
         }
         PopulacaoInicial[i]->liberar();
         PopulacaoInicial[i]->clona(PopulacaoGenitores[j]);
-        j++;
     }
     
 }
@@ -241,6 +241,7 @@ int main()
         // teste
         cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
         // teste
+        cout << "eficiencia genitor" << endl;
         eficienciaArvores(PopulacaoGenitores, infoArquivo);
         // avaliacao da Populacao de filhos
 
