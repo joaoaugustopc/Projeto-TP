@@ -213,6 +213,7 @@ void Arv::Muta(Arv *subarv)
     raiz = auxMuta(raiz, subarv->raiz, noSorteio, &cont);
 
     no += subarv->getNos(); // atualiza o ultimo idx
+    subarv->raiz=NULL;
 }
 
 NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int noMutacao, int *cont)
@@ -226,8 +227,7 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int noMutacao, int *cont)
     {
         (*cont)++;
         p = libera(p); // deleta toda a subarvore sorteada e retorna a raiz da outra arvore gerada aleatoriamente
-        p = auxClona(sub);
-        return p;
+        return sub;
     }
     else
     {

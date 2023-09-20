@@ -10,7 +10,7 @@
 #include "Avaliacao.h"
 #include <math.h>
 
-#define TAM 6
+#define TAM 100
 
 using namespace std;
 
@@ -213,6 +213,18 @@ vector<Arv *> gerarVetorDeGenitores(char *cabecalho, int tam) // Função que Ge
 
     return arvPopulacao;
 }
+void gerarVetorDeGenitores(char *cabecalho, int tam, Arv** arvore) // Função que Gera uma População Inical de Arvores
+{
+    int tamPopulacao = TAM;
+     // vetor de arvores obs: passar altura arvore como parametro
+
+    for (int i = 0; i < tamPopulacao; i++)
+    {
+        arvore[i] = new Arv(cabecalho, tam);
+    }
+
+   
+}
 
 int main()
 {
@@ -221,6 +233,9 @@ int main()
     vector<Arv *> PopulacaoInicial; // Estudar algum jeito de alocar um vetor de classe que precisa de um construtor;
     vector<Arv *> PopulacaoGenitores;
 
+    //Arv**arvore = new Arv*[TAM];
+
+
     int qtdVariaveis;
     int alturaArvore = 5;
 
@@ -228,6 +243,7 @@ int main()
     char *cabecalhoVet = cabecalho(infoArquivo, &qtdVariaveis); // função para extrair somente o cabecalho do arquivo e guardar o numero de colunas da matriz
 
     PopulacaoInicial = gerarPopulacaoInicial(cabecalhoVet, qtdVariaveis - 1, alturaArvore); // gerando População Inicial desconsiderando a ultima coluna (valesperado)
+    //gerarVetorDeGenitores(cabecalhoVet, qtdVariaveis -1, arvore);
     eficienciaArvores(PopulacaoInicial, infoArquivo);                                       // avaliando População Inicial
     PopulacaoGenitores = gerarVetorDeGenitores(cabecalhoVet, qtdVariaveis - 1);
     int idxPai1;
