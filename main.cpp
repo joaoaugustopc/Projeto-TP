@@ -220,12 +220,16 @@ int main()
     gerarVetorPop(cabecalhoVet, qtdVariaveis -1,PopulacaoGenitores);
     gerarPopulacaoInicial(PopulacaoInicial,cabecalhoVet, qtdVariaveis - 1, alturaArvore); // Preenchendo cada arvore do vetor População Inicial desconsiderando a ultima coluna (valesperado)
 
+    cout << "Imprime arvores iniciais e aptidao:" << endl;
     eficienciaArvores(PopulacaoInicial, infoArquivo);                                       // avaliando População Inicial
     int idxPai1;
     int idxPai2;
 
     for (int geracao = 0; geracao < TAM; geracao++)
     {
+        cout << endl;
+        cout << "Geracao " << geracao << ": " << endl;
+        cout << endl;
 
         for (int i = 0; i < TAM; i += 2)
         {
@@ -238,6 +242,13 @@ int main()
             idxPai2 = getPai(PopulacaoInicial);
             PopulacaoGenitores[i]->clona(PopulacaoInicial[idxPai1]);
             PopulacaoGenitores[i + 1]->clona(PopulacaoInicial[idxPai2]);
+
+            //teste para verificar clone
+            cout << "imprime clone " << i+1 << ": ";
+            PopulacaoGenitores[i]->imprime();
+            cout << "imprime clone " << i+2 << ": ";
+
+            PopulacaoGenitores[i+1]->imprime();
             // <------------------- > criar uma função clone(fazer na mão)
 
             // processo de mutação e Recombinação
