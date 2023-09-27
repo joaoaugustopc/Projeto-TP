@@ -20,7 +20,7 @@ private:
     void auxaltera(NoArv *p);
     float numAleatorio(char *type);
     NoArv *criaSubArvAleatoria(int altura);
-    void preencherPilha(NoArv *p, std::stack<NoArv *> &pilha);
+    void preencherPilha(NoArv *p, std::stack<NoArv *> *pilha);
     int retornarResultadoExpressao(std::stack<char> &pilha);
     NoArv *auxMuta(NoArv *p, NoArv *sub, int val, int *cont);
     NoArv *noh(NoArv *p, int val, int *cont);
@@ -40,7 +40,7 @@ public:
     float valaleatorio(char*type);
     void criaArvAleatoria(int altura);
     int resolverExpressao();
-    void preenchePilhaAux(stack<NoArv *> &pilha);
+    void preenchePilhaAux(stack<NoArv *> *pilha);
     void Muta(Arv *subarv);
     int getNos();
     void Recombina(Arv *arvore2);

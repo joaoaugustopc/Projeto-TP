@@ -188,7 +188,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     return novoNo;
 }
 
-void Arv::preencherPilha(NoArv *p, std::stack<NoArv *> &pilha)
+void Arv::preencherPilha(NoArv *p, stack<NoArv *> *pilha)
 {
     if (p == NULL)
     {
@@ -197,10 +197,10 @@ void Arv::preencherPilha(NoArv *p, std::stack<NoArv *> &pilha)
 
     preencherPilha(p->getEsq(), pilha);
     preencherPilha(p->getDir(), pilha);
-    pilha.push(p);
+    pilha->push(p);
 }
 
-void Arv::preenchePilhaAux(stack<NoArv *> &pilha)
+void Arv::preenchePilhaAux(stack<NoArv *> *pilha)
 {
     preencherPilha(raiz, pilha);
 }
