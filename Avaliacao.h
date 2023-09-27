@@ -14,25 +14,31 @@ public:
     Avaliacao(){};
     ~Avaliacao(){};
 
-    float Operacao(stack<NoArv *> *pilha, int i, vector<vector<string>> matriz)
+    float Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> matriz)
     {
         // criar copia da pilha original
-        stack<NoArv *> pilhaTemp; // criar pilha de nós
+        stack<NoArv *> pilhaTemp = pilha; // criar copia da pilha de nós
         stack<NoArv *> pilhaCopia;
         stack<float> pilhaResultado;
 
-        while (!pilha->empty())
+
+
+       /* while (!pilha.empty())
         {
-            pilhaCopia.push(pilha->top());
-            pilhaTemp.push(pilha->top());
-            pilha->pop();
+            pilhaCopia.push(pilha.top());
+            pilhaTemp.push(pilha.top());
+            pilha.pop();
         }
+        */
 
         while (!pilhaTemp.empty())
         {
-            pilha->push(pilhaTemp.top());
+            pilhaCopia.push(pilhaTemp.top());
             pilhaTemp.pop();
         }
+
+
+
 
         // realiza a operacao
         while (!pilhaCopia.empty())

@@ -63,7 +63,7 @@ vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em fo
     return content; // retornar matriz com os valores da tabela
 }
 
-void opera(Arv *x, vector<vector<string>> valoresFile) // função com nenhuma utilidade (antiga)
+/*void opera(Arv *x, vector<vector<string>> valoresFile) // função com nenhuma utilidade (antiga)
 {
     stack<NoArv *> pilha;
     Avaliacao op;               // classe para realizar a operacao
@@ -72,11 +72,11 @@ void opera(Arv *x, vector<vector<string>> valoresFile) // função com nenhuma u
     {
         cout << "Resultado da operacao da linha " << i + 1 << " --> " << op.Operacao(&pilha, i, valoresFile) << endl;
     }
-}
+}*/
 
 float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar soma da diferença,  ao quadrado, de uma arvore
 {
-    stack<NoArv *> pilha;
+    stack<NoArv*> pilha;
     Avaliacao resultOperacao;        // classe para realizar a operacao
     arvPop->preenchePilhaAux(&pilha); // Funcao no MI para preencher a pilha com os nós da arvore
 
@@ -91,7 +91,7 @@ float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar s
         istringstream ent(valoresFile[i][indiceValEsperado]);
         float valEsperado;
         ent >> valEsperado;
-        diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(&pilha, i, valoresFile), 2);
+        diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
 
     return diferencaValEsp;
@@ -99,8 +99,7 @@ float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar s
 
 void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo) // preeche um vetor com a aptidao de cada arvore (soma das diferenças)
 {
-    int qtdArvores = TAM;
-    for (int i = 0; i < qtdArvores; i++)
+    for (int i = 0; i < TAM; i++)
     {
         vetorArvores[i]->setAptidao(operaReturn(vetorArvores[i], valoresArquivo)); // funcao que o algoritmo trava
 
@@ -113,19 +112,20 @@ void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo
     }
 }
 
-void gerarPopulacaoInicial(Arv **vetorPop, char *cabecalho, int tam, int alturaArv) // Função que Gera uma População Inical de Arvores
+void gerarPopulacaoInicial(Arv **vetorPop, int alturaArv) // Função que Gera uma População Inical de Arvores
 {
-    int tamPopulacao = TAM;
-
-    for (int i = 0; i < tamPopulacao; i++)
+    for (int i = 0; i < TAM; i++)
     {
         vetorPop[i]->criaArvAleatoria(alturaArv);
     }
 }
+
 void mutacao(Arv *arvore, char *cabecalho, int tam, int alturaArv) // funcao que Muta uma determinada arvore
 {
     Arv *aux = new Arv(cabecalho, tam); // gera uma arvore aleatoria;
+    cout<<"Impimindo sub-arvore para clone: ";
     aux->criaArvAleatoria(alturaArv);
+    aux->imprime();
     arvore->Muta(aux);
     delete aux;
 }
@@ -169,6 +169,13 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
             }
         }
     }
+
+    for(int i=0;i<TAM;i++){
+        cout << "Imprime arvore" << i << ": ";
+        PopulacaoInicial[i]->imprime();
+        cout << "Aptidao da arvore " << i << ": " << PopulacaoInicial[i]->getAptidao() << endl;
+    }
+    
 }
 
 int getPai(Arv **PopulacaoInicial)
@@ -187,8 +194,7 @@ int getPai(Arv **PopulacaoInicial)
 
 void gerarVetorPop(char *cabecalho, int tam, Arv **arvore) // Função que Gera uma População
 {
-    int tamPopulacao = TAM;
-    for (int i = 0; i < tamPopulacao; i++)
+    for (int i = 0; i < TAM; i++)
     {
         arvore[i] = new Arv(cabecalho, tam);
     }
@@ -208,10 +214,11 @@ int main()
 
     gerarVetorPop(cabecalhoVet, qtdVariaveis - 1, PopulacaoInicial); // Constroi avores em cada indice do vetor de população
     gerarVetorPop(cabecalhoVet, qtdVariaveis - 1, PopulacaoGenitores);
-    gerarPopulacaoInicial(PopulacaoInicial, cabecalhoVet, qtdVariaveis - 1, alturaArvore); // Preenchendo cada arvore do vetor População Inicial desconsiderando a ultima coluna (valesperado)
+    gerarPopulacaoInicial(PopulacaoInicial, alturaArvore); // Preenchendo cada arvore do vetor População Inicial desconsiderando a ultima coluna (valesperado)
 
     cout << "Imprime arvores iniciais e aptidao:" << endl;
     eficienciaArvores(PopulacaoInicial, infoArquivo); // avaliando População Inicial
+
     int idxPai1;
     int idxPai2;
 
@@ -229,32 +236,41 @@ int main()
             PopulacaoGenitores[i + 1]->clona(PopulacaoInicial[idxPai2]);
 
             //teste para verificar clone
-            cout << "imprime clone " << i+1 << ": ";
+            cout << "imprime genitor " << i << ": ";
             PopulacaoGenitores[i]->imprime();
-            cout << "imprime clone " << i+2 << ": ";
-
+            cout << "imprime genitor " << i+1 << ": ";
             PopulacaoGenitores[i+1]->imprime();
             // <------------------- > criar uma função clone(fazer na mão)
 
             // processo de mutação e Recombinação
             PopulacaoGenitores[i]->Recombina(PopulacaoGenitores[i + 1]);
-            // mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis, alturaArvore);
-            // mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis, alturaArvore);
+            cout<<"Arvore "<<i<<" apos o processo de recombinacao: ";
+            PopulacaoGenitores[i]->imprime();
+            cout<<"Arvore "<<i+1<<" apos o processo de recombinacao: ";
+            PopulacaoGenitores[i+1]->imprime();
+            cout<<endl;
+            mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis - 1, alturaArvore);
+            mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis - 1, alturaArvore);
+            cout<<"Arvore "<<i<<" apos o processo de mutacao: ";
+            PopulacaoGenitores[i]->imprime();
+            cout<<"Arvore "<<i+1<<" apos o processo de mutacao: ";
+            PopulacaoGenitores[i+1]->imprime();
+            cout<<endl;
         }
         // teste
-        cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
+        cout << "Arvores apos processos de mutacao: " << endl;
         // teste
         eficienciaArvores(PopulacaoGenitores, infoArquivo);
         // avaliacao da Populacao de filhos
 
         // Faz a  Substituição de todoss os individuos salvando o melhor da População Inicial e matando o pior da População de Filhos;
-        cout << "substituicao" << endl;
+        cout<< endl << "substituicao" << endl;
         substituirPopulacao(PopulacaoInicial, PopulacaoGenitores);
     }
 
     // teste
     cout << "Populacao apos substituicao:" << endl;
-    for (int i = 0; i < TAM - 1; i++)
+    for (int i = 0; i < TAM; i++)
     {
         cout << "Resultado da avaliacao arvore " << i << ": " << operaReturn(PopulacaoInicial[i], infoArquivo) << endl;
     }
