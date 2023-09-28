@@ -10,7 +10,7 @@
 #include "Avaliacao.h"
 #include <math.h>
 
-#define TAM 6
+#define TAM 100
 
 using namespace std;
 

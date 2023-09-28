@@ -56,6 +56,7 @@ NoArv *Arv::getRaiz()
     else
     {
         cout << "Árvora vazia!" << endl;
+        return NULL;
         
     }
 }
@@ -263,6 +264,8 @@ void Arv ::Recombina(Arv *arvore2)
     raiz = auxRecombina(raiz, arv2, no1, &cont); // coloca o nó sorteado da arvore 2 no local do nó sorteado da arvore 1
     cont = 0;
     arvore2->raiz = auxRecombina(arvore2->raiz, arv1, no2, &cont); // coloca o nó sorteado da arvore 1 no local do nó sorteado da arvore 2
+    this->no=contaNos(raiz) - 1;
+    arvore2->no=contaNos(arvore2->raiz) - 1;
 }
 
 NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont) // igual a funcao de mutar, porém esta nao deleta nenhuma subarvore
@@ -358,4 +361,14 @@ NoArv *Arv ::auxClona(NoArv *p)
 void Arv :: liberar(){
     raiz = libera(raiz);
     Aptidao = -1;
+}
+
+
+int Arv :: contaNos(NoArv*p){
+    if(p==NULL){
+        return 0;
+    }
+
+    int x = contaNos(p->getEsq()) + contaNos(p->getDir());
+    return x + 1; 
 }

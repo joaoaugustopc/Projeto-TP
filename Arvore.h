@@ -26,6 +26,7 @@ private:
     NoArv *noh(NoArv *p, int val, int *cont);
     NoArv *auxRecombina(NoArv *p, NoArv *sub, int val, int *cont);
     NoArv * auxClona(NoArv*p);
+    int contaNos(NoArv* p);
 
 public:
     Arv(char *cabecalho, int tam);
