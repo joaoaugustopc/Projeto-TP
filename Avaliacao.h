@@ -97,7 +97,8 @@ public:
             }
             else if (pilhaCopia.top()->getTipo() == 1) // verifica se é uma varialvel
             {
-                for (int j = 0; j < matriz[0].size() - 1; j++) // retirar o valor esperado das operações
+                string::size_type colunaValEsp = matriz[0].size();
+                for (string::size_type j = 0; j < colunaValEsp - 1; j++) // retirar o valor esperado das operações
                 {
                     istringstream trans(matriz[0][j]);
                     char elemento;

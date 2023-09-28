@@ -56,6 +56,7 @@ NoArv *Arv::getRaiz()
     else
     {
         cout << "Árvora vazia!" << endl;
+        
     }
 }
 
@@ -170,24 +171,25 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     float x = numAleatorio(&type); // Passa o endereco da variavel para armezar o tipo de dado do nó
     novoNo->setInfo(x);
     novoNo->setTipo(type);
-    no++;
 
     if (novoNo->getTipo() != 2)
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
+        no++;
         return novoNo;
     }
     else
     {
         novoNo->setEsq(criaSubArvAleatoria(altura - 1));
         novoNo->setDir(criaSubArvAleatoria(altura - 1));
+        no++;
     }
 
     return novoNo;
 }
 
-void Arv::preencherPilha(NoArv *p, stack<NoArv *> *pilha)
+void Arv::preencherPilha(NoArv *p, std::stack<NoArv *> *pilha)
 {
     if (p == NULL)
     {
