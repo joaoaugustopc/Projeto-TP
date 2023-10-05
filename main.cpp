@@ -9,6 +9,7 @@
 #include <sstream>
 #include "Avaliacao.h"
 #include <math.h>
+#include <time.h>
 
 #define TAM 100
 
@@ -204,6 +205,9 @@ void imprimeApt(Arv **Pop, int tam)
 
 int main()
 {
+    //calcular tempo do programa
+    double time_spent = 0;
+    clock_t begin = clock();
 
     srand(time(NULL));
     Arv **PopulacaoInicial = new Arv *[TAM];
@@ -271,6 +275,11 @@ int main()
 
     delete[] PopulacaoInicial;
     delete[] PopulacaoGenitores;
+
+    clock_t end = clock();
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+
+    cout << "Tempo do programa: " << time_spent << "segundos.";
 
     return 0;
 }
