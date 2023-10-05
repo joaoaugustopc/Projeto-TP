@@ -9,6 +9,7 @@
 #include <sstream>
 #include "Avaliacao.h"
 #include <math.h>
+#include <time.h>
 
 #define TAM 100
 
@@ -104,9 +105,11 @@ void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo
         vetorArvores[i]->setAptidao(operaReturn(vetorArvores[i], valoresArquivo)); // funcao que o algoritmo trava
 
         // teste
+        /*
         cout << "Imprime arvores" << i << ": ";
         vetorArvores[i]->imprime();
         cout << "Aptidao da arvore " << i << ": " << vetorArvores[i]->getAptidao() << endl;
+        */
 
         // teste
     }
@@ -123,9 +126,9 @@ void gerarPopulacaoInicial(Arv **vetorPop, int alturaArv) // Função que Gera u
 void mutacao(Arv *arvore, char *cabecalho, int tam, int alturaArv) // funcao que Muta uma determinada arvore
 {
     Arv *aux = new Arv(cabecalho, tam); // gera uma arvore aleatoria;
-    cout<<"Impimindo sub-arvore para clone: ";
+    //cout<<"Impimindo sub-arvore para clone: ";
     aux->criaArvAleatoria(alturaArv);
-    aux->imprime();
+    //aux->imprime();
     arvore->Muta(aux);
     delete aux;
 }
@@ -170,11 +173,13 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
         }
     }
 
+/*
     for(int i=0;i<TAM;i++){
         cout << "Imprime arvore" << i << ": ";
         PopulacaoInicial[i]->imprime();
         cout << "Aptidao da arvore " << i << ": " << PopulacaoInicial[i]->getAptidao() << endl;
     }
+*/
     
 }
 
@@ -202,6 +207,9 @@ void gerarVetorPop(char *cabecalho, int tam, Arv **arvore) // Função que Gera 
 
 int main()
 {
+    //calcular tempo do programa
+    double time_spent = 0;
+    clock_t begin = clock();
 
     srand(time(NULL));
     Arv **PopulacaoInicial = new Arv *[TAM];
@@ -216,7 +224,7 @@ int main()
     gerarVetorPop(cabecalhoVet, qtdVariaveis - 1, PopulacaoGenitores);
     gerarPopulacaoInicial(PopulacaoInicial, alturaArvore); // Preenchendo cada arvore do vetor População Inicial desconsiderando a ultima coluna (valesperado)
 
-    cout << "Imprime arvores iniciais e aptidao:" << endl;
+    //cout << "Imprime arvores iniciais e aptidao:" << endl;
     eficienciaArvores(PopulacaoInicial, infoArquivo); // avaliando População Inicial
 
     int idxPai1;
@@ -225,8 +233,8 @@ int main()
     for (int geracao = 0; geracao < TAM; geracao++)
     {
         cout << endl;
-        cout << "Geracao " << geracao << ": " << endl;
-        cout << endl;
+        cout << "Criando geracao " << geracao << ": " << endl;
+        //cout << endl;
 
         for (int i = 0; i < TAM; i += 2)
         {
@@ -236,43 +244,56 @@ int main()
             PopulacaoGenitores[i + 1]->clona(PopulacaoInicial[idxPai2]);
 
             //teste para verificar clone
+            /*
             cout << "imprime genitor " << i << ": ";
             PopulacaoGenitores[i]->imprime();
             cout << "imprime genitor " << i+1 << ": ";
             PopulacaoGenitores[i+1]->imprime();
+            */
             // <------------------- > criar uma função clone(fazer na mão)
 
             // processo de mutação e Recombinação
             PopulacaoGenitores[i]->Recombina(PopulacaoGenitores[i + 1]);
+            
+            /*
             cout<<"Arvore "<<i<<" apos o processo de recombinacao: ";
             PopulacaoGenitores[i]->imprime();
             cout<<"Arvore "<<i+1<<" apos o processo de recombinacao: ";
             PopulacaoGenitores[i+1]->imprime();
             cout<<endl;
+            */
             mutacao(PopulacaoGenitores[i], cabecalhoVet, qtdVariaveis - 1, alturaArvore);
             mutacao(PopulacaoGenitores[i + 1], cabecalhoVet, qtdVariaveis - 1, alturaArvore);
+            /*
             cout<<"Arvore "<<i<<" apos o processo de mutacao: ";
             PopulacaoGenitores[i]->imprime();
             cout<<"Arvore "<<i+1<<" apos o processo de mutacao: ";
             PopulacaoGenitores[i+1]->imprime();
             cout<<endl;
+            */
         }
         // teste
-        cout << "Arvores apos processos de mutacao: " << endl;
+        /*
+        cout << "Arvores apos processos de mutacao e recombinacao: " << endl;
         // teste
+        */
         eficienciaArvores(PopulacaoGenitores, infoArquivo);
         // avaliacao da Populacao de filhos
 
         // Faz a  Substituição de todoss os individuos salvando o melhor da População Inicial e matando o pior da População de Filhos;
-        cout<< endl << "substituicao" << endl;
+        //cout<< endl << "substituicao" << endl;
         substituirPopulacao(PopulacaoInicial, PopulacaoGenitores);
     }
 
     // teste
-    cout << "Populacao apos substituicao:" << endl;
+    cout << endl;
+    cout << "POPULACAO APOS SUBSTITUICAO:" << endl;
     for (int i = 0; i < TAM; i++)
     {
+        cout << endl;
         cout << "Resultado da avaliacao arvore " << i << ": " << operaReturn(PopulacaoInicial[i], infoArquivo) << endl;
+        cout << "Imprime arvore  " << i << " :" << endl;
+        PopulacaoInicial[i]->imprime();
     }
     // teste
 
@@ -285,6 +306,11 @@ int main()
 
     delete[] PopulacaoInicial;
     delete[] PopulacaoGenitores;
+
+    clock_t end = clock();
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+
+    cout << "Tempo do programa: " << time_spent << "segundos.";
 
     return 0;
 }
