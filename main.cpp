@@ -11,7 +11,7 @@
 #include <math.h>
 #include <time.h>
 
-#define TAM 100
+#define TAM 50
 
 using namespace std;
 
@@ -95,7 +95,7 @@ float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar s
         diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
 
-    return diferencaValEsp;
+    return diferencaValEsp/qtdLinhasFile; // erro quadratico medio
 }
 
 void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo) // preeche um vetor com a aptidao de cada arvore (soma das diferenças)

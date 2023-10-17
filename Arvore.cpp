@@ -44,8 +44,8 @@ float Arv::numAleatorio(char *type) // retornar float (pode guardar char)
     else
     {
         *type = 2;                     // guardar o tipo (operador)
-        int vet[4] = {42, 43, 45, 47}; // vetor contendo (na representacao do tipo int) os operadores
-        return vet[0 + rand() % 4];
+        int vet[5] = {42, 43, 45, 47, 94}; // vetor contendo (na representacao do tipo int) os operadores
+        return vet[0 + rand() % 5];
     }
 }
 

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -81,7 +82,9 @@ public:
                     {
                         resultado = val1 / val2;
                     }
-
+                    break;
+                case '^':
+                    resultado = pow(val1, val2);
                     break;
                 default:
                     cout << "Operador inválido!" << endl;
