@@ -11,7 +11,9 @@
 #include <math.h>
 #include <time.h>
 
-#define TAM 500
+//#define TAM 50
+#define GERACAO 100
+#define FAMILIA 100
 
 using namespace std;
 
@@ -100,7 +102,7 @@ float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar s
 
 void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo) // preeche um vetor com a aptidao de cada arvore (soma das diferenças)
 {
-    for (int i = 0; i < TAM; i++)
+    for (int i = 0; i < FAMILIA; i++)
     {
         vetorArvores[i]->setAptidao(operaReturn(vetorArvores[i], valoresArquivo)); // funcao que o algoritmo trava
     }
@@ -108,7 +110,7 @@ void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo
 
 void gerarPopulacaoInicial(Arv **vetorPop, int alturaArv) // Função que Gera uma População Inical de Arvores
 {
-    for (int i = 0; i < TAM; i++)
+    for (int i = 0; i < FAMILIA; i++)
     {
         vetorPop[i]->criaArvAleatoria(alturaArv);
     }
@@ -129,7 +131,7 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
     float pior = PopulacaoGenitores[0]->getAptidao();
     int idxMelhor = 0;
     int idxPior = 0;
-    for (int i = 1; i < TAM; i++)
+    for (int i = 1; i < FAMILIA; i++)
     {
         if (abs(PopulacaoInicial[i]->getAptidao()) < abs(melhor))
         {
@@ -146,7 +148,7 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
     // realizando a substituicao
     int j = 0;
     int i = 0;
-    for (; i < TAM; i++)
+    for (; i < FAMILIA; i++)
     {
         if (i != idxMelhor)
         {
@@ -154,7 +156,7 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
             {
                 j++;
             }
-            if (j < TAM)
+            if (j < FAMILIA)
             {
                 PopulacaoInicial[i]->clona(PopulacaoGenitores[j]);
                 j++;
@@ -178,13 +180,13 @@ int getPai(Arv **PopulacaoInicial)
         return idx2;
     }*/
 
-    int participantes = (5*TAM)/100; // 5% da população
+    int participantes = (5*FAMILIA)/100; // 5% da população
     int * idx = new int [participantes];
-    idx[0]=gerarNumAleatorio(0, TAM - 1);
+    idx[0]=gerarNumAleatorio(0, FAMILIA - 1);
     int menor = idx[0];
     for (int i = 1; i < participantes ; i++)
     {
-        idx[i]=gerarNumAleatorio(0, TAM - 1);
+        idx[i]=gerarNumAleatorio(0, FAMILIA - 1);
         if(PopulacaoInicial[idx[i]]->getAptidao()<PopulacaoInicial[menor]->getAptidao()){
             menor=idx[i];
         }
@@ -198,7 +200,7 @@ int getPai(Arv **PopulacaoInicial)
 
 void gerarVetorPop(char *cabecalho, int tam, Arv **arvore) // Função que Gera uma População
 {
-    for (int i = 0; i < TAM; i++)
+    for (int i = 0; i < FAMILIA; i++)
     {
         arvore[i] = new Arv(cabecalho, tam);
     }
@@ -229,8 +231,8 @@ int main()
     clock_t begin = clock();
 
     srand(time(NULL));
-    Arv **PopulacaoInicial = new Arv *[TAM];
-    Arv **PopulacaoGenitores = new Arv *[TAM];
+    Arv **PopulacaoInicial = new Arv *[FAMILIA];
+    Arv **PopulacaoGenitores = new Arv *[FAMILIA];
 
     int qtdVariaveis;
     int alturaArvore = 5;
@@ -244,17 +246,17 @@ int main()
 
     cout << "Imprime arvores iniciais e aptidao:" << endl;
 
-    imprimePop(PopulacaoInicial, TAM);
+    imprimePop(PopulacaoInicial, FAMILIA);
     cout << endl;
-    imprimeApt(PopulacaoInicial, TAM);
+    imprimeApt(PopulacaoInicial, FAMILIA);
 
     int idxPai1;
     int idxPai2;
 
-    for (int geracao = 0; geracao < TAM; geracao++)
+    for (int geracao = 0; geracao < GERACAO; geracao++)
     {
         cout<<"GERACAO : "<< geracao <<endl;
-        for (int i = 0; i < TAM; i += 2)
+        for (int i = 0; i < FAMILIA; i += 2)
         {
             idxPai1 = getPai(PopulacaoInicial);
             idxPai2 = getPai(PopulacaoInicial);
@@ -279,14 +281,14 @@ int main()
     cout << endl
          << "POPULACAO FINAL :" << endl
          << endl;
-    imprimePop(PopulacaoInicial, TAM);
+    imprimePop(PopulacaoInicial, FAMILIA);
 
     cout << endl
          << "RESUTADO FINAL : " << endl
          << endl;
-    imprimeApt(PopulacaoInicial, TAM);
+    imprimeApt(PopulacaoInicial, FAMILIA);
 
-    for (int i = 0; i < TAM; i++)
+    for (int i = 0; i < FAMILIA; i++)
     {
         delete PopulacaoInicial[i];
         delete PopulacaoGenitores[i];
