@@ -34,7 +34,7 @@ float Arv::numAleatorio(char *type) // retornar float (pode guardar char)
     if (x == 0)
     {
         *type = 0;               // guardar o tipo (numero)
-        return 0 + rand() % 101; // retornar um valor aleatorio em uma faixa de valores (pode mudar essa faixa)
+        return -10 + rand() % 111; // retornar um valor aleatorio em uma faixa de valores (pode mudar essa faixa)
     }
     if (x == 1)
     {
