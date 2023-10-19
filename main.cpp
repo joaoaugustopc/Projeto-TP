@@ -178,7 +178,7 @@ int getPai(Arv **PopulacaoInicial)
         return idx2;
     }*/
 
-    int participantes = 4;
+    int participantes = (5*TAM)/100; // 5% da população
     int * idx = new int [participantes];
     idx[0]=gerarNumAleatorio(0, TAM - 1);
     int menor = idx[0];
