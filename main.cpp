@@ -95,7 +95,7 @@ float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar s
         diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
 
-    return diferencaValEsp/qtdLinhasFile; // erro quadratico medio
+    return (float)diferencaValEsp/qtdLinhasFile-1; // erro quadratico medio
 }
 
 void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo) // preeche um vetor com a aptidao de cada arvore (soma das diferenças)
@@ -165,8 +165,10 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
 
 int getPai(Arv **PopulacaoInicial)
 {
-    int idx1 = gerarNumAleatorio(0, TAM - 1);
+    /*int idx1 = c
     int idx2 = gerarNumAleatorio(0, TAM - 1);
+    int idx3 = gerarNumAleatorio(0, TAM - 1);
+    int idx4 = gerarNumAleatorio(0, TAM - 1);
     if (PopulacaoInicial[idx1]->getAptidao() < PopulacaoInicial[idx2]->getAptidao())
     {
         return idx1;
@@ -174,7 +176,24 @@ int getPai(Arv **PopulacaoInicial)
     else
     {
         return idx2;
+    }*/
+
+    int participantes = 4;
+    int * idx = new int [participantes];
+    idx[0]=gerarNumAleatorio(0, TAM - 1);
+    int menor = idx[0];
+    for (int i = 1; i < participantes ; i++)
+    {
+        idx[i]=gerarNumAleatorio(0, TAM - 1);
+        if(PopulacaoInicial[idx[i]]->getAptidao()<PopulacaoInicial[menor]->getAptidao()){
+            menor=idx[i];
+        }
     }
+    
+    delete [] idx;
+
+    return menor;
+    
 }
 
 void gerarVetorPop(char *cabecalho, int tam, Arv **arvore) // Função que Gera uma População
