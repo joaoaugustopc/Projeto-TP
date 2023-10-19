@@ -11,7 +11,7 @@
 #include <math.h>
 #include <time.h>
 
-#define TAM 20
+#define TAM 500
 
 using namespace std;
 
