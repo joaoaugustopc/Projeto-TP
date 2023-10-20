@@ -12,7 +12,7 @@
 #include <time.h>
 
 //#define TAM 50
-#define GERACAO 100
+#define GERACAO 50
 #define FAMILIA 100
 
 using namespace std;
