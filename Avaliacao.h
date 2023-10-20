@@ -86,6 +86,22 @@ public:
                 case '^':
                     resultado = pow(val1, val2);
                     break;
+                case 'e'://expoente de e
+                    resultado = exp(val1); //ignorar o segundo valor
+                    break;
+                case '#': //raiz quadrada
+                    if(val1 < 0){
+                        resultado = 0;
+                    } else{
+                        resultado = sqrt(val1);
+                    }
+                    break;
+                case '$': //seno
+                    resultado = sin(val1);
+                    break;
+                case '&':
+                    resultado = tanh(val1);
+                    break;
                 default:
                     cout << "Operador inválido!" << endl;
                     exit(1);
