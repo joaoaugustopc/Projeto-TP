@@ -29,23 +29,29 @@ Arv::~Arv()
 
 float Arv::numAleatorio(char *type) // retornar float (pode guardar char)
 {
-    int x = rand() % 3;
+    int x = rand() % 4;
 
     if (x == 0)
     {
-        *type = 0;               // guardar o tipo (numero)
+        *type = 0;                 // guardar o tipo (numero)
         return -10 + rand() % 111; // retornar um valor aleatorio em uma faixa de valores (pode mudar essa faixa)
     }
-    if (x == 1)
+    else if (x == 1)
     {
         *type = 1;                      // guardar o tipo (variavel)
         return vetor[0 + rand() % tam]; // retornar uma variavel válida aleatoria
     }
+    else if (x == 2)
+    {
+        *type = 2;                         // guardar o tipo (operador)
+        int vet[5] = {42, 43, 45, 47, 94}; // vetor contendo (na representacao do tipo int) os operadores
+        return vet[rand() % 5];
+    }
     else
     {
-        *type = 2;                     // guardar o tipo (operador)
-        int vet[9] = {42, 43, 45, 47, 94, 101, 35, 36, 38}; // vetor contendo (na representacao do tipo int) os operadores
-        return vet[0 + rand() % 5];
+        *type = 3;                      // guardar o tipo (operador c/ uma entrada de parâmetro)
+        int vet[4] = {101, 35, 36, 38}; // vetor contendo (na representacao do tipo int) os operadores
+        return vet[rand() % 4];
     }
 }
 
@@ -57,7 +63,6 @@ NoArv *Arv::getRaiz()
     {
         cout << "Árvora vazia!" << endl;
         return NULL;
-        
     }
 }
 
@@ -151,7 +156,6 @@ float Arv::valaleatorio(char *type) // funcao para retornar um valor aleatorio (
 void Arv::criaArvAleatoria(int altura)
 {
     raiz = criaSubArvAleatoria(altura);
-
 }
 
 NoArv *Arv::criaSubArvAleatoria(int altura)
@@ -173,7 +177,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     novoNo->setInfo(x);
     novoNo->setTipo(type);
 
-    if (novoNo->getTipo() != 2)
+    if (novoNo->getTipo() != 2 && novoNo->getTipo() != 3)
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
@@ -182,8 +186,17 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
     }
     else
     {
-        novoNo->setEsq(criaSubArvAleatoria(altura - 1));
-        novoNo->setDir(criaSubArvAleatoria(altura - 1));
+        if (novoNo->getTipo() == 3)     // Nos casos em que o operador seja um que necessite apenas de uma entrada Ex : exponencial, seno, cosseno e raiz quadrada;
+        {
+            novoNo->setEsq(criaSubArvAleatoria(altura - 1));
+            novoNo->setDir(NULL);
+        }
+        else
+        {
+            novoNo->setEsq(criaSubArvAleatoria(altura - 1));
+            novoNo->setDir(criaSubArvAleatoria(altura - 1));
+        }
+
         no++;
     }
 
@@ -210,12 +223,12 @@ void Arv::preenchePilhaAux(stack<NoArv *> *pilha)
 void Arv::Muta(Arv *subarv)
 {
     int noSorteio = rand() % (no + 1); // sorteia um idx que vai representar um nó
-    int cont = 0;                // contador
-    
+    int cont = 0;                      // contador
+
     raiz = auxMuta(raiz, subarv->raiz, noSorteio, &cont);
 
     no += subarv->getNos(); // atualiza o ultimo idx
-    subarv->raiz=NULL;
+    subarv->raiz = NULL;
 }
 
 NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int noMutacao, int *cont)
@@ -239,8 +252,6 @@ NoArv *Arv::auxMuta(NoArv *p, NoArv *sub, int noMutacao, int *cont)
     }
 
     return p;
-
-
 }
 
 int Arv ::getNos() // retorna a quantidade de nos, alterar nome
@@ -264,8 +275,8 @@ void Arv ::Recombina(Arv *arvore2)
     raiz = auxRecombina(raiz, arv2, no1, &cont); // coloca o nó sorteado da arvore 2 no local do nó sorteado da arvore 1
     cont = 0;
     arvore2->raiz = auxRecombina(arvore2->raiz, arv1, no2, &cont); // coloca o nó sorteado da arvore 1 no local do nó sorteado da arvore 2
-    this->no=contaNos(raiz) - 1;
-    arvore2->no=contaNos(arvore2->raiz) - 1;
+    this->no = contaNos(raiz) - 1;
+    arvore2->no = contaNos(arvore2->raiz) - 1;
 }
 
 NoArv *Arv ::auxRecombina(NoArv *p, NoArv *sub, int val, int *cont) // igual a funcao de mutar, porém esta nao deleta nenhuma subarvore
@@ -325,9 +336,9 @@ float Arv ::getAptidao()
     return Aptidao;
 }
 
-void Arv ::clona(Arv*p)
+void Arv ::clona(Arv *p)
 {
-    raiz=libera(raiz);
+    raiz = libera(raiz);
     raiz = auxClona(p->getRaiz());
     Aptidao = p->Aptidao;
     no = p->no;
@@ -358,17 +369,19 @@ NoArv *Arv ::auxClona(NoArv *p)
     return novoNo;
 }
 
-void Arv :: liberar(){
+void Arv ::liberar()
+{
     raiz = libera(raiz);
     Aptidao = -1;
 }
 
-
-int Arv :: contaNos(NoArv*p){
-    if(p==NULL){
+int Arv ::contaNos(NoArv *p)
+{
+    if (p == NULL)
+    {
         return 0;
     }
 
     int x = contaNos(p->getEsq()) + contaNos(p->getDir());
-    return x + 1; 
+    return x + 1;
 }

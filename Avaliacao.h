@@ -5,10 +5,12 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include "NoArv.h"
 
 using namespace std;
 
-class Avaliacao {
+class Avaliacao
+{
 
 private:
 public:
@@ -22,15 +24,13 @@ public:
         stack<NoArv *> pilhaCopia;
         stack<float> pilhaResultado;
 
-
-
-       /* while (!pilha.empty())
-        {
-            pilhaCopia.push(pilha.top());
-            pilhaTemp.push(pilha.top());
-            pilha.pop();
-        }
-        */
+        /* while (!pilha.empty())
+         {
+             pilhaCopia.push(pilha.top());
+             pilhaTemp.push(pilha.top());
+             pilha.pop();
+         }
+         */
 
         while (!pilhaTemp.empty())
         {
@@ -38,13 +38,56 @@ public:
             pilhaTemp.pop();
         }
 
-
-
-
         // realiza a operacao
         while (!pilhaCopia.empty())
         {
-            if (pilhaCopia.top()->getTipo() == 2) // verifica se é um operador
+
+            if (pilhaCopia.top()->getTipo() == 3) // verifica se é uma operador de apenas um parâmetro
+            {
+                char operacao = ((char)pilhaCopia.top()->getInfo()); // lida como um char
+                pilhaCopia.pop();
+
+                if (pilhaResultado.size() < 1)
+                {
+                    cout << "erro de tamanho" << endl;
+                    exit(1);
+                }
+
+                float val1 = pilhaResultado.top();
+                pilhaResultado.pop();
+
+                float resultado;
+
+                switch (operacao)
+                {
+                case 'e':                  // expoente de e
+                    resultado = exp(val1); // ignorar o segundo valor
+                    break;
+                case '#': // raiz quadrada
+                    if (val1 < 0)
+                    {
+                        resultado = 0;
+                    }
+                    else
+                    {
+                        resultado = sqrt(val1);
+                    }
+                    break;
+                case '$': // seno
+                    resultado = sin(val1);
+                    break;
+                case '&':
+                    resultado = tanh(val1);
+                    break;
+                default:
+                    cout << "Operador inválido!" << endl;
+                    exit(1);
+                }
+
+                pilhaResultado.push(resultado);
+            }
+
+            else if (pilhaCopia.top()->getTipo() == 2) // verifica se é um operador
             {
                 char operacao = ((char)pilhaCopia.top()->getInfo()); // lida como um char
                 pilhaCopia.pop();
@@ -85,22 +128,6 @@ public:
                     break;
                 case '^':
                     resultado = pow(val1, val2);
-                    break;
-                case 'e'://expoente de e
-                    resultado = exp(val1); //ignorar o segundo valor
-                    break;
-                case '#': //raiz quadrada
-                    if(val1 < 0){
-                        resultado = 0;
-                    } else{
-                        resultado = sqrt(val1);
-                    }
-                    break;
-                case '$': //seno
-                    resultado = sin(val1);
-                    break;
-                case '&':
-                    resultado = tanh(val1);
                     break;
                 default:
                     cout << "Operador inválido!" << endl;
