@@ -17,12 +17,12 @@ public:
     Avaliacao(){};
     ~Avaliacao(){};
 
-    float Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> matriz)
+    double Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> matriz)
     {
         // criar copia da pilha original
         stack<NoArv *> pilhaTemp = pilha; // criar copia da pilha de nós
         stack<NoArv *> pilhaCopia;
-        stack<float> pilhaResultado;
+        stack<double> pilhaResultado;
 
         /* while (!pilha.empty())
          {
@@ -53,10 +53,10 @@ public:
                     exit(1);
                 }
 
-                float val1 = pilhaResultado.top();
+                double val1 = pilhaResultado.top();
                 pilhaResultado.pop();
 
-                float resultado;
+                double resultado;
 
                 switch (operacao)
                 {
@@ -79,6 +79,16 @@ public:
                 case '&':
                     resultado = tanh(val1);
                     break;
+                case '!':
+                    if (val1 <= 0)
+                    {
+                        resultado = 0;
+                    }
+                    else
+                    {
+                        resultado = log(val1);
+                    }
+                    break;
                 default:
                     cout << "Operador inválido!" << endl;
                     exit(1);
@@ -98,12 +108,12 @@ public:
                     exit(1);
                 }
 
-                float val2 = pilhaResultado.top();
+                double val2 = pilhaResultado.top();
                 pilhaResultado.pop();
-                float val1 = pilhaResultado.top();
+                double val1 = pilhaResultado.top();
                 pilhaResultado.pop();
 
-                float resultado;
+                double resultado;
 
                 switch (operacao)
                 {
@@ -127,7 +137,14 @@ public:
                     }
                     break;
                 case '^':
-                    resultado = pow(val1, val2);
+                    if (val1 < 0 && fmod(val2, 1.0) != 0)
+                    {
+                        resultado = 0;
+                    }
+                    else
+                    {
+                        resultado = pow(val1, val2);
+                    }
                     break;
                 default:
                     cout << "Operador inválido!" << endl;
@@ -154,8 +171,8 @@ public:
                     if (valor == elemento) // encontrar a coluna correspondente ao elemento da pilha
                     {
                         // "i" é a linha escolhida para selecionar os valores (escolhida na main)
-                        istringstream ent(matriz[i][j]); // altera para o numero correspondente (float)
-                        float val;
+                        istringstream ent(matriz[i][j]); // altera para o numero correspondente (double)
+                        double val;
                         ent >> val;
                         pilhaResultado.push(val);
                         pilhaCopia.pop();

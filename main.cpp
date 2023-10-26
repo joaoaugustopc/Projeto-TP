@@ -10,10 +10,11 @@
 #include "Avaliacao.h"
 #include <math.h>
 #include <time.h>
+#include "OrdenaVet.h"
 
-//#define TAM 50
+// #define TAM 50s
 #define GERACAO 50
-#define FAMILIA 100
+#define FAMILIA 500
 
 using namespace std;
 
@@ -77,7 +78,7 @@ vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em fo
     }
 }*/
 
-float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar soma da diferença,  ao quadrado, de uma arvore
+double operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar soma da diferença,  ao quadrado, de uma arvore
 {
     stack<NoArv *> pilha;
     Avaliacao resultOperacao;         // classe para realizar a operacao
@@ -85,19 +86,19 @@ float operaReturn(Arv *arvPop, vector<vector<string>> valoresFile) // retornar s
 
     int qtdLinhasFile = valoresFile.size();
 
-    float diferencaValEsp = 0;
+    double diferencaValEsp = 0;
 
     int indiceValEsperado = valoresFile[0].size() - 1;
 
     for (int i = 1; i < qtdLinhasFile; i++)
     {
         istringstream ent(valoresFile[i][indiceValEsperado]);
-        float valEsperado;
+        double valEsperado;
         ent >> valEsperado;
         diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
 
-    return (float)diferencaValEsp/qtdLinhasFile-1; // erro quadratico medio
+    return (double)diferencaValEsp / qtdLinhasFile - 1; // erro quadratico medio
 }
 
 void eficienciaArvores(Arv **vetorArvores, vector<vector<string>> valoresArquivo) // preeche um vetor com a aptidao de cada arvore (soma das diferenças)
@@ -124,11 +125,43 @@ void mutacao(Arv *arvore, char *cabecalho, int tam, int alturaArv) // funcao que
     delete aux;
 }
 
+void imprimeApt(Arv **Pop, int tam)
+{
+    for (int i = 0; i < tam; i++)
+    {
+
+        cout << "Aptidao da Arvore " << i + 1 << " " << Pop[i]->getAptidao() << endl;
+    }
+}
 void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
 {
+
+    OrdenaVet ordenacaoInicial;
+    OrdenaVet ordenacaoGenitores;
+
+    ordenacaoInicial.quickSort(PopulacaoInicial, FAMILIA);
+    ordenacaoGenitores.quickSort(PopulacaoGenitores, FAMILIA);
+    /*
+     cout<<"APT INICIAL: "<<endl;
+        imprimeApt(PopulacaoInicial,FAMILIA);
+        cout<<"APT GENITORES: "<<endl;
+        imprimeApt(PopulacaoGenitores,FAMILIA);
+    */
+
+    int elite = 5;
+    int j = 0;
+    for (int i = elite; i < FAMILIA; i++)
+    {
+        PopulacaoInicial[i]->clona(PopulacaoGenitores[j]);
+        j++;
+    }
+
+    /*
+    cout<<"APT INICIAL 2: "<<endl;
+        imprimeApt(PopulacaoInicial,FAMILIA);
     // descobrindo o melhor e o Pior
-    float melhor = PopulacaoInicial[0]->getAptidao();
-    float pior = PopulacaoGenitores[0]->getAptidao();
+    double melhor = PopulacaoInicial[0]->getAptidao();
+    double pior = PopulacaoGenitores[0]->getAptidao();
     int idxMelhor = 0;
     int idxPior = 0;
     for (int i = 1; i < FAMILIA; i++)
@@ -163,39 +196,40 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
             }
         }
     }
+    */
 }
 
 int getPai(Arv **PopulacaoInicial)
 {
-    /*int idx1 = c
-    int idx2 = gerarNumAleatorio(0, TAM - 1);
-    int idx3 = gerarNumAleatorio(0, TAM - 1);
-    int idx4 = gerarNumAleatorio(0, TAM - 1);
-    if (PopulacaoInicial[idx1]->getAptidao() < PopulacaoInicial[idx2]->getAptidao())
+    /*
+    int idx1 = gerarNumAleatorio(0, FAMILIA - 1);
+    int idx2 = gerarNumAleatorio(0, FAMILIA - 1);
+    if (abs(PopulacaoInicial[idx1]->getAptidao()) < abs(PopulacaoInicial[idx2]->getAptidao()))
     {
         return idx1;
     }
     else
     {
         return idx2;
-    }*/
+    }
+    */
 
     int participantes = 4;
-    int * idx = new int [participantes];
-    idx[0]=gerarNumAleatorio(0, FAMILIA - 1);
+    int *idx = new int[participantes];
+    idx[0] = gerarNumAleatorio(0, FAMILIA - 1);
     int menor = idx[0];
-    for (int i = 1; i < participantes ; i++)
+    for (int i = 1; i < participantes; i++)
     {
-        idx[i]=gerarNumAleatorio(0, FAMILIA - 1);
-        if(PopulacaoInicial[idx[i]]->getAptidao()<PopulacaoInicial[menor]->getAptidao()){
-            menor=idx[i];
+        idx[i] = gerarNumAleatorio(0, FAMILIA - 1);
+        if (abs(PopulacaoInicial[idx[i]]->getAptidao()) < abs(PopulacaoInicial[menor]->getAptidao()))
+        {
+            menor = idx[i];
         }
     }
-    
-    delete [] idx;
+
+    delete[] idx;
 
     return menor;
-    
 }
 
 void gerarVetorPop(char *cabecalho, int tam, Arv **arvore) // Função que Gera uma População
@@ -214,19 +248,16 @@ void imprimePop(Arv **Pop, int tam)
         Pop[i]->imprime();
     }
 }
-
-void imprimeApt(Arv **Pop, int tam)
+void imprimeArv(Arv **Pop, int n)
 {
-    for (int i = 0; i < tam; i++)
-    {
 
-        cout << "Aptidao da Arvore " << i + 1 << " " << Pop[i]->getAptidao() << endl;
-    }
+    cout << "Arvore " << n << ": ";
+    Pop[n - 1]->imprime();
 }
 
 int main()
 {
-    //calcular tempo do programa
+    // calcular tempo do programa
     double time_spent = 0;
     clock_t begin = clock();
 
@@ -255,7 +286,7 @@ int main()
 
     for (int geracao = 0; geracao < GERACAO; geracao++)
     {
-        cout<<"GERACAO : "<< geracao <<endl;
+        cout << "GERACAO : " << geracao << endl;
         for (int i = 0; i < FAMILIA; i += 2)
         {
             idxPai1 = getPai(PopulacaoInicial);
@@ -273,20 +304,28 @@ int main()
 
         eficienciaArvores(PopulacaoGenitores, infoArquivo);
         // avaliacao da Populacao de filhos
-
         // Faz a  Substituição de todoss os individuos salvando o melhor da População Inicial e matando o pior da População de Filhos;
         substituirPopulacao(PopulacaoInicial, PopulacaoGenitores);
     }
 
-    cout << endl
-         << "POPULACAO FINAL :" << endl
-         << endl;
-    imprimePop(PopulacaoInicial, FAMILIA);
+    OrdenaVet ordenacao;
+    ordenacao.quickSort(PopulacaoInicial, FAMILIA);
 
     cout << endl
          << "RESUTADO FINAL : " << endl
          << endl;
     imprimeApt(PopulacaoInicial, FAMILIA);
+
+    int idx;
+    cout << "-----------------------------------" << endl;
+    cout << "Digite o indice da arvore desejada para impressão ( Digite 0 para sair ): ";
+    cin >> idx;
+    while (idx >= 0)
+    {
+        imprimeArv(PopulacaoInicial, idx);
+        cout << "Digite o indice da arvore desejada para impressão ( Digite 0 para sair ): ";
+        cin >> idx;
+    }
 
     for (int i = 0; i < FAMILIA; i++)
     {

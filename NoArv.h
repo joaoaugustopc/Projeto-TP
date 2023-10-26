@@ -4,7 +4,7 @@ class NoArv
 {
 
 private:
-    float info;
+    double info;
     NoArv *esq;
     NoArv *dir;
     char tipo; // 0 = numero, 1 = variavel, 2 = operador
@@ -13,10 +13,10 @@ public:
     NoArv();
     ~NoArv();
     void setEsq(NoArv *p);
-    void setInfo(float val);
+    void setInfo(double val);
     void setDir(NoArv *p);
     NoArv *getEsq();
-    float getInfo();
+    double getInfo();
     NoArv *getDir();
     void setTipo(char type);
     char getTipo();

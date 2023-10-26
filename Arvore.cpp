@@ -27,14 +27,22 @@ Arv::~Arv()
     delete[] vetor;
 }
 
-float Arv::numAleatorio(char *type) // retornar float (pode guardar char)
+double Arv::numAleatorio(char *type) // retornar double (pode guardar char)
 {
     int x = rand() % 4;
 
     if (x == 0)
     {
-        *type = 0;                 // guardar o tipo (numero)
-        return -10 + rand() % 111; // retornar um valor aleatorio em uma faixa de valores (pode mudar essa faixa)
+        *type = 0; // guardar o tipo (numero)
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dist(-0.9, 0.9);
+        double randomNumber;
+        do
+        {
+            randomNumber = dist(gen);
+        } while (randomNumber == 0.0); // Repete até obter um valor diferente de zero
+        return randomNumber;
     }
     else if (x == 1)
     {
@@ -49,9 +57,9 @@ float Arv::numAleatorio(char *type) // retornar float (pode guardar char)
     }
     else
     {
-        *type = 3;                      // guardar o tipo (operador c/ uma entrada de parâmetro)
-        int vet[4] = {101, 35, 36, 38}; // vetor contendo (na representacao do tipo int) os operadores
-        return vet[rand() % 4];
+        *type = 3;                          // guardar o tipo (operador c/ uma entrada de parâmetro)
+        int vet[5] = {101, 35, 36, 38, 33}; // vetor contendo (na representacao do tipo int) os operadores e,#,$,&,!
+        return vet[rand() % 5];
     }
 }
 
@@ -138,13 +146,21 @@ void Arv ::auxImprime(NoArv *p)
     }
 }
 
-float Arv::valaleatorio(char *type) // funcao para retornar um valor aleatorio (no caso de chegar na altura maxima)
+double Arv::valaleatorio(char *type) // funcao para retornar um valor aleatorio (no caso de chegar na altura maxima)
 {
     int val = rand() % 2;
     if (val == 0)
     {
-        *type = 0;
-        return rand() % 101;
+        *type = 0; // guardar o tipo (numero)
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dist(-0.9, 0.9);
+        double randomNumber;
+        do
+        {
+            randomNumber = dist(gen);
+        } while (randomNumber == 0.0); // Repete até obter um valor diferente de zero
+        return randomNumber;
     }
     else
     {
@@ -173,7 +189,7 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
         return novoNo;
     }
 
-    float x = numAleatorio(&type); // Passa o endereco da variavel para armezar o tipo de dado do nó
+    double x = numAleatorio(&type); // Passa o endereco da variavel para armezar o tipo de dado do nó
     novoNo->setInfo(x);
     novoNo->setTipo(type);
 
@@ -184,19 +200,17 @@ NoArv *Arv::criaSubArvAleatoria(int altura)
         no++;
         return novoNo;
     }
+
+    if (novoNo->getTipo() == 2)
+    {
+        novoNo->setEsq(criaSubArvAleatoria(altura - 1));
+        novoNo->setDir(criaSubArvAleatoria(altura - 1));
+        no++;
+    }
     else
     {
-        if (novoNo->getTipo() == 3)     // Nos casos em que o operador seja um que necessite apenas de uma entrada Ex : exponencial, seno, cosseno e raiz quadrada;
-        {
-            novoNo->setEsq(criaSubArvAleatoria(altura - 1));
-            novoNo->setDir(NULL);
-        }
-        else
-        {
-            novoNo->setEsq(criaSubArvAleatoria(altura - 1));
-            novoNo->setDir(criaSubArvAleatoria(altura - 1));
-        }
-
+        novoNo->setEsq(criaSubArvAleatoria(altura - 1));
+        novoNo->setDir(NULL);
         no++;
     }
 
@@ -326,12 +340,12 @@ NoArv *Arv ::noh(NoArv *p, int val, int *cont) // funcao que retorna o nó de id
     }
 }
 
-void Arv ::setAptidao(float val)
+void Arv ::setAptidao(double val)
 {
     Aptidao = val;
 }
 
-float Arv ::getAptidao()
+double Arv ::getAptidao()
 {
     return Aptidao;
 }
@@ -353,16 +367,22 @@ NoArv *Arv ::auxClona(NoArv *p)
     NoArv *novoNo = new NoArv();
     novoNo->setInfo(p->getInfo());
     novoNo->setTipo(p->getTipo());
-    if (novoNo->getTipo() != 2)
+    if (novoNo->getTipo() != 2 && novoNo->getTipo() != 3)
     {
         novoNo->setEsq(NULL);
         novoNo->setDir(NULL);
         no++;
     }
-    else
+    else if (novoNo->getTipo() == 2)
     {
         novoNo->setEsq(auxClona(p->getEsq()));
         novoNo->setDir(auxClona(p->getDir()));
+        no++;
+    }
+    else
+    {
+        novoNo->setEsq(auxClona(p->getEsq()));
+        novoNo->setDir(NULL);
         no++;
     }
 
