@@ -320,7 +320,7 @@ int main()
     cout << "-----------------------------------" << endl;
     cout << "Digite o indice da arvore desejada para impressão ( Digite 0 para sair ): ";
     cin >> idx;
-    while (idx >= 0)
+    while (idx > 0)
     {
         imprimeArv(PopulacaoInicial, idx);
         cout << "Digite o indice da arvore desejada para impressão ( Digite 0 para sair ): ";

@@ -66,7 +66,7 @@ public:
                 case '#': // raiz quadrada
                     if (val1 < 0)
                     {
-                        resultado = 0;
+                        resultado = val1;
                     }
                     else
                     {
@@ -82,7 +82,7 @@ public:
                 case '!':
                     if (val1 <= 0)
                     {
-                        resultado = 0;
+                        resultado = val1;
                     }
                     else
                     {
@@ -127,9 +127,9 @@ public:
                     resultado = val1 * val2;
                     break;
                 case '/':
-                    if (val2 == 0) // divisao protegida
+                    if (val2 < 0.00001) // divisao protegida
                     {
-                        resultado = 0;
+                        resultado = 1;
                     }
                     else
                     {
@@ -139,7 +139,7 @@ public:
                 case '^':
                     if (val1 < 0 && fmod(val2, 1.0) != 0)
                     {
-                        resultado = 0;
+                        resultado = 1;
                     }
                     else
                     {
