@@ -66,7 +66,7 @@ public:
                 case '#': // raiz quadrada
                     if (val1 < 0)
                     {
-                        resultado = 0; // operacao protegida
+                        resultado = val1;
                     }
                     else
                     {
@@ -82,7 +82,7 @@ public:
                 case '!':
                     if (val1 <= 0)
                     {
-                        resultado = 0; // operacao protegida
+                        resultado = val1;
                     }
                     else
                     {
