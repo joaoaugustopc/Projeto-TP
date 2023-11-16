@@ -27,6 +27,7 @@ private:
     NoArv *auxRecombina(NoArv *p, NoArv *sub, int val, int *cont);
     NoArv * auxClona(NoArv*p);
     int contaNos(NoArv* p);
+    void auxImprimeOrdem(NoArv *p);
 
 public:
     Arv(char *cabecalho, int tam);
@@ -34,6 +35,7 @@ public:
     bool vazia();
     NoArv *getRaiz();
     void imprime();
+    void imprimeOrdem();
     bool busca(char val);
     bool isoperator(char c);
     int altura(NoArv *p);

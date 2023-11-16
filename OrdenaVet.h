@@ -25,8 +25,8 @@ private:
         if (abs(v[ini]->getAptidao()) > abs(v[fim]->getAptidao()))
             troca(&v[ini], &v[fim]);
         if (abs(v[meio]->getAptidao()) > abs(v[fim]->getAptidao()))
-            troca(&v[meio],&v[fim]);
-        if (abs(v[ini]->getAptidao())> abs(v[meio]->getAptidao()))
+            troca(&v[meio], &v[fim]);
+        if (abs(v[ini]->getAptidao()) > abs(v[meio]->getAptidao()))
             troca(&v[ini], &v[meio]);
         return meio;
     }
@@ -35,7 +35,7 @@ private:
     {
         // int pivopos = (ini+fim)/2;
         int pivopos = pivoAleatorio(ini, fim);
-        //int pivopos = medianaDeTres(v, ini, fim);
+        // int pivopos = medianaDeTres(v, ini, fim);
         Arv *pivo = v[pivopos];
 
         int i = ini - 1, j = fim + 1;
@@ -55,7 +55,6 @@ private:
         } while (true);
     }
 
-
     void quickSortRec(Arv **v, int ini, int fim)
     {
         if (ini < fim)
@@ -72,7 +71,6 @@ public:
     ~OrdenaVet() {}
     void quickSort(Arv **v, int n)
     {
-
         quickSortRec(v, 0, n - 1);
     }
 };

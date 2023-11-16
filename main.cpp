@@ -253,6 +253,9 @@ void imprimeArv(Arv **Pop, int n)
 
     cout << "Arvore " << n << ": ";
     Pop[n - 1]->imprime();
+    cout<<endl;
+    cout << "Arvore " << n << " em ordem: ";
+    Pop[n - 1]->imprimeOrdem();
 }
 
 int main()
@@ -261,7 +264,7 @@ int main()
     double time_spent = 0;
     clock_t begin = clock();
 
-    srand(time(NULL));
+    srand(1);
     Arv **PopulacaoInicial = new Arv *[FAMILIA];
     Arv **PopulacaoGenitores = new Arv *[FAMILIA];
 
@@ -335,6 +338,7 @@ int main()
 
     delete[] PopulacaoInicial;
     delete[] PopulacaoGenitores;
+    delete[] cabecalhoVet;
 
     clock_t end = clock();
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
