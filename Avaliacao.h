@@ -79,7 +79,7 @@ public:
                 case '&':
                     resultado = tanh(val1);
                     break;
-                case '!':
+                case '!': // log
                     if (val1 <= 0)
                     {
                         resultado = val1;
