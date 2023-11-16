@@ -143,10 +143,6 @@ public:
                     {
                         resultado = 1;
                     }
-                    else if (std::isinf(val1) && std::isinf(val2) && std::isinf(val1) && std::isinf(val2))
-                    {
-                        resultado = 0;
-                    }
                     else
                     {
                         resultado = val1 / val2;
@@ -156,6 +152,10 @@ public:
                     if (val1 < 0 && fmod(val2, 1.0) != 0)
                     {
                         resultado = 1;
+                    }
+                    else if (val1 < 0 && std::isinf(val2))
+                    {
+                        resultado = 0;
                     }
                     else
                     {
