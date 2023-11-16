@@ -60,7 +60,11 @@ public:
 
                 switch (operacao)
                 {
-                case 'e':                  // expoente de e
+                case 'e': // expoente de e
+                    if (std::isinf(exp(val1)))
+                    {
+                        resultado = std::numeric_limits<double>::infinity();
+                    }
                     resultado = exp(val1); // ignorar o segundo valor
                     break;
                 case '#': // raiz quadrada
@@ -74,9 +78,17 @@ public:
                     }
                     break;
                 case '$': // seno
+                    if (std::isinf(sin(val1)))
+                    {
+                        resultado = std::numeric_limits<double>::infinity();
+                    }
                     resultado = sin(val1);
                     break;
                 case '&':
+                    if (std::isinf(tanh(val1)))
+                    {
+                        resultado = std::numeric_limits<double>::infinity();
+                    }
                     resultado = tanh(val1);
                     break;
                 case '!': // log
@@ -127,9 +139,13 @@ public:
                     resultado = val1 * val2;
                     break;
                 case '/':
-                    if (val2 < 0.00001) // divisao protegida
+                    if (abs(val2) < 0.00001) // divisao protegida
                     {
                         resultado = 1;
+                    }
+                    else if (std::isinf(val1) && std::isinf(val2) && std::isinf(val1) && std::isinf(val2))
+                    {
+                        resultado = 0;
                     }
                     else
                     {
