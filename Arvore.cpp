@@ -5,6 +5,8 @@
 #include <random>
 #include <stack>
 
+# define SEED 1
+
 using namespace std;
 
 Arv::Arv(char *cabecalho, int n)
@@ -34,8 +36,9 @@ double Arv::numAleatorio(char *type) // retornar double (pode guardar char)
     if (x == 0)
     {
         *type = 0; // guardar o tipo (numero)
-        std::random_device rd;
-        std::mt19937 gen(rd());
+       
+        //std:: random_device rd;
+        std::mt19937 gen(SEED);
         std::uniform_real_distribution<> dist(-0.9, 0.9);
         double randomNumber;
         do
@@ -146,14 +149,36 @@ void Arv ::auxImprime(NoArv *p)
     }
 }
 
+void Arv :: imprimeOrdem(){
+    auxImprimeOrdem(raiz);
+    cout << endl;
+}
+
+void Arv :: auxImprimeOrdem(NoArv * p){
+    if (p != NULL)
+    {
+        auxImprimeOrdem(p->getEsq());
+        if (p->getTipo() != 0)
+        {
+            char valor = ((char)p->getInfo());
+            cout << valor << ", ";
+        }
+        else
+        {
+            cout << p->getInfo() << ", ";
+        }
+        auxImprimeOrdem(p->getDir());
+    }
+}
+
 double Arv::valaleatorio(char *type) // funcao para retornar um valor aleatorio (no caso de chegar na altura maxima)
 {
     int val = rand() % 2;
     if (val == 0)
     {
         *type = 0; // guardar o tipo (numero)
-        std::random_device rd;
-        std::mt19937 gen(rd());
+        //std::random_device rd;
+        std::mt19937 gen(SEED);
         std::uniform_real_distribution<> dist(-0.9, 0.9);
         double randomNumber;
         do
