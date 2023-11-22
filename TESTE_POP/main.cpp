@@ -77,8 +77,30 @@ double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
     return listaResultados;
 }
 
+double medianaAptidoes(double *aptidoes, int tam)
+{
+    std::sort(aptidoes, aptidoes + tam);
+    // teste
+    for (int i = 0; i < tam; i++)
+    {
+        std::cout << aptidoes[i] << std::endl;
+    }
+
+    double mediana;
+    if (tam % 2 == 0)
+    {
+        mediana = (aptidoes[(tam / 2) - 1] + aptidoes[tam / 2]) / 2.0;
+    }
+    else
+    {
+        mediana = aptidoes[tam / 2];
+    }
+    return mediana;
+}
+
 int main()
 {
+
     cout << "Digite o arquivo com o(s) teste(s)" << endl;
     vector<vector<string>> dados = learquivo();
     cout << "Digite o arquivo com a(s) arvore(s)" << endl;
@@ -88,5 +110,6 @@ int main()
     {
         cout << aptidoes[i] << endl;
     }
+
     return 0;
 }
