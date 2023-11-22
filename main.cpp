@@ -254,6 +254,7 @@ void imprimeArv(Arv **Pop, int n)
     cout << "Arvore " << n << ": ";
     Pop[n - 1]->imprime();
     cout << endl;
+    cout << endl;
     cout << "Arvore " << n << " em ordem: ";
     Pop[n - 1]->imprimeOrdem();
 }
