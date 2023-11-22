@@ -6,7 +6,6 @@
 #include <stack>
 #include "Avaliacao.h"
 
-
 using namespace std;
 
 vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em forma de uma matriz
@@ -26,7 +25,7 @@ vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em fo
         {
             row.clear();
 
-            stringstream str(line); 
+            stringstream str(line);
 
             while (getline(str, word, ','))
                 row.push_back(word);
@@ -40,7 +39,8 @@ vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em fo
     return content; // retornar matriz com os valores da tabela
 }
 
-double avalia(stack<string> pilha, vector<vector<string>> valoresFile){
+double avalia(stack<string> pilha, vector<vector<string>> valoresFile)
+{
     Avaliacao resultOperacao;
     int qtdLinhasFile = valoresFile.size();
 
@@ -56,37 +56,37 @@ double avalia(stack<string> pilha, vector<vector<string>> valoresFile){
         diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
 
-    return (double)diferencaValEsp;
+    return (double)diferencaValEsp / qtdLinhasFile - 1; // erro quadratico medio
 }
 
-double * getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs){
+double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
+{
 
-    double * listaResultados = new double[Arvs.size()]; // vetor para armazenar os resultados das expressoes
+    double *listaResultados = new double[Arvs.size()]; // vetor para armazenar os resultados das expressoes
 
-    for(unsigned int i = 0; i < Arvs.size(); i++){
+    for (unsigned int i = 0; i < Arvs.size(); i++)
+    {
         stack<string> pilha;
-        for(unsigned int j = 0; j < Arvs[i].size(); j++){
+        for (unsigned int j = 0; j < Arvs[i].size(); j++)
+        {
             pilha.push(Arvs[i][j]);
-        } 
+        }
         listaResultados[i] = avalia(pilha, dados);
     }
 
     return listaResultados;
 }
 
-int main(){
-    cout<<"Digite o arquivo com o(s) teste(s)"<<endl;
+int main()
+{
+    cout << "Digite o arquivo com o(s) teste(s)" << endl;
     vector<vector<string>> dados = learquivo();
-    cout<<"Digite o arquivo com a(s) arvore(s)"<<endl;
+    cout << "Digite o arquivo com a(s) arvore(s)" << endl;
     vector<vector<string>> Arvs = learquivo();
-    for(int i = 0;i<Arvs.size();i++){
-        for(int j = 0;j<Arvs[i].size();j++){
-            cout<<Arvs[i][j]<<" ";
-        }
-        cout<<endl;
+    double *aptidoes = getAptidoes(dados, Arvs);
+    for (int i = 0; i < Arvs.size(); i++)
+    {
+        cout << aptidoes[i] << endl;
     }
     return 0;
 }
-
-    //double * aptidoes = getAptidoes(dados, Arvs);
-    //cout<< aptidoes[0]<<endl;
