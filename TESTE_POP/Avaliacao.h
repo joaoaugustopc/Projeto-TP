@@ -5,7 +5,12 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
-#include "NoArv.h"
+#include <cctype>
+#include <string>
+#include <limits>
+#include <cctype>
+#include <regex>
+
 
 using namespace std;
 
@@ -13,15 +18,35 @@ class Avaliacao
 {
 
 private:
+    bool isOperator1(string str)
+    {
+        return (str == "e" || str == "#" || str == "$" || str == "&" || str == "!"); // expoente de e, raiz quadrada, seno, tangente hiperbólica, log
+    }
+
+    bool isOperator2(string str)
+    {
+        return (str == "+" || str == "-" || str == "*" || str == "/" || str == "^"); // soma, subtração, multiplicação, divisão, potenciação
+    }
+
+    bool isNumero(string &str)
+    {
+        regex e("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$");
+
+        if (regex_match(str, e))
+            return true;
+
+        return false;
+    }
+
 public:
     Avaliacao(){};
     ~Avaliacao(){};
 
-    double Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> matriz)
+    double Operacao(stack<string> &pilha, int i, vector<vector<string>> matriz)
     {
         // criar copia da pilha original
-        stack<NoArv *> pilhaTemp = pilha; // criar copia da pilha de nós
-        stack<NoArv *> pilhaCopia;
+        stack<string> pilhaTemp = pilha; // criar copia da pilha de nós
+        stack<string> pilhaCopia;
         stack<double> pilhaResultado;
 
         /* while (!pilha.empty())
@@ -42,9 +67,10 @@ public:
         while (!pilhaCopia.empty())
         {
 
-            if (pilhaCopia.top()->getTipo() == 3) // verifica se é uma operador de apenas um parâmetro
+            if (isOperator1(pilhaCopia.top())) // verifica se é uma operador de apenas um parâmetro
+
             {
-                char operacao = ((char)pilhaCopia.top()->getInfo()); // lida como um char
+                char operacao = (pilhaCopia.top())[0]; // get the first character from the string
                 pilhaCopia.pop();
 
                 if (pilhaResultado.size() < 1)
@@ -109,9 +135,9 @@ public:
                 pilhaResultado.push(resultado);
             }
 
-            else if (pilhaCopia.top()->getTipo() == 2) // verifica se é um operador
+            else if (isOperator2(pilhaCopia.top())) // verifica se é um operador
             {
-                char operacao = ((char)pilhaCopia.top()->getInfo()); // lida como um char
+                char operacao = (pilhaCopia.top())[0]; // lida como um char
                 pilhaCopia.pop();
 
                 if (pilhaResultado.size() < 2)
@@ -169,15 +195,18 @@ public:
 
                 pilhaResultado.push(resultado);
             }
-            else if (pilhaCopia.top()->getTipo() == 0) // verifica se é um numero
+            else if (isNumero(pilhaCopia.top())) // verifica se é um numero
             {
-                pilhaResultado.push(pilhaCopia.top()->getInfo());
+                stringstream ent(pilhaCopia.top());
+                double val;
+                ent >> val;
+                pilhaResultado.push(val);
                 pilhaCopia.pop();
             }
-            else if (pilhaCopia.top()->getTipo() == 1) // verifica se é uma varialvel
+            else if (isalpha((pilhaCopia.top())[0])) // verifica se é uma varialvel
             {
+                char valor = (pilhaCopia.top())[0];
                 string::size_type colunaValEsp = matriz[0].size();
-                char valor = ((char)pilhaCopia.top()->getInfo());
                 for (string::size_type j = 0; j < colunaValEsp - 1; j++) // retirar o valor esperado das operações
                 {
                     istringstream trans(matriz[0][j]);

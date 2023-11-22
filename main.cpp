@@ -254,6 +254,7 @@ void imprimeArv(Arv **Pop, int n)
     cout << "Arvore " << n << ": ";
     Pop[n - 1]->imprime();
     cout << endl;
+    cout << endl;
     cout << "Arvore " << n << " em ordem: ";
     Pop[n - 1]->imprimeOrdem();
 }
@@ -277,12 +278,6 @@ int main()
     gerarVetorPop(cabecalhoVet, qtdVariaveis - 1, PopulacaoGenitores);
     gerarPopulacaoInicial(PopulacaoInicial, alturaArvore); // Preenchendo cada arvore do vetor População Inicial desconsiderando a ultima coluna (valesperado)
     eficienciaArvores(PopulacaoInicial, infoArquivo);      // avaliando População Inicial
-
-    cout << "Imprime arvores iniciais e aptidao:" << endl;
-
-    imprimePop(PopulacaoInicial, FAMILIA);
-    cout << endl;
-    imprimeApt(PopulacaoInicial, FAMILIA);
 
     int idxPai1;
     int idxPai2;

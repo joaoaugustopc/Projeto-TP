@@ -5,7 +5,7 @@
 #include <random>
 #include <stack>
 
-# define SEED 1
+#define SEED 0.5
 
 using namespace std;
 
@@ -36,16 +36,26 @@ double Arv::numAleatorio(char *type) // retornar double (pode guardar char)
     if (x == 0)
     {
         *type = 0; // guardar o tipo (numero)
-       
-        //std:: random_device rd;
-        std::mt19937 gen(SEED);
-        std::uniform_real_distribution<> dist(-0.9, 0.9);
-        double randomNumber;
-        do
+
+        float r = (rand() % 101) / 100.0;       // gerar um numero aleatorio entre 0 e 1
+        r = r * 1.8 - 0.9;                  // gerar um numero aleatorio entre -0.9 e 0.9
+        while (r == 0.0)                // caso o numero seja 0, gerar outro
         {
-            randomNumber = dist(gen);
-        } while (randomNumber == 0.0); // Repete até obter um valor diferente de zero
-        return randomNumber;
+            r = (rand() % 101) / 100.0;
+            r = r * 1.8 - 0.9;
+        }
+        return r;     // retornar um numero aleatorio
+        /*
+         //std:: random_device rd;
+         std::mt19937 gen(SEED);
+         std::uniform_real_distribution<> dist(-0.9, 0.9);
+         double randomNumber;
+         do
+         {
+             randomNumber = dist(gen);
+         } while (randomNumber == 0.0); // Repete até obter um valor diferente de zero
+         return randomNumber;
+        */
     }
     else if (x == 1)
     {
@@ -140,32 +150,34 @@ void Arv ::auxImprime(NoArv *p)
         if (p->getTipo() != 0)
         {
             char valor = ((char)p->getInfo());
-            cout << valor << ", ";
+            cout << valor << ",";
         }
         else
         {
-            cout << p->getInfo() << ", ";
+            cout << p->getInfo() << ",";
         }
     }
 }
 
-void Arv :: imprimeOrdem(){
+void Arv ::imprimeOrdem()
+{
     auxImprimeOrdem(raiz);
     cout << endl;
 }
 
-void Arv :: auxImprimeOrdem(NoArv * p){
+void Arv ::auxImprimeOrdem(NoArv *p)
+{
     if (p != NULL)
     {
         auxImprimeOrdem(p->getEsq());
         if (p->getTipo() != 0)
         {
             char valor = ((char)p->getInfo());
-            cout << valor << ", ";
+            cout << valor << ",";
         }
         else
         {
-            cout << p->getInfo() << ", ";
+            cout << p->getInfo() << ",";
         }
         auxImprimeOrdem(p->getDir());
     }
@@ -177,6 +189,15 @@ double Arv::valaleatorio(char *type) // funcao para retornar um valor aleatorio 
     if (val == 0)
     {
         *type = 0; // guardar o tipo (numero)
+        float r = (rand() % 101) / 100.0;
+        r = r * 1.8 - 0.9;
+        while (r == 0.0)
+        {
+            r = (rand() % 101) / 100.0;
+            r = r * 1.8 - 0.9;
+        }
+        return r;
+        /*
         //std::random_device rd;
         std::mt19937 gen(SEED);
         std::uniform_real_distribution<> dist(-0.9, 0.9);
@@ -186,6 +207,7 @@ double Arv::valaleatorio(char *type) // funcao para retornar um valor aleatorio 
             randomNumber = dist(gen);
         } while (randomNumber == 0.0); // Repete até obter um valor diferente de zero
         return randomNumber;
+        */
     }
     else
     {
