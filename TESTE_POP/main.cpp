@@ -119,5 +119,8 @@ int main()
         cout << aptidoes[i] << endl;
     }
 
+    cout << "mediana dos testes: " << medianaAptidoes(aptidoes, Arvs.size()) << endl;
+    cout << "iqr dos testes: " << IQRaptidoes(aptidoes, Arvs.size()) << endl;
+
     return 0;
 }
