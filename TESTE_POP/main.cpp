@@ -98,6 +98,14 @@ double medianaAptidoes(double *aptidoes, int tam)
     return mediana;
 }
 
+double IQRaptidoes(double *aptidoes, int tam)
+{
+    std::sort(aptidoes, aptidoes + tam);
+    double Q1 = medianaAptidoes(aptidoes, tam / 2);
+    double Q3 = medianaAptidoes(aptidoes + (tam + 1) / 2, tam / 2);
+    return Q3 - Q1;
+}
+
 int main()
 {
 
