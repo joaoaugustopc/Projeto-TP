@@ -264,7 +264,7 @@ int main()
     double time_spent = 0;
     clock_t begin = clock();
 
-    srand(time(0));
+    srand(0);
     Arv **PopulacaoInicial = new Arv *[FAMILIA];
     Arv **PopulacaoGenitores = new Arv *[FAMILIA];
 

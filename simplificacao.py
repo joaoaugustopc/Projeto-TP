@@ -1,6 +1,6 @@
-from sympy import*
+import sympy as sp
 
-x, y = symbols("x y")
+x, y = sp.symbols("x y")
 
 
 
