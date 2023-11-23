@@ -81,11 +81,6 @@ double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
 double medianaAptidoes(double *aptidoes, int tam)
 {
     std::sort(aptidoes, aptidoes + tam);
-    // teste
-    for (int i = 0; i < tam; i++)
-    {
-        std::cout << aptidoes[i] << std::endl;
-    }
 
     double mediana;
     if (tam % 2 == 0)
@@ -118,6 +113,7 @@ int main()
 
     for (int i = 0; i < Arvs.size(); i++)
     {
+        cout << "aptidao da arvore " << i << ": " << aptidoes[i] << endl;
         cout << aptidoes[i] << endl;
     }
 
