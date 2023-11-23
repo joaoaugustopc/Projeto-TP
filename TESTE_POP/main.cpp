@@ -41,6 +41,7 @@ vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em fo
 
 double avalia(stack<string> pilha, vector<vector<string>> valoresFile)
 {
+    cout << "Avalia a arvore" << endl;
     Avaliacao resultOperacao;
     int qtdLinhasFile = valoresFile.size();
 
@@ -55,7 +56,7 @@ double avalia(stack<string> pilha, vector<vector<string>> valoresFile)
         ent >> valEsperado;
         diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
-
+    cout << "Erro quadratico medio: " << diferencaValEsp / qtdLinhasFile - 1 << endl;
     return (double)diferencaValEsp / qtdLinhasFile - 1; // erro quadratico medio
 }
 
@@ -114,6 +115,7 @@ int main()
     cout << "Digite o arquivo com a(s) arvore(s)" << endl;
     vector<vector<string>> Arvs = learquivo();
     double *aptidoes = getAptidoes(dados, Arvs);
+
     for (int i = 0; i < Arvs.size(); i++)
     {
         cout << aptidoes[i] << endl;
