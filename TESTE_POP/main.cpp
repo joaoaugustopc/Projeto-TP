@@ -39,7 +39,7 @@ vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em fo
     return content; // retornar matriz com os valores da tabela
 }
 
-double avalia(stack<Elemento> pilha, vector<vector<string>> valoresFile)
+double avalia(stack<Elemento> pilha, vector<vector<string>> &valoresFile)
 {
     cout << "Avalia a arvore" << endl;
     Avaliacao resultOperacao;
@@ -74,6 +74,7 @@ double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
             aux.setInfo(Arvs[i][j]);
             pilha.push(aux);
         }
+        
         listaResultados[i] = avalia(pilha, dados);
     }
 
@@ -107,12 +108,15 @@ double IQRaptidoes(double *aptidoes, int tam)
 int main()
 {
     double time_spent = 0;
-    clock_t begin = clock();
 
     cout << "Digite o arquivo com o(s) teste(s)" << endl;
     vector<vector<string>> dados = learquivo();
     cout << "Digite o arquivo com a(s) arvore(s)" << endl;
     vector<vector<string>> Arvs = learquivo();
+
+    // vetor de aptidoes de cada arvore
+    clock_t begin = clock();
+    
     double *aptidoes = getAptidoes(dados, Arvs);
 
     for (int i = 0; i < Arvs.size(); i++)
@@ -124,9 +128,9 @@ int main()
     cout << "mediana dos testes: " << medianaAptidoes(aptidoes, Arvs.size()) << endl;
     cout << "iqr dos testes: " << IQRaptidoes(aptidoes, Arvs.size()) << endl;
 
+
     clock_t end = clock();
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-
     cout <<endl<< "Tempo do programa: " << time_spent << "segundos.";
 
     return 0;

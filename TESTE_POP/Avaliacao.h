@@ -26,7 +26,7 @@ public:
     Avaliacao(){};
     ~Avaliacao(){};
 
-    double Operacao(stack<Elemento> &pilha, int i, vector<vector<string>> matriz)
+    double Operacao(stack<Elemento> &pilha, int i, vector<vector<string>> &matriz)
     {
         // criar copia da pilha original
         stack<Elemento> pilhaTemp = pilha; // criar copia da pilha de nós

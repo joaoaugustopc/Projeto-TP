@@ -6,6 +6,7 @@
 #include <iostream>
 #include <math.h>
 #include "NoArv.h"
+#include <limits>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ public:
     Avaliacao(){};
     ~Avaliacao(){};
 
-    double Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> matriz)
+    double Operacao(stack<NoArv *> &pilha, int i, vector<vector<string>> &matriz)
     {
         // criar copia da pilha original
         stack<NoArv *> pilhaTemp = pilha; // criar copia da pilha de nós
