@@ -10,6 +10,8 @@
 #include <limits>
 #include <cctype>
 #include <regex>
+#include "Elemento.h"
+
 
 
 using namespace std;
@@ -18,35 +20,17 @@ class Avaliacao
 {
 
 private:
-    bool isOperator1(string str)
-    {
-        return (str == "e" || str == "#" || str == "$" || str == "&" || str == "!"); // expoente de e, raiz quadrada, seno, tangente hiperbólica, log
-    }
-
-    bool isOperator2(string str)
-    {
-        return (str == "+" || str == "-" || str == "*" || str == "/" || str == "^"); // soma, subtração, multiplicação, divisão, potenciação
-    }
-
-    bool isNumero(string &str)
-    {
-        regex e("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$");
-
-        if (regex_match(str, e))
-            return true;
-
-        return false;
-    }
+    
 
 public:
     Avaliacao(){};
     ~Avaliacao(){};
 
-    double Operacao(stack<string> &pilha, int i, vector<vector<string>> matriz)
+    double Operacao(stack<Elemento> &pilha, int i, vector<vector<string>> matriz)
     {
         // criar copia da pilha original
-        stack<string> pilhaTemp = pilha; // criar copia da pilha de nós
-        stack<string> pilhaCopia;
+        stack<Elemento> pilhaTemp = pilha; // criar copia da pilha de nós
+        stack<Elemento> pilhaCopia;
         stack<double> pilhaResultado;
 
         /* while (!pilha.empty())
@@ -67,10 +51,10 @@ public:
         while (!pilhaCopia.empty())
         {
 
-            if (isOperator1(pilhaCopia.top())) // verifica se é uma operador de apenas um parâmetro
+            if (pilhaCopia.top().getType()==1) // verifica se é uma operador de apenas um parâmetro
 
             {
-                char operacao = (pilhaCopia.top())[0]; // get the first character from the string
+                char operacao = (pilhaCopia.top().getInfo())[0]; // get the first character from the string
                 pilhaCopia.pop();
 
                 if (pilhaResultado.size() < 1)
@@ -135,9 +119,9 @@ public:
                 pilhaResultado.push(resultado);
             }
 
-            else if (isOperator2(pilhaCopia.top())) // verifica se é um operador
+            else if (pilhaCopia.top().getType()==2) // verifica se é um operador
             {
-                char operacao = (pilhaCopia.top())[0]; // lida como um char
+                char operacao = (pilhaCopia.top().getInfo())[0]; // lida como um char
                 pilhaCopia.pop();
 
                 if (pilhaResultado.size() < 2)
@@ -195,17 +179,17 @@ public:
 
                 pilhaResultado.push(resultado);
             }
-            else if (isNumero(pilhaCopia.top())) // verifica se é um numero
+            else if (pilhaCopia.top().getType()== 0) // verifica se é um numero
             {
-                stringstream ent(pilhaCopia.top());
+                stringstream ent(pilhaCopia.top().getInfo());
                 double val;
                 ent >> val;
                 pilhaResultado.push(val);
                 pilhaCopia.pop();
             }
-            else if (isalpha((pilhaCopia.top())[0])) // verifica se é uma varialvel
+            else if (pilhaCopia.top().getType()==3) // verifica se é uma varialvel
             {
-                char valor = (pilhaCopia.top())[0];
+                char valor = (pilhaCopia.top().getInfo())[0];
                 string::size_type colunaValEsp = matriz[0].size();
                 for (string::size_type j = 0; j < colunaValEsp - 1; j++) // retirar o valor esperado das operações
                 {

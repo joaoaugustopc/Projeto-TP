@@ -39,7 +39,7 @@ vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em fo
     return content; // retornar matriz com os valores da tabela
 }
 
-double avalia(stack<string> pilha, vector<vector<string>> valoresFile)
+double avalia(stack<Elemento> pilha, vector<vector<string>> valoresFile)
 {
     cout << "Avalia a arvore" << endl;
     Avaliacao resultOperacao;
@@ -56,8 +56,8 @@ double avalia(stack<string> pilha, vector<vector<string>> valoresFile)
         ent >> valEsperado;
         diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
-    cout << "Erro quadratico medio: " << diferencaValEsp / qtdLinhasFile - 1 << endl;
-    return (double)diferencaValEsp / qtdLinhasFile - 1; // erro quadratico medio
+    cout << "Erro quadratico medio: " << diferencaValEsp / (qtdLinhasFile - 1 ) << endl;
+    return (double)diferencaValEsp / ( qtdLinhasFile - 1 ); // erro quadratico medio
 }
 
 double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
@@ -67,10 +67,12 @@ double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
 
     for (unsigned int i = 0; i < Arvs.size(); i++)
     {
-        stack<string> pilha;
+        stack<Elemento> pilha;
         for (unsigned int j = 0; j < Arvs[i].size(); j++)
         {
-            pilha.push(Arvs[i][j]);
+            Elemento aux;
+            aux.setInfo(Arvs[i][j]);
+            pilha.push(aux);
         }
         listaResultados[i] = avalia(pilha, dados);
     }
@@ -104,6 +106,8 @@ double IQRaptidoes(double *aptidoes, int tam)
 
 int main()
 {
+    double time_spent = 0;
+    clock_t begin = clock();
 
     cout << "Digite o arquivo com o(s) teste(s)" << endl;
     vector<vector<string>> dados = learquivo();
@@ -119,6 +123,11 @@ int main()
 
     cout << "mediana dos testes: " << medianaAptidoes(aptidoes, Arvs.size()) << endl;
     cout << "iqr dos testes: " << IQRaptidoes(aptidoes, Arvs.size()) << endl;
+
+    clock_t end = clock();
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+
+    cout <<endl<< "Tempo do programa: " << time_spent << "segundos.";
 
     return 0;
 }
