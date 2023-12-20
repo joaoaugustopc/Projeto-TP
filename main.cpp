@@ -36,11 +36,13 @@ char *cabecalho(vector<vector<string>> &matriz, int *tam) // funcao para retorna
     return vet;
 }
 
-vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em forma de uma matriz
+vector<vector<string>> learquivo(string fname) // funcao para ler e retornar o arquivo em forma de uma matriz
 {
-    string fname;
+    /*
+   string fname;
     cout << "Enter the file name: ";
     cin >> fname;
+    */
 
     vector<vector<string>> content;
     vector<string> row;
@@ -259,8 +261,17 @@ void imprimeArv(Arv **Pop, int n)
     Pop[n - 1]->imprimeOrdem();
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+
+    if (argc != 2)
+    {
+        cout << "Usage: " << argv[0] << " <filename>\n";
+        return 1;
+    }
+
+    string filename = argv[1];
+
     // calcular tempo do programa
     double time_spent = 0;
     clock_t begin = clock();
@@ -271,7 +282,7 @@ int main()
 
     int qtdVariaveis;
     int alturaArvore = 5;
-    vector<vector<string>> infoArquivo = learquivo();
+    vector<vector<string>> infoArquivo = learquivo(filename);
     char *cabecalhoVet = cabecalho(infoArquivo, &qtdVariaveis); // função para extrair somente o cabecalho do arquivo e guardar o numero de colunas da matriz
 
     gerarVetorPop(cabecalhoVet, qtdVariaveis - 1, PopulacaoInicial); // Constroi avores em cada indice do vetor de população
