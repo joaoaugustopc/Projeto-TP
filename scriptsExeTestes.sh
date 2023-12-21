@@ -14,10 +14,22 @@ if [[ $arvore -ge 1 && $arvore -le 21 ]]; then
 
     for seed in "${seeds[@]}"
     do
+        echo "===================================="
         echo "Executando com a semente $seed"
-        # Compila todos os arquivos .cpp exceto randSeeds.cpp e executa com o nome do arquivo e a semente como argumentos
         g++ *.cpp && ./a.out dados/funcao$arvore/funcao$arvore\_$dados.csv $seed $arvore $dados
     done
 else
     echo "Opção inválida."
 fi
+
+cd TESTE_POP
+echo "===================================="
+echo "Executando testes das melhores árvores..."
+echo "===================================="
+echo "Resultados:"
+
+testFile=Arquivos_Testes/funcao$arvore\_teste50k.csv
+treeFile=Arquivos_Arvores/avaliacaoFuncao$arvore\_arvores$dados.csv
+g++ *.cpp && ./a.out $testFile $treeFile
+
+   

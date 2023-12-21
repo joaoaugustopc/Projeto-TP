@@ -8,11 +8,13 @@
 
 using namespace std;
 
-vector<vector<string>> learquivo() // funcao para ler e retornar o arquivo em forma de uma matriz
+vector<vector<string>> learquivo(string fname) // funcao para ler e retornar o arquivo em forma de uma matriz
 {
+    /*
     string fname;
     cout << "Enter the file name: ";
     cin >> fname;
+    */
 
     vector<vector<string>> content;
     vector<string> row;
@@ -56,8 +58,8 @@ double avalia(stack<Elemento> pilha, vector<vector<string>> &valoresFile)
         ent >> valEsperado;
         diferencaValEsp += pow(valEsperado - resultOperacao.Operacao(pilha, i, valoresFile), 2);
     }
-    cout << "Erro quadratico medio: " << diferencaValEsp / (qtdLinhasFile - 1 ) << endl;
-    return (double)diferencaValEsp / ( qtdLinhasFile - 1 ); // erro quadratico medio
+    cout << "Erro quadratico medio: " << diferencaValEsp / (qtdLinhasFile - 1) << endl;
+    return (double)diferencaValEsp / (qtdLinhasFile - 1); // erro quadratico medio
 }
 
 double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
@@ -74,7 +76,7 @@ double *getAptidoes(vector<vector<string>> dados, vector<vector<string>> Arvs)
             aux.setInfo(Arvs[i][j]);
             pilha.push(aux);
         }
-        
+
         listaResultados[i] = avalia(pilha, dados);
     }
 
@@ -105,18 +107,27 @@ double IQRaptidoes(double *aptidoes, int tam)
     return Q3 - Q1;
 }
 
-int main()
+int main(int argc, char const *argv[])
 {
+    if (argc != 3)
+    {
+        cout << "Usage: " << argv[0] << " <test_file> <tree_file>\n";
+        return 1;
+    }
+
+    string testFile = argv[1];
+    string treeFile = argv[2];
+
     double time_spent = 0;
 
-    cout << "Digite o arquivo com o(s) teste(s)" << endl;
-    vector<vector<string>> dados = learquivo();
-    cout << "Digite o arquivo com a(s) arvore(s)" << endl;
-    vector<vector<string>> Arvs = learquivo();
+    cout << "Lendo o arquivo com o(s) teste(s): " << testFile << endl;
+    vector<vector<string>> dados = learquivo(testFile);
+    cout << "Lendo o arquivo com a(s) arvore(s): " << treeFile << endl;
+    vector<vector<string>> Arvs = learquivo(treeFile);
 
     // vetor de aptidoes de cada arvore
     clock_t begin = clock();
-    
+
     double *aptidoes = getAptidoes(dados, Arvs);
 
     for (int i = 0; i < Arvs.size(); i++)
@@ -128,10 +139,10 @@ int main()
     cout << "mediana dos testes: " << medianaAptidoes(aptidoes, Arvs.size()) << endl;
     cout << "iqr dos testes: " << IQRaptidoes(aptidoes, Arvs.size()) << endl;
 
-
     clock_t end = clock();
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-    cout <<endl<< "Tempo do programa: " << time_spent << "segundos.";
+    cout << endl
+         << "Tempo do programa: " << time_spent << "segundos.";
 
     return 0;
 }
