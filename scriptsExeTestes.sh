@@ -29,7 +29,7 @@ echo "===================================="
 echo "Resultados:"
 
 testFile=Arquivos_Testes/funcao$funcao\_teste50k.csv
-treeFile=Arquivos_funcaos/avaliacaoFuncao$funcao\_funcaos$dados.csv
+treeFile=Arquivos_Arvores/funcao$funcao/avaliacaoFuncao$funcao\_funcaos$dados.csv
 g++ *.cpp && ./a.out $testFile $treeFile
 
    

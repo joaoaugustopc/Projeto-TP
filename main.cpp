@@ -262,9 +262,9 @@ void imprimeArv(Arv **Pop, int n)
     Pop[n - 1]->imprimeOrdem();
 }
 
-void addArvFile(Arv **Pop, string funtion, string qtdTestes)
+void addArvFile(Arv **Pop, string function, string qtdTestes)
 {
-    string fname = "TESTE_POP/Arquivos_Arvores/avaliacaoFuncao" + funtion + "_arvores" + qtdTestes + ".csv";
+    string fname = "TESTE_POP/Arquivos_Arvores/funcao" + function + "/avaliacaoFuncao" + function + "_arvores" + qtdTestes + ".csv";
     ofstream file(fname, ios::app);
     if (file.is_open())
     {
