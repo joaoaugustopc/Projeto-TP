@@ -16,7 +16,7 @@ if [[ $arvore -ge 1 && $arvore -le 21 ]]; then
     do
         echo "Executando com a semente $seed"
         # Compila todos os arquivos .cpp exceto randSeeds.cpp e executa com o nome do arquivo e a semente como argumentos
-        g++ *.cpp && ./a.out dados/funcao$arvore/funcao$arvore\_$dados.csv $seed
+        g++ *.cpp && ./a.out dados/funcao$arvore/funcao$arvore\_$dados.csv $seed $arvore $dados
     done
 else
     echo "Opção inválida."

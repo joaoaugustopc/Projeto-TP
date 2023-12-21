@@ -25,9 +25,10 @@ private:
     NoArv *auxMuta(NoArv *p, NoArv *sub, int val, int *cont);
     NoArv *noh(NoArv *p, int val, int *cont);
     NoArv *auxRecombina(NoArv *p, NoArv *sub, int val, int *cont);
-    NoArv * auxClona(NoArv*p);
-    int contaNos(NoArv* p);
+    NoArv *auxClona(NoArv *p);
+    int contaNos(NoArv *p);
     void auxImprimeOrdem(NoArv *p);
+    string returnPosOrdAux(NoArv *p);
 
 public:
     Arv(char *cabecalho, int tam);
@@ -40,7 +41,7 @@ public:
     bool isoperator(char c);
     int altura(NoArv *p);
     void altera();
-    double valaleatorio(char*type);
+    double valaleatorio(char *type);
     void criaArvAleatoria(int altura);
     int resolverExpressao();
     void preenchePilhaAux(stack<NoArv *> *pilha);
@@ -49,8 +50,9 @@ public:
     void Recombina(Arv *arvore2);
     void setAptidao(double val);
     double getAptidao();
-    void clona(Arv*p);
+    void clona(Arv *p);
     void liberar();
+    string returnArv();
 };
 
 #endif

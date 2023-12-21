@@ -37,14 +37,14 @@ double Arv::numAleatorio(char *type) // retornar double (pode guardar char)
     {
         *type = 0; // guardar o tipo (numero)
 
-        float r = (rand() % 101) / 100.0;       // gerar um numero aleatorio entre 0 e 1
-        r = r * 1.8 - 0.9;                  // gerar um numero aleatorio entre -0.9 e 0.9
-        while (r == 0.0)                // caso o numero seja 0, gerar outro
+        float r = (rand() % 101) / 100.0; // gerar um numero aleatorio entre 0 e 1
+        r = r * 1.8 - 0.9;                // gerar um numero aleatorio entre -0.9 e 0.9
+        while (r == 0.0)                  // caso o numero seja 0, gerar outro
         {
             r = (rand() % 101) / 100.0;
             r = r * 1.8 - 0.9;
         }
-        return r;     // retornar um numero aleatorio
+        return r; // retornar um numero aleatorio
         /*
          //std:: random_device rd;
          std::mt19937 gen(SEED);
@@ -451,4 +451,34 @@ int Arv ::contaNos(NoArv *p)
 
     int x = contaNos(p->getEsq()) + contaNos(p->getDir());
     return x + 1;
+}
+
+string Arv::returnArv()
+{
+    string result = returnPosOrdAux(this->raiz);
+    if (!result.empty())
+    {
+        result.pop_back(); // Remove the trailing comma
+    }
+    return result;
+}
+
+string Arv::returnPosOrdAux(NoArv *p)
+{
+    string result = "";
+    if (p != NULL)
+    {
+        result += returnPosOrdAux(p->getEsq());
+        result += returnPosOrdAux(p->getDir());
+        if (p->getTipo() != 0)
+        {
+            char valor = ((char)p->getInfo());
+            result += string(1, valor) + ",";
+        }
+        else
+        {
+            result += to_string(p->getInfo()) + ",";
+        }
+    }
+    return result;
 }

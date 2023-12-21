@@ -250,6 +250,7 @@ void imprimePop(Arv **Pop, int tam)
         Pop[i]->imprime();
     }
 }
+
 void imprimeArv(Arv **Pop, int n)
 {
 
@@ -261,10 +262,23 @@ void imprimeArv(Arv **Pop, int n)
     Pop[n - 1]->imprimeOrdem();
 }
 
+void addArvFile(Arv **Pop, string funtion, string qtdTestes)
+{
+    string fname = "TESTE_POP/Arquivos_Arvores/avaliacaoFuncao" + funtion + "_arvores" + qtdTestes + ".csv";
+    ofstream file(fname, ios::app);
+    if (file.is_open())
+    {
+        string arvFile = Pop[0]->returnArv();
+        file << arvFile << endl;
+    }
+    else
+        cout << "Could not open the file\n";
+}
+
 int main(int argc, char *argv[])
 {
 
-    if (argc != 3)
+    if (argc != 5)
     {
         cout << "Usage: " << argv[0] << " <filename> <seed>\n";
         return 1;
@@ -272,6 +286,8 @@ int main(int argc, char *argv[])
 
     string filename = argv[1];
     int seed = atoi(argv[2]);
+    int funcao = atoi(argv[3]);
+    int dados = atoi(argv[4]);
 
     // calcular tempo do programa
     double time_spent = 0;
@@ -326,16 +342,20 @@ int main(int argc, char *argv[])
          << endl;
     imprimeApt(PopulacaoInicial, FAMILIA);
 
-    int idx;
-    cout << "-----------------------------------" << endl;
-    cout << "Digite o indice da arvore desejada para impressão ( Digite 0 para sair ): ";
-    cin >> idx;
-    while (idx > 0)
-    {
-        imprimeArv(PopulacaoInicial, idx);
+    addArvFile(PopulacaoInicial, to_string(funcao), to_string(dados));
+
+    /*
+        int idx;
+        cout << "-----------------------------------" << endl;
         cout << "Digite o indice da arvore desejada para impressão ( Digite 0 para sair ): ";
         cin >> idx;
-    }
+        while (idx > 0)
+        {
+            imprimeArv(PopulacaoInicial, idx);
+            cout << "Digite o indice da arvore desejada para impressão ( Digite 0 para sair ): ";
+            cin >> idx;
+        }
+    */
 
     for (int i = 0; i < FAMILIA; i++)
     {
