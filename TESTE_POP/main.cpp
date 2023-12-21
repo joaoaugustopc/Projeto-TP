@@ -31,6 +31,8 @@ vector<vector<string>> learquivo(string fname) // funcao para ler e retornar o a
 
             while (getline(str, word, ','))
                 row.push_back(word);
+
+            if(!row.empty())
             content.push_back(row);
         }
     }
