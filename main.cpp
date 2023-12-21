@@ -264,7 +264,7 @@ void imprimeArv(Arv **Pop, int n)
 int main(int argc, char *argv[])
 {
 
-    if (argc != 2)
+    if (argc != 3)
     {
         cout << "Usage: " << argv[0] << " <filename> <seed>\n";
         return 1;
