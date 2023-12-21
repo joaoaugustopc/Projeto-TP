@@ -7,6 +7,7 @@ echo "Digite o número de dados:"
 read dados
 
 if [[ $funcao -ge 1 && $funcao -le 21 ]]; then
+
     echo "Você escolheu a árvore $funcao e $dados dados."
 
     # Lê as sementes do arquivo seeds.txt
@@ -29,7 +30,7 @@ echo "===================================="
 echo "Resultados:"
 
 testFile=Arquivos_Testes/funcao$funcao\_teste50k.csv
-treeFile=Arquivos_Arvores/funcao$funcao/avaliacaoFuncao$funcao\_funcaos$dados.csv
+treeFile=Arquivos_Arvores/funcao$funcao/avaliacaoFuncao$funcao\_arvores$dados.csv
 g++ *.cpp && ./a.out $testFile $treeFile
 
    
