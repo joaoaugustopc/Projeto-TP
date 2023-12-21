@@ -266,17 +266,18 @@ int main(int argc, char *argv[])
 
     if (argc != 2)
     {
-        cout << "Usage: " << argv[0] << " <filename>\n";
+        cout << "Usage: " << argv[0] << " <filename> <seed>\n";
         return 1;
     }
 
     string filename = argv[1];
+    int seed = atoi(argv[2]);
 
     // calcular tempo do programa
     double time_spent = 0;
     clock_t begin = clock();
 
-    srand(7132);
+    srand(seed);
     Arv **PopulacaoInicial = new Arv *[FAMILIA];
     Arv **PopulacaoGenitores = new Arv *[FAMILIA];
 
