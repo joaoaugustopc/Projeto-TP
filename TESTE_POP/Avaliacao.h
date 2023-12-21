@@ -12,16 +12,12 @@
 #include <regex>
 #include "Elemento.h"
 
-
-
 using namespace std;
 
 class Avaliacao
 {
 
 private:
-    
-
 public:
     Avaliacao(){};
     ~Avaliacao(){};
@@ -51,7 +47,7 @@ public:
         while (!pilhaCopia.empty())
         {
 
-            if (pilhaCopia.top().getType()==1) // verifica se é uma operador de apenas um parâmetro
+            if (pilhaCopia.top().getType() == 1) // verifica se é uma operador de apenas um parâmetro
 
             {
                 char operacao = (pilhaCopia.top().getInfo())[0]; // get the first character from the string
@@ -119,7 +115,7 @@ public:
                 pilhaResultado.push(resultado);
             }
 
-            else if (pilhaCopia.top().getType()==2) // verifica se é um operador
+            else if (pilhaCopia.top().getType() == 2) // verifica se é um operador
             {
                 char operacao = (pilhaCopia.top().getInfo())[0]; // lida como um char
                 pilhaCopia.pop();
@@ -179,7 +175,7 @@ public:
 
                 pilhaResultado.push(resultado);
             }
-            else if (pilhaCopia.top().getType()== 0) // verifica se é um numero
+            else if (pilhaCopia.top().getType() == 0) // verifica se é um numero
             {
                 stringstream ent(pilhaCopia.top().getInfo());
                 double val;
@@ -187,7 +183,7 @@ public:
                 pilhaResultado.push(val);
                 pilhaCopia.pop();
             }
-            else if (pilhaCopia.top().getType()==3) // verifica se é uma varialvel
+            else if (pilhaCopia.top().getType() == 3) // verifica se é uma varialvel
             {
                 char valor = (pilhaCopia.top().getInfo())[0];
                 string::size_type colunaValEsp = matriz[0].size();
