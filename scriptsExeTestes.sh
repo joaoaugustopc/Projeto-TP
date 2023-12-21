@@ -1,13 +1,13 @@
 #!/bin/bash
 
-echo "Escolha uma árvore (1-21):"
-read arvore
+echo "Escolha uma funcao (1-21):"
+read funcao
 
 echo "Digite o número de dados:"
 read dados
 
-if [[ $arvore -ge 1 && $arvore -le 21 ]]; then
-    echo "Você escolheu a árvore $arvore e $dados dados."
+if [[ $funcao -ge 1 && $funcao -le 21 ]]; then
+    echo "Você escolheu a árvore $funcao e $dados dados."
 
     # Lê as sementes do arquivo seeds.txt
     mapfile -t seeds < seeds.txt
@@ -16,7 +16,7 @@ if [[ $arvore -ge 1 && $arvore -le 21 ]]; then
     do
         echo "===================================="
         echo "Executando com a semente $seed"
-        g++ *.cpp && ./a.out dados/funcao$arvore/funcao$arvore\_$dados.csv $seed $arvore $dados
+        g++ *.cpp && ./a.out dados/funcao$funcao/funcao$funcao\_$dados.csv $seed $funcao $dados
     done
 else
     echo "Opção inválida."
@@ -28,8 +28,8 @@ echo "Executando testes das melhores árvores..."
 echo "===================================="
 echo "Resultados:"
 
-testFile=Arquivos_Testes/funcao$arvore\_teste50k.csv
-treeFile=Arquivos_Arvores/avaliacaoFuncao$arvore\_arvores$dados.csv
+testFile=Arquivos_Testes/funcao$funcao\_teste50k.csv
+treeFile=Arquivos_funcaos/avaliacaoFuncao$funcao\_funcaos$dados.csv
 g++ *.cpp && ./a.out $testFile $treeFile
 
    
