@@ -32,8 +32,8 @@ vector<vector<string>> learquivo(string fname) // funcao para ler e retornar o a
             while (getline(str, word, ','))
                 row.push_back(word);
 
-            if(!row.empty())
-            content.push_back(row);
+            if (!row.empty())
+                content.push_back(row);
         }
     }
     else
@@ -134,10 +134,11 @@ int main(int argc, char const *argv[])
 
     for (int i = 0; i < Arvs.size(); i++)
     {
-        cout << "aptidao da arvore " << i << ": " << aptidoes[i] << endl;
+        cout << "aptidao da arvore " << i << ": " << endl;
         cout << aptidoes[i] << endl;
     }
 
+    cout << "===============================" << endl;
     cout << "mediana dos testes: " << medianaAptidoes(aptidoes, Arvs.size()) << endl;
     cout << "iqr dos testes: " << IQRaptidoes(aptidoes, Arvs.size()) << endl;
 
