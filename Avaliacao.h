@@ -59,61 +59,75 @@ public:
 
                 double resultado;
 
-                if (isinf(val1) || isnan(val1))
+                switch (operacao)
                 {
-                    resultado = std::numeric_limits<double>::max();
-                }
-                else
-                {
-
-                    switch (operacao)
+                case 'e': // expoente de e
+                    if (std::isinf(exp(val1)))
                     {
-                    case 'e': // expoente de e
-                        if (std::isinf(exp(val1)))
-                        {
-                            resultado = std::numeric_limits<double>::max();
-                        }
-                        resultado = exp(val1); // ignorar o segundo valor
-                        break;
-                    case '#': // raiz quadrada
-                        if (val1 < 0)
-                        {
-                            resultado = val1;
-                        }
-                        else
-                        {
-                            resultado = sqrt(val1);
-                        }
-                        break;
-                    case '$': // seno
-                        if (std::isinf(sin(val1)))
-                        {
-                            resultado = std::numeric_limits<double>::max();
-                        }
-                        resultado = sin(val1);
-                        break;
-                    case '&':
-                        if (std::isinf(tanh(val1)))
-                        {
-                            resultado = std::numeric_limits<double>::max();
-                        }
-                        resultado = tanh(val1);
-                        break;
-                    case '!': // log
-                        if (val1 <= 0)
-                        {
-                            resultado = val1;
-                        }
-                        else
-                        {
-                            resultado = log(val1);
-                        }
-                        break;
-                    default:
-                        cout << "Operador inválido!" << endl;
-                        exit(1);
+                        resultado = std::numeric_limits<double>::max();
                     }
+                    resultado = exp(val1); // ignorar o segundo valor
+                    if (isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
+                    break;
+                case '#': // raiz quadrada
+                    if (val1 < 0)
+                    {
+                        resultado = val1;
+                    }
+                    else
+                    {
+                        resultado = sqrt(val1);
+                    }
+                    if (isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
+                    break;
+                case '$': // seno
+                    if (std::isinf(sin(val1)))
+                    {
+                        resultado = std::numeric_limits<double>::max();
+                    }
+                    resultado = sin(val1);
+                    if (isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
+                    break;
+                case '&':
+                    if (std::isinf(tanh(val1)))
+                    {
+                        resultado = std::numeric_limits<double>::max();
+                    }
+                    resultado = tanh(val1);
+                    if (isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
+                    break;
+                case '!': // log
+                    if (val1 <= 0)
+                    {
+                        resultado = val1;
+                    }
+                    else
+                    {
+                        resultado = log(val1);
+                    }
+
+                    if (isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
+                    break;
+                default:
+                    cout << "Operador inválido!" << endl;
+                    exit(1);
                 }
+
                 pilhaResultado.push(resultado);
             }
 
@@ -135,22 +149,28 @@ public:
 
                 double resultado;
 
-                if(isinf(val1)|| isinf(val2) || isnan(val1) || isnan(val2)){
-                    resultado = std::numeric_limits<double>::max();
-                }
-                else{
-
-
                 switch (operacao)
                 {
                 case '+':
                     resultado = val1 + val2;
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '-':
                     resultado = val1 - val2;
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '*':
                     resultado = val1 * val2;
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '/':
                     if (abs(val2) < 0.00001) // divisao protegida
@@ -160,6 +180,11 @@ public:
                     else
                     {
                         resultado = val1 / val2;
+                    }
+
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
                     }
                     break;
                 case '^':
@@ -175,11 +200,15 @@ public:
                     {
                         resultado = pow(val1, val2);
                     }
+
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 default:
                     cout << "Operador inválido!" << endl;
                     exit(1);
-                }
                 }
 
                 pilhaResultado.push(resultado);

@@ -72,6 +72,10 @@ public:
                         resultado = std::numeric_limits<double>::infinity();
                     }
                     resultado = exp(val1); // ignorar o segundo valor
+                     if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '#': // raiz quadrada
                     if (val1 < 0)
@@ -82,6 +86,10 @@ public:
                     {
                         resultado = sqrt(val1);
                     }
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '$': // seno
                     if (std::isinf(sin(val1)))
@@ -89,6 +97,10 @@ public:
                         resultado = std::numeric_limits<double>::infinity();
                     }
                     resultado = sin(val1);
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '&':
                     if (std::isinf(tanh(val1)))
@@ -96,6 +108,10 @@ public:
                         resultado = std::numeric_limits<double>::infinity();
                     }
                     resultado = tanh(val1);
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '!': // log
                     if (val1 <= 0)
@@ -105,6 +121,11 @@ public:
                     else
                     {
                         resultado = log(val1);
+                    }
+
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
                     }
                     break;
                 default:
@@ -119,6 +140,7 @@ public:
             {
                 char operacao = (pilhaCopia.top().getInfo())[0]; // lida como um char
                 pilhaCopia.pop();
+
 
                 if (pilhaResultado.size() < 2)
                 {
@@ -137,12 +159,24 @@ public:
                 {
                 case '+':
                     resultado = val1 + val2;
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '-':
                     resultado = val1 - val2;
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '*':
                     resultado = val1 * val2;
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
+                    }
                     break;
                 case '/':
                     if (abs(val2) < 0.00001) // divisao protegida
@@ -152,6 +186,11 @@ public:
                     else
                     {
                         resultado = val1 / val2;
+                    }
+
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
                     }
                     break;
                 case '^':
@@ -166,6 +205,10 @@ public:
                     else
                     {
                         resultado = pow(val1, val2);
+                    }
+                    if(isinf(resultado) || isnan(resultado))
+                    {
+                        resultado = 1;
                     }
                     break;
                 default:
