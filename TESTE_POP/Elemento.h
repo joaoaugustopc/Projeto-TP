@@ -20,7 +20,7 @@ private:
 
     bool isVariavel(string str)
     {
-        return ((str[0] >= 'a' && str[0] <= 'z') || (str[0] >= 'A' && str[0] <= 'Z'));
+        return (((str[0] >= 'a' && str[0] <= 'z') || (str[0] >= 'A' && str[0] <= 'Z')) && str[0]!='e');
     }
 
 public:
