@@ -168,12 +168,12 @@ void substituirPopulacao(Arv **PopulacaoInicial, Arv **PopulacaoGenitores)
     int idxPior = 0;
     for (int i = 1; i < FAMILIA; i++)
     {
-        if (abs(PopulacaoInicial[i]->getAptidao()) < abs(melhor))
+        if (PopulacaoInicial[i]->getAptidao() > melhor)
         {
             melhor = PopulacaoInicial[i]->getAptidao();
             idxMelhor = i;
         }
-        if (abs(PopulacaoGenitores[i]->getAptidao()) > abs(pior))
+        if (PopulacaoGenitores[i]->getAptidao() < pior)
         {
             pior = PopulacaoGenitores[i]->getAptidao();
             idxPior = i;
